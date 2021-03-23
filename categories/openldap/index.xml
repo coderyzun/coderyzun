@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OpenLdap on 「Yang&#39;zun」的网志博客</title>
+    <link>https://cdryzun.github.io/categories/openldap/</link>
+    <description>Recent content in OpenLdap on 「Yang&#39;zun」的网志博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 18 Dec 2020 16:24:43 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/openldap/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>部署 Devops 必备利器 OpenLdap</title>
+      <link>https://cdryzun.github.io/post/docker-deploy-ldap/</link>
+      <pubDate>Fri, 18 Dec 2020 16:24:43 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/docker-deploy-ldap/</guid>
+      <description>环境说明: 操作系统: Centos Docker 版本: 19.03.8 使用容器: osixia/phpldapadmin:latest 、osixia/openldap:latest 、grams/ltb-self-service-p</description>
+    </item>
+    
+  </channel>
+</rss>

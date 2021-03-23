@@ -44,6 +44,15 @@
     </item>
     
     <item>
+      <title>部署 Devops 必备利器 OpenLdap</title>
+      <link>https://cdryzun.github.io/post/docker-deploy-ldap/</link>
+      <pubDate>Fri, 18 Dec 2020 16:24:43 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/docker-deploy-ldap/</guid>
+      <description>环境说明: 操作系统: Centos Docker 版本: 19.03.8 使用容器: osixia/phpldapadmin:latest 、osixia/openldap:latest 、grams/ltb-self-service-p</description>
+    </item>
+    
+    <item>
       <title>Docker Quickstart Redis Server</title>
       <link>https://cdryzun.github.io/post/docker-quickstart-redis/</link>
       <pubDate>Mon, 30 Nov 2020 10:35:47 +0800</pubDate>

@@ -25,5 +25,14 @@
       <description>环境说明 链接文档 软件版本说明 helm: v3.4.2 ingress: v3.16.1 Nginx Ingress 参考文档 安装 1 2 3 4 wget https://get.helm.sh/helm-v3.4.2-linux-amd64.tar.gz tar xf helm-v3.4.2-linux-amd64.tar.gz \ &amp;amp;&amp;amp; cp linux-amd64/helm /usr/local/bin/ 添加helm命令补全 1 2 helm completion bash \ &amp;amp;&amp;amp; helm completion bash &amp;gt; /etc/bash_completion.d/helm 添加 ingress repo 1 2 3 helm</description>
     </item>
     
+    <item>
+      <title>部署 Devops 必备利器 OpenLdap</title>
+      <link>https://cdryzun.github.io/post/docker-deploy-ldap/</link>
+      <pubDate>Fri, 18 Dec 2020 16:24:43 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/docker-deploy-ldap/</guid>
+      <description>环境说明: 操作系统: Centos Docker 版本: 19.03.8 使用容器: osixia/phpldapadmin:latest 、osixia/openldap:latest 、grams/ltb-self-service-p</description>
+    </item>
+    
   </channel>
 </rss>

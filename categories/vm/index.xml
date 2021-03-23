@@ -6,7 +6,16 @@
     <description>Recent content in Vm on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 21 Feb 2021 10:09:38 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/vm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 25 Feb 2021 09:07:25 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/vm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Centos7 编译安装 Qemu 及安装 libvirt 管理工具</title>
+      <link>https://cdryzun.github.io/post/qume-libvirt-install/</link>
+      <pubDate>Thu, 25 Feb 2021 09:07:25 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/qume-libvirt-install/</guid>
+      <description>环境说明 操作系统: CentOS 7.9.2009 Qumu 版本: 5.2.0 Libvirt 版本: 5.4.0 Libvirt 高版本 没有尝试安装成功，如对高版本安装感兴趣的话可以参考这篇 文档 编译安装 Qemu ⚠️ 注意下面操作的命令</description>
+    </item>
+    
     <item>
       <title>VMware ESXi Clone 复制虚拟机</title>
       <link>https://cdryzun.github.io/post/exsi-clone-hosts/</link>

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>部署 Devops 必备利器 OpenLdap - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="Centos使用Docker部署Devops必备利器-OpenLdap" /><meta name="keywords" content="OpenLdap, Docker容器部署, 持续集成" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/docker-deploy-ldap/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<meta property="og:title" content="部署 Devops 必备利器 OpenLdap" />
+<meta property="og:description" content="Centos使用Docker部署Devops必备利器-OpenLdap" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/docker-deploy-ldap/" />
+<meta property="article:published_time" content="2020-12-18T16:24:43+08:00" />
+<meta property="article:modified_time" content="2020-12-18T16:24:43+08:00" />
+<meta itemprop="name" content="部署 Devops 必备利器 OpenLdap">
+<meta itemprop="description" content="Centos使用Docker部署Devops必备利器-OpenLdap">
+<meta itemprop="datePublished" content="2020-12-18T16:24:43+08:00" />
+<meta itemprop="dateModified" content="2020-12-18T16:24:43+08:00" />
+<meta itemprop="wordCount" content="782">
+
+
+
+<meta itemprop="keywords" content="Docker,Devops,Centos,OpenLdap," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="部署 Devops 必备利器 OpenLdap"/>
+<meta name="twitter:description" content="Centos使用Docker部署Devops必备利器-OpenLdap"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
+</head>
+<body>
+  <header id="header" class="header">
+      <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+  </header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">部署 Devops 必备利器 OpenLdap</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-18 </span>
+        <div class="post-category">
+            <a href="/categories/devops/"> Devops </a>
+            <a href="/categories/openldap/"> OpenLdap </a>
+            </div>
+          <span class="more-meta"> 约 782 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明:</a></li>
+    <li><a href="#使用-docker-compose-部署-ldap">使用 docker-compose 部署 ldap</a>
+      <ul>
+        <li><a href="#创建部署前所需的文件夹">创建部署前所需的文件夹</a></li>
+        <li><a href="#docker-compose-部署">Docker-compose 部署</a>
+          <ul>
+            <li><a href="#docker-compose-启动">docker-compose 启动</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#自助-修改密码服务-搭建"><code>自助</code> 修改密码服务 搭建</a></li>
+    <li><a href="#openldap-目录结构的初始化">openLdap 目录结构的初始化</a>
+      <ul>
+        <li><a href="#创建-users-ou-组">创建 <code>users</code> ou 组</a></li>
+        <li><a href="#创建-groups-ou-组">创建 <code>groups</code> ou 组</a></li>
+        <li><a href="#创建-user-用户对象">创建 <code>user</code> 用户对象</a></li>
+        <li><a href="#创建-group-组对象并将-用户拉入这个组中">创建 <code>group</code> 组对象，并将 用户拉入这个组中</a></li>
+      </ul>
+    </li>
+    <li><a href="#服务关联">服务关联</a>
+      <ul>
+        <li><a href="#jenkins">Jenkins</a></li>
+        <li><a href="#gitlab">Gitlab</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="环境说明">环境说明:</h1>
+<ul>
+<li>操作系统: Centos</li>
+<li>Docker 版本:  19.03.8</li>
+<li>使用容器:  <a href="https://hub.docker.com/r/osixia/openldap"><code>osixia/phpldapadmin:latest</code></a> 、<code>osixia/openldap:latest</code> 、<code>grams/ltb-self-service-password:latest</code></li>
+</ul>
+<h1 id="使用-docker-compose-部署-ldap">使用 docker-compose 部署 ldap</h1>
+<h2 id="创建部署前所需的文件夹">创建部署前所需的文件夹</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mkdir -p /data/openldap/<span class="o">{</span>data,config<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="docker-compose-部署">Docker-compose 部署</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">version: <span class="s2">&#34;3&#34;</span>
+services:
+  openldap:
+    container_name: <span class="s2">&#34;openldap&#34;</span>
+    image: <span class="s2">&#34;osixia/openldap:latest&#34;</span>
+    restart: always
+    environment:
+      LDAP_ORGANISATION: <span class="s2">&#34;openldap&#34;</span>
+      LDAP_DOMAIN: <span class="s2">&#34;treesir.pub&#34;</span>
+      LDAP_ADMIN_PASSWORD: <span class="s2">&#34;123456&#34;</span>
+      LDAP_CONFIG_PASSWORD: <span class="s2">&#34;123456&#34;</span>
+    volumes:
+      - /data/openldap/data:/var/lib/ldap
+      - /data/openldap/config:/etc/ldap/slapd.d
+    ports:
+      - <span class="s1">&#39;389:389&#39;</span>
+  phpldapadmin:
+    container_name: <span class="s2">&#34;phpldapadmin&#34;</span>
+    image: <span class="s2">&#34;osixia/phpldapadmin:latest&#34;</span>
+    restart: always
+    environment:
+      PHPLDAPADMIN_HTTPS: <span class="s2">&#34;false&#34;</span>
+      PHPLDAPADMIN_LDAP_HOSTS: <span class="s2">&#34;192.168.8.1&#34;</span>
+    ports:
+      - <span class="s1">&#39;30004:80&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="docker-compose-启动">docker-compose 启动</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker-compose up -d
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="自助-修改密码服务-搭建"><code>自助</code> 修改密码服务 搭建</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker pull grams/ltb-self-service-password 
+
+mkdir -p /etc/ldap-repasswd <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> <span class="nb">cd</span> /etc/ldap-repasswd
+
+wget https://cdn.treesir.pub/application/openldap/config.inc.php
+
+vim config.inc.php  <span class="c1"># 修改配置文件中 ldap 信息</span>
+<span class="nv">$ldap_url</span> <span class="o">=</span> <span class="s2">&#34;ldap://192.168.8.1:389&#34;</span><span class="p">;</span>
+<span class="nv">$ldap_starttls</span> <span class="o">=</span> false<span class="p">;</span>
+<span class="nv">$ldap_binddn</span> <span class="o">=</span> <span class="s2">&#34;cn=admin,dc=treesir,dc=pub&#34;</span><span class="p">;</span>
+<span class="nv">$ldap_bindpw</span> <span class="o">=</span> <span class="s2">&#34;123456&#34;</span><span class="p">;</span>
+<span class="nv">$ldap_base</span> <span class="o">=</span> <span class="s2">&#34;dc=treesir,dc=pub&#34;</span><span class="p">;</span>
+<span class="nv">$ldap_login_attribute</span> <span class="o">=</span> <span class="s2">&#34;uid&#34;</span><span class="p">;</span>
+<span class="nv">$ldap_fullname_attribute</span> <span class="o">=</span> <span class="s2">&#34;cn&#34;</span><span class="p">;</span>
+<span class="nv">$ldap_filter</span> <span class="o">=</span> <span class="s2">&#34;(&amp;(objectClass=person)(</span><span class="nv">$ldap_login_attribute</span><span class="s2">={login}))&#34;</span><span class="p">;</span>
+
+<span class="c1"># 启动容器</span>
+docker run -p 8765:80 -d <span class="se">\
+</span><span class="se"></span>--restart always <span class="se">\
+</span><span class="se"></span>-v /etc/ldap-repasswd/config.inc.php:/usr/share/self-service-password/conf/config.inc.php <span class="se">\
+</span><span class="se"></span>--name ldap-repasswd <span class="se">\
+</span><span class="se"></span>grams/ltb-self-service-password
+
+ <span class="c1"># 如开启了 防火墙 需要将 端口 开放出来</span>
+firewall-cmd --zone<span class="o">=</span>public --add-port<span class="o">=</span>8765/tcp --permanent <span class="o">&amp;&amp;</span> firewall-cmd --reload
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><code>config.inc.php</code> 配置文件为最基础配置，比如你需要配置 <code>邮件通知</code> 及 <code>密码的安全级别</code>等高级功能请参考详细 <a href="https://ltb-project.org/documentation"><code>文档</code></a> 。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210304152035767.png" alt="image-20210304152035767"></p>
+<h1 id="openldap-目录结构的初始化">openLdap 目录结构的初始化</h1>
+<blockquote>
+<p><strong>下面演示的的目录结构的创建，不一定适用于你们的环境，更具实际使用情况调整即可。</strong></p>
+</blockquote>
+<h2 id="创建-users-ou-组">创建 <code>users</code> ou 组</h2>
+<p><img src="https://cdn.treesir.pub/img/image-20210304153242949.png" alt="image-20210304153242949"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304153317510.png" alt="image-20210304153317510"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304153335150.png" alt="image-20210304153335150"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304153345469.png" alt="image-20210304153345469"></p>
+<h2 id="创建-groups-ou-组">创建 <code>groups</code> ou 组</h2>
+<blockquote>
+<p>与 <code>上面</code>  创建 users ou 组一样的</p>
+</blockquote>
+<p>此时我们得到两个 ou组了，在接着创建 <code>user</code> &amp; <code>group</code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304153525116.png" alt="image-20210304153525116"></p>
+<h2 id="创建-user-用户对象">创建 <code>user</code> 用户对象</h2>
+<p><img src="https://cdn.treesir.pub/img/image-20210304154011218.png" alt="image-20210304154011218"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304154024308.png" alt="image-20210304154024308"></p>
+<blockquote>
+<p>选择创建 <code>defuault</code> 对象，这样的 <code>好处</code> 是我们可以自定义字段，<code>将无用的字段进行排除</code> 只保留有效的字段。。</p>
+</blockquote>
+<p>找到 <code>inetOrgPerson</code> , 点击 <code>Proceed</code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304154458948.png" alt="image-20210304154458948"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304155017955.png" alt="image-20210304155017955"></p>
+<blockquote>
+<p>创建完成后选择提交，如果提交 <code>没有任何响应</code>,将最上面的对象设置为 <code>cn</code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304155216888.png" alt="image-20210304155216888"></p>
+</blockquote>
+<h2 id="创建-group-组对象并将-用户拉入这个组中">创建 <code>group</code> 组对象，并将 用户拉入这个组中</h2>
+<p><img src="https://cdn.treesir.pub/img/image-20210304155549187.png" alt="image-20210304155549187"></p>
+<p>和上面一样，创建 <code>default</code> 对象</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304154024308.png" alt="image-20210304154024308"></p>
+<p>找到 <code>groupOfUniqueNames</code> 点击创建</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304155840895.png" alt="image-20210304155840895"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304160001868.png" alt="image-20210304160001868"></p>
+<p>复制用户的信息，粘贴至 <code>uniqueMember</code> 中</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304160137645.png" alt="image-20210304160137645"></p>
+<blockquote>
+<p><strong>其他字段留空</strong>，点击并提交。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210304160222401.png" alt=""></p>
+<p><strong>如需添加其他用户至这个组</strong></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304160550296.png" alt="image-20210304160550296"></p>
+<h1 id="服务关联">服务关联</h1>
+<h2 id="jenkins">Jenkins</h2>
+<p>参考 <a href="https://www.treesir.pub/post/jenkins-install/#%E5%85%B3%E8%81%94-openldap">配置链接</a></p>
+<h2 id="gitlab">Gitlab</h2>
+<p>Gitlab <code>gitlab.rb</code> 配置文, 添加配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">gitlab_rails<span class="o">[</span><span class="s1">&#39;ldap_enabled&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="nb">true</span>
+gitlab_rails<span class="o">[</span><span class="s1">&#39;ldap_servers&#39;</span><span class="o">]</span> <span class="o">=</span> YAML.load <span class="s">&lt;&lt;-&#39;EOS&#39;
+</span><span class="s">    main: # &#39;main&#39; is the GitLab &#39;provider ID&#39; of this LDAP server
+</span><span class="s">      label: &#39;LDAP&#39;
+</span><span class="s">      host: &#39;treesir.pub&#39;
+</span><span class="s">      port: 389 # usually 636 for SSL
+</span><span class="s">      uid: &#39;uid&#39; # This should be the attribute, not the value that maps to uid.
+</span><span class="s">      # Examples: &#39;america\\momo&#39; or &#39;CN=Gitlab Git,CN=Users,DC=mydomain,DC=com&#39;
+</span><span class="s">      bind_dn: &#39;cn=admin,dc=treesir,dc=pub&#39;
+</span><span class="s">      password: &#39;123456&#39;
+</span><span class="s">      encryption: &#39;plain&#39; # &#34;start_tls&#34; or &#34;simple_tls&#34; or &#34;plain&#34;
+</span><span class="s">      active_directory: false
+</span><span class="s">      allow_username_or_email_login: false
+</span><span class="s">      base: &#39;ou=users,dc=treesir,dc=pub&#39;
+</span><span class="s">      user_filter: &#39;&#39;
+</span><span class="s">      attributes:
+</span><span class="s">        username: [&#39;uid&#39;, &#39;userid&#39;, &#39;sAMAccountName&#39;]
+</span><span class="s">        email:    [&#39;mail&#39;, &#39;email&#39;, &#39;userPrincipalName&#39;]
+</span><span class="s">        name:       &#39;cn&#39;
+</span><span class="s">        first_name: &#39;givenName&#39;
+</span><span class="s">        last_name:  &#39;sn&#39;
+</span><span class="s">EOS</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>修改完成后，需要重载 <code>Gitlab</code> 配置文件, 否则不会生效</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">gitlab-ctl reconfigure
+
+gitlab-ctl restart  <span class="c1"># 重载配置 后 重启服务器生效</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-18
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/docker/">Docker</a>
+          <a href="/tags/devops/">Devops</a>
+          <a href="/tags/centos/">Centos</a>
+          <a href="/tags/openldap/">OpenLdap</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/flannel-exclusion-records/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">kubernetes集群中 controller-manager 及 scheduler 组件频繁发生重启的一次排查解决</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/docker-quickstart-redis/">
+            <span class="next-text nav-default">Docker Quickstart Redis Server</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  
+
+  <span class="copyright-year">
+    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
+    </span>
+
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>
