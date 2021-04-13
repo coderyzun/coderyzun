@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>使用 Docker 部署 Gitlab，及常用优化项的说明。 - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用docker进行部署Gitlab，及常用使用操作维护的配置说明" /><meta name="keywords" content="Docker-Compose, Gitlab, 安装部署, Devops" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/gitlab-deploy/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<meta property="og:title" content="使用 Docker 部署 Gitlab，及常用优化项的说明。" />
+<meta property="og:description" content="使用docker进行部署Gitlab，及常用使用操作维护的配置说明" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/gitlab-deploy/" />
+<meta property="article:published_time" content="2021-03-04T16:31:06+08:00" />
+<meta property="article:modified_time" content="2021-03-04T16:31:06+08:00" />
+<meta itemprop="name" content="使用 Docker 部署 Gitlab，及常用优化项的说明。">
+<meta itemprop="description" content="使用docker进行部署Gitlab，及常用使用操作维护的配置说明">
+<meta itemprop="datePublished" content="2021-03-04T16:31:06+08:00" />
+<meta itemprop="dateModified" content="2021-03-04T16:31:06+08:00" />
+<meta itemprop="wordCount" content="1498">
+
+
+
+<meta itemprop="keywords" content="Docker-Compose,Gitlab,Devops," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用 Docker 部署 Gitlab，及常用优化项的说明。"/>
+<meta name="twitter:description" content="使用docker进行部署Gitlab，及常用使用操作维护的配置说明"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
+</head>
+<body>
+  <header id="header" class="header">
+      <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+  </header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">使用 Docker 部署 Gitlab，及常用优化项的说明。</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-03-04 </span>
+        <div class="post-category">
+            <a href="/categories/gitlab/"> Gitlab </a>
+            </div>
+          <span class="more-meta"> 约 1498 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明及准备工作">环境说明及准备工作</a></li>
+    <li><a href="#创建-docker-compose-部署文件">创建 Docker-Compose 部署文件</a></li>
+    <li><a href="#添加使用-nginx-代理">添加使用 nginx 代理</a>
+      <ul>
+        <li><a href="#安装-nginx">安装 nginx</a></li>
+      </ul>
+    </li>
+    <li><a href="#优化项说明">优化项说明</a>
+      <ul>
+        <li><a href="#默认新建项目时-关闭-auto-devops">默认新建项目时 关闭 Auto DevOps</a></li>
+        <li><a href="#开启网络钩子">开启网络钩子</a></li>
+        <li><a href="#接口请求限制">接口请求限制</a></li>
+        <li><a href="#开启-grafana-dashboard">开启 grafana dashboard</a></li>
+        <li><a href="#设置时区本土化">设置时区本土化</a></li>
+        <li><a href="#关闭使用-ssh-管理代码">关闭使用 ssh 管理代码</a></li>
+        <li><a href="#关闭注册功能">关闭注册功能</a></li>
+        <li><a href="#设置新用户最小权限">设置新用户最小权限</a></li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="环境说明及准备工作">环境说明及准备工作</h1>
+<ul>
+<li>
+<p>部署 Gitlab 版本说明:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker pull gitlab/gitlab-ce:13.10.2-ce.0
+</code></pre></td></tr></table>
+</div>
+</div><p>提前拉取好镜像。</p>
+</li>
+<li>
+<p>docker-compose 版本说明:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker-compose --version
+docker-compose version 1.18.0, build 8dd22a9
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>docker version: 19.03.9</p>
+</li>
+</ul>
+<h1 id="创建-docker-compose-部署文件">创建 Docker-Compose 部署文件</h1>
+<blockquote>
+<p>Gitlab <code>docker-compose.yaml</code> 部署文件如下所示</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mkdir -p /data/docker-compose/gitlab-ce 
+
+<span class="nb">cd</span> /data/docker-compose/gitlab-ce <span class="c1"># 配置文件注意保留，后续的维护多需要使用</span>
+
+cat docker-compose.yaml
+version: <span class="s1">&#39;2&#39;</span>
+services:
+    gitlab:
+      image: <span class="s1">&#39;gitlab/gitlab-ce:13.10.2-ce.0&#39;</span>
+      restart: always
+      hostname: <span class="s1">&#39;gitlab.treesir.pub&#39;</span>
+      container_name: <span class="s1">&#39;gitlab-ce&#39;</span>
+      environment:
+        TZ: <span class="s1">&#39;Asia/Shanghai&#39;</span>
+        GITLAB_OMNIBUS_CONFIG: <span class="p">|</span>
+          external_url <span class="s1">&#39;http://gitlab.treesir.pub&#39;</span>  <span class="c1"># or protocol &#34;https&#34;</span>
+          gitlab_rails<span class="o">[</span><span class="s1">&#39;time_zone&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;Asia/Shanghai&#39;</span>
+          gitlab_rails<span class="o">[</span><span class="s1">&#39;smtp_enable&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="nb">true</span>
+          gitlab_rails<span class="o">[</span><span class="s1">&#39;smtp_address&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&#34;smtp.qq.com&#34;</span>
+          gitlab_rails<span class="o">[</span><span class="s1">&#39;smtp_port&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="m">465</span>
+          gitlab_rails<span class="o">[</span><span class="s1">&#39;smtp_user_name&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&#34;sample@qq.com&#34;</span>
+          gitlab_rails<span class="o">[</span><span class="s1">&#39;smtp_password&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&#34;sample&#34;</span>
+          gitlab_rails<span class="o">[</span><span class="s1">&#39;smtp_authentication&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&#34;login&#34;</span>
+          gitlab_rails<span class="o">[</span><span class="s1">&#39;smtp_enable_starttls_auto&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="nb">true</span>
+          gitlab_rails<span class="o">[</span><span class="s1">&#39;smtp_tls&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="nb">true</span>
+          gitlab_rails<span class="o">[</span><span class="s1">&#39;gitlab_email_from&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;sample@qq.com&#39;</span>
+      ports:
+        - <span class="s1">&#39;18080:80&#39;</span>
+      volumes:
+        - /application/gitlab/config:/etc/gitlab
+        - /application/gitlab/data:/var/opt/gitlab
+        - /application/gitlab/logs:/var/log/gitlab
+volumes:
+    config:
+    data:
+    logs:
+
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>修改对应配置项中的 <code>域名地址</code>、<code>smtp信息</code>，这里使用的 smtp地址信息为 <code>QQemail</code>的，获取方式可以参考 <a href="https://www.jianshu.com/p/9efaff9e9437">此方法</a>。</p>
+<p>还有就是需要注意一下配置文件中的端口映射，这里将容器内的 <code>80</code> 端口映射到了 <code>18080</code>，原因是打算用 <code>nginx</code> 来配置代理使用，这样可以更加合理的利用<code>80</code> or <code>443</code> 这两个特殊端口，如果单独给这么一个服务难免有那么一些浪费。当然不是一定需要这样做，对端口没有特殊要求的话，也可以将端口直接映射到对应的 80 or 443 端口，这样配置相对简单，而且省去了后面的一系列的操作。</p>
+</blockquote>
+<p><strong>创建完配置文件后，我们进行一些启动容器的操作</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker-compose up -d
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210409163819513.png" alt="image-20210409163819513"></p>
+<p><strong>等待几分钟后，我们测试访问一下对应的端口</strong></p>
+<blockquote>
+<p>Gitlab 中的默认用户是 <code>root</code></p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210409164819832.png" alt="image-20210409164819832"></p>
+<blockquote>
+<p>可以看到，服务现在已经启动完成。如果你那边访问出现问题，可以检测一下对应的容器日志。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker logs -f --tail <span class="m">100</span> gitlab-ce
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h1 id="添加使用-nginx-代理">添加使用 nginx 代理</h1>
+<p><img src="https://cdn.treesir.pub/img/image-20210409165223276.png" alt="image-20210409165223276"></p>
+<blockquote>
+<p>如上面图片所示，如你使用的容器端口映射不是使用 <code>80</code>，是无法直接 copy 这地址使用的，我们可以通过添加 <code>反代解决</code>，这里介绍如何使用 <code>nginx</code> 进行实现。</p>
+</blockquote>
+<h2 id="安装-nginx">安装 nginx</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install -y nginx*
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>这里使用 yum 进行直接安装</p>
+</blockquote>
+<p><strong>对应 nginx 配置文件如下所示</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat /etc/nginx/conf.d/gitlab.conf
+
+upstream gitlab <span class="o">{</span>
+  server 192.168.8.110:18080<span class="p">;</span>  <span class="c1"># 如 nginx 和 gitlab在同一台机器上时，建议使用地址 &#34;127.0.0.1&#34;</span>
+<span class="o">}</span>
+
+server <span class="o">{</span>
+  listen 80<span class="p">;</span>
+  server_name gitlab.treesir.pub<span class="p">;</span>
+  location / <span class="o">{</span>
+    proxy_read_timeout      300<span class="p">;</span>
+    proxy_connect_timeout   300<span class="p">;</span>
+    proxy_redirect          off<span class="p">;</span>
+
+    proxy_set_header        Host                <span class="nv">$http_host</span><span class="p">;</span>
+    proxy_set_header        X-Real-IP           <span class="nv">$remote_addr</span><span class="p">;</span>
+    proxy_set_header        X-Forwarded-For     <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+    proxy_set_header        X-Forwarded-Proto   http<span class="p">;</span>
+    proxy_set_header        X-Frame-Options     SAMEORIGIN<span class="p">;</span>
+    proxy_pass http://gitlab <span class="p">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">#server {</span>
+<span class="c1">#  listen 443 ssl;</span>
+<span class="c1">#  server_name registry.example.com;</span>
+<span class="c1">#</span>
+<span class="c1">#  ssl on;</span>
+<span class="c1">#  ssl_certificate /letsencrypt/fullchain.pem;</span>
+<span class="c1">#  ssl_certificate_key /letsencrypt/privkey.pem;</span>
+<span class="c1">#</span>
+<span class="c1">#  location / {</span>
+<span class="c1">#    proxy_read_timeout      300;</span>
+<span class="c1">#    proxy_connect_timeout   300;</span>
+<span class="c1">#    proxy_redirect          off;</span>
+<span class="c1">#</span>
+<span class="c1">#    proxy_set_header        Host                $http_host;</span>
+<span class="c1">#    proxy_set_header        X-Real-IP           $remote_addr;</span>
+<span class="c1">#    proxy_set_header        X-Forwarded-For     $proxy_add_x_forwarded_for;</span>
+<span class="c1">#    proxy_set_header        X-Forwarded-Proto   https;</span>
+<span class="c1">#    proxy_set_header        X-Frame-Options     SAMEORIGIN;</span>
+<span class="c1">#    proxy_pass http://gitlab;</span>
+<span class="c1">#  }</span>
+<span class="c1">#}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>默认内网自己使用的话，对安全没有什么需求的话，可以只开启 http 协议，但是如果在公网的话，还是建议开启 <code>https</code>的。配置文件中有示例配置，打开注释即可进行使用，证书的话这里推荐 <code>acme.sh</code> 的免费证书。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf <span class="nb">test</span> is successful
+
+nginx -s reload  <span class="c1"># 重载生效</span>
+
+systemctl <span class="nb">enable</span> nginx <span class="c1"># 设置 nginx 开机自启</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>更改 hosts 文件后，我们进行测试访问一下地址</strong></p>
+<blockquote>
+<p><a href="https://www.baidu.com/s?ie=utf-8&amp;f=8&amp;rsv_bp=1&amp;rsv_idx=2&amp;ch=&amp;tn=baiduhome_pg&amp;bar=&amp;wd=%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%9B%B4%E6%94%B9hosts&amp;rsv_spt=1&amp;oq=%25E5%2590%2584%25E6%2593%258D%25E4%25BD%259C%25E7%25B3%25BB%25E7%25BB%259F%25E6%259B%25B4%25E6%2594%25B9hosts&amp;rsv_pq=89a0cf6f00019b6e&amp;rsv_t=01f6WSXkn%2BXRAo%2FEoqrourz%2FvvuGJcRuG5Kl8TxYOvSr2AF5gbkPOwyqVPpjoAO73UPK&amp;rqlang=cn&amp;rsv_enter=1&amp;rsv_btype=t&amp;rsv_dl=tb&amp;inputT=962">更改 hosts文件 方法说明</a></p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210409172159652.png" alt="image-20210409172159652"></p>
+<p><strong>测试上传文件</strong></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210409172547967.png" alt="image-20210409172547967"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210409172607523.png" alt="image-20210409172607523"></p>
+<blockquote>
+<p>可以看到，我们刚才 push 上传的 文件已经可以在 <code>dashboard</code> 中看到了。</p>
+</blockquote>
+<h1 id="优化项说明">优化项说明</h1>
+<blockquote>
+<p>这里的优化项指 关闭 Gitlab 中一些，默认开启了但是又没有什么用处的功能，自己更具实际情况进行选择关停即可，<code>不是必选的操作</code>。</p>
+</blockquote>
+<h2 id="默认新建项目时-关闭-auto-devops">默认新建项目时 关闭 Auto DevOps</h2>
+<p><img src="https://cdn.treesir.pub/img/image-20210412150002697.png" alt="image-20210412150002697"></p>
+<h2 id="开启网络钩子">开启网络钩子</h2>
+<blockquote>
+<p>与 Jenkins 进行集成时，需要用到 WebHook，这里我们需要将此处进行打开。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210412150343435.png" alt="image-20210412150343435"></p>
+<h2 id="接口请求限制">接口请求限制</h2>
+<blockquote>
+<p>开启后，可有效避免 <code>cc </code>攻击, 一般在公网中建议开启，内网的话，可有可无。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210412150549008.png" alt="image-20210412150549008"></p>
+<h2 id="开启-grafana-dashboard">开启 grafana dashboard</h2>
+<blockquote>
+<p>在 Gitlab 中，默认存在一套 Prometheus 监控方案，当打开 grafana 后，我们可以访问  <code>${GITLAB_URL}/-/grafana</code> 这个地址进行查看。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210412150825760.png" alt="image-20210412150825760"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210412151147827.png" alt="image-20210412151147827"></p>
+<blockquote>
+<p>并且默认的 grafana 中，已预制了对应的展示模板。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210412151401340.png" alt="image-20210412151401340"></p>
+<h2 id="设置时区本土化">设置时区本土化</h2>
+<p><img src="https://cdn.treesir.pub/img/image-20210412151612643.png" alt="image-20210412151612643"></p>
+<h2 id="关闭使用-ssh-管理代码">关闭使用 ssh 管理代码</h2>
+<p><img src="https://cdn.treesir.pub/img/image-20210412152449920.png" alt="image-20210412152449920"></p>
+<h2 id="关闭注册功能">关闭注册功能</h2>
+<blockquote>
+<p>如果你开启了使用 ldap 用户认证的管理，此项强烈建议是把它关闭的。一般打开了的话，常见于一些对外服务的站点，企业中根本不需要。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210412152950209.png" alt="image-20210412152950209"></p>
+<h2 id="设置新用户最小权限">设置新用户最小权限</h2>
+<blockquote>
+<p>不勾选此项时，默认新添加的用户还是拥有<code>创建仓库</code> 的权限的，如果管理员想 <code>掌控全局</code> 的话，还是建议开启。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210412153256775.png" alt="image-20210412153256775"></p>
+<h1 id="总结">总结</h1>
+<p>Gitlab 为企业中 常见的 git 代码管理软件，是在实施 <code>Devops</code> 过程中的利剑，功能强大，并内置了 ci/cd、repository、监控等功能。在对 Gitlab 进行配置优化时，我们需要注意在配置时还 存在着<code>全局生效配置</code> 和 <code>项目局部生效配置</code>，如在全局中配置了未见生效，可以去对应的项目组中查看此项目对应配置也做了相应的更改否。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-03-04
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/docker-compose/">Docker-Compose</a>
+          <a href="/tags/gitlab/">Gitlab</a>
+          <a href="/tags/devops/">Devops</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/gitlab-integration-jira/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Gitlab 和 jira 之间的集成</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/jenkins-install/">
+            <span class="next-text nav-default">Centos 7 Yum 安装 Jenkins 及常用配置的说明</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  
+
+  <span class="copyright-year">
+    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
+    </span>
+
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

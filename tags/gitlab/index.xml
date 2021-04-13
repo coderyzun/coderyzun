@@ -25,5 +25,14 @@
       <description>环境说明 Gitlab-ce 版本： 13.10.2 Jira 版本：v8.13.4 Jira 获取 工作流结束 id 获取到工作流 结束 id 21 Gitlab 设置全局与 jira 集成 测试效果 找到需要关联 issue id 编辑 文件 commit</description>
     </item>
     
+    <item>
+      <title>使用 Docker 部署 Gitlab，及常用优化项的说明。</title>
+      <link>https://cdryzun.github.io/post/gitlab-deploy/</link>
+      <pubDate>Thu, 04 Mar 2021 16:31:06 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/gitlab-deploy/</guid>
+      <description>环境说明及准备工作 部署 Gitlab 版本说明: 1 docker pull gitlab/gitlab-ce:13.10.2-ce.0 提前拉取好镜像。 docker-compose 版本说明: 1 2 docker-compose --version docker-compose version 1.18.0, build 8dd22a9 docker version: 19.03.9 创建 Docker-Compose 部署文件 Gitlab docker-compose.yaml 部署文件如下所示 1 2 3 4 5 6</description>
+    </item>
+    
   </channel>
 </rss>
