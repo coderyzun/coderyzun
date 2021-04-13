@@ -35,7 +35,7 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
-<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
 
 <link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
@@ -46,7 +46,7 @@
 <meta property="og:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cdryzun.github.io/" />
-<meta property="og:updated_time" content="2021-03-02T19:31:09+08:00" />
+<meta property="og:updated_time" content="2021-04-12T17:25:58+08:00" />
 <meta itemprop="name" content="「Yang&#39;zun」的网志博客">
 <meta itemprop="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历">
 <meta name="twitter:card" content="summary"/>
@@ -130,6 +130,52 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/gitlab-pre-receive-webhook/">Gitlab pre-receive webook 的添加与使用</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-04-12 </span>
+      <div class="post-category">
+          <a href="/categories/devops/"> Devops </a>
+          </div>
+        <span class="more-meta"> 约 2435 字 </span>
+        <span class="more-meta"> 预计阅读 5 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      环境说明 版本使用说明 Gitlab version: 13.10.2 gitlab 服务器安装教程请参考 文档，本文档将示例在 gitlab 中如何添加和配置 pre-receive 钩子，并演示针对 git push 操作做相关的限制操作。 文档参考 gitlab
+    </div>
+    <div class="read-more">
+      <a href="/post/gitlab-pre-receive-webhook/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/gitlab-integration-jira/">Gitlab 和 jira 之间的集成</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-04-09 </span>
+      <div class="post-category">
+          <a href="/categories/devops/"> Devops </a>
+          </div>
+        <span class="more-meta"> 约 250 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      环境说明 Gitlab-ce 版本： 13.10.2 Jira 版本：v8.13.4 Jira 获取 工作流结束 id 获取到工作流 结束 id 21 Gitlab 设置全局与 jira 集成 测试效果 找到需要关联 issue id 编辑 文件 commit
+    </div>
+    <div class="read-more">
+      <a href="/post/gitlab-integration-jira/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/jenkins-install/">Centos 7 Yum 安装 Jenkins 及常用配置的说明</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-03-02 </span>
@@ -206,7 +252,7 @@
       <div class="post-category">
           <a href="/categories/devops/"> Devops </a>
           </div>
-        <span class="more-meta"> 约 1256 字 </span>
+        <span class="more-meta"> 约 1260 字 </span>
         <span class="more-meta"> 预计阅读 3 分钟 </span>
     </div>
   </header>
@@ -267,53 +313,6 @@
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/k8s-nfs-strage-class/">在 Kubernetes 中部署 nfs storageClass</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-01-19 </span>
-      <div class="post-category">
-          <a href="/categories/devops/"> devOps </a>
-          </div>
-        <span class="more-meta"> 约 1098 字 </span>
-        <span class="more-meta"> 预计阅读 3 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      环境说明： helm version: v3.4.2 kubernetes version: v1.19.6 nfs server: 192.168.8.66 sub-net: 192.168.8.0/24 nfs 服务端配置 1 yum install rpcbind nfs-utils -y # 安装 nfs server 创建用户 &amp; 数据目录 1 2 3 4 5 6 7 8 9 groupadd -g 2233 nfs-user useradd nfs-user -M -s /sbin/nologin -u 2233 -g nfs-user id nfs-user mkdir -p /data/nfs.sharedir chown
-    </div>
-    <div class="read-more">
-      <a href="/post/k8s-nfs-strage-class/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/k8s-deploy-kafka-cluster/">使用 Confluentinc 在 Kubernetes 集群中部署 Kafka 集群 </a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-01-19 </span>
-      <div class="post-category">
-          <a href="/categories/kubernetes/"> Kubernetes </a>
-          <a href="/categories/kafka/"> kafka </a>
-          </div>
-        <span class="more-meta"> 约 1278 字 </span>
-        <span class="more-meta"> 预计阅读 3 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      部署说明 kafka &amp; zookeeper 集群部署工具: confluentinc 使用 helm 进行部署，并部署一个外置的 kafka 管理工具。 环境说明 kubernetes version: v1.17.4 helm version: v3.3.1 traefik version: v2.3.6 docker version: 18.09.6 k8s strage class: nfs kafka dashboard: kafka-manager 集群部署 Helm 应用下载 1
-    </div>
-    <div class="read-more">
-      <a href="/post/k8s-deploy-kafka-cluster/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -346,11 +345,7 @@
     <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
   </span>
 
-  <div class="busuanzi-footer">
-    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
-      <span class="division">|</span>
-    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
-  </div>
+  
 
   
 

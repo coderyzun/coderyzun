@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Git on 「Yang&#39;zun」的网志博客</title>
+    <link>https://cdryzun.github.io/tags/git/</link>
+    <description>Recent content in Git on 「Yang&#39;zun」的网志博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 09 Apr 2021 15:52:44 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gitlab 和 jira 之间的集成</title>
+      <link>https://cdryzun.github.io/post/gitlab-integration-jira/</link>
+      <pubDate>Fri, 09 Apr 2021 15:52:44 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/gitlab-integration-jira/</guid>
+      <description>环境说明 Gitlab-ce 版本： 13.10.2 Jira 版本：v8.13.4 Jira 获取 工作流结束 id 获取到工作流 结束 id 21 Gitlab 设置全局与 jira 集成 测试效果 找到需要关联 issue id 编辑 文件 commit</description>
+    </item>
+    
+  </channel>
+</rss>

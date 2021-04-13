@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Gitlab pre-receive webook 的添加与使用 - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用 Gitlab 时，git commit 和 jira issue id 的集成" /><meta name="keywords" content="Gitlab, git, shell, issue" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/gitlab-pre-receive-webhook/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<meta property="og:title" content="Gitlab pre-receive webook 的添加与使用" />
+<meta property="og:description" content="使用 Gitlab 时，git commit 和 jira issue id 的集成" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/gitlab-pre-receive-webhook/" />
+<meta property="article:published_time" content="2021-04-12T17:25:58+08:00" />
+<meta property="article:modified_time" content="2021-04-12T17:25:58+08:00" />
+<meta itemprop="name" content="Gitlab pre-receive webook 的添加与使用">
+<meta itemprop="description" content="使用 Gitlab 时，git commit 和 jira issue id 的集成">
+<meta itemprop="datePublished" content="2021-04-12T17:25:58+08:00" />
+<meta itemprop="dateModified" content="2021-04-12T17:25:58+08:00" />
+<meta itemprop="wordCount" content="2435">
+
+
+
+<meta itemprop="keywords" content="Gitlab,Webhook,shell," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Gitlab pre-receive webook 的添加与使用"/>
+<meta name="twitter:description" content="使用 Gitlab 时，git commit 和 jira issue id 的集成"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
+</head>
+<body>
+  <header id="header" class="header">
+      <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+  </header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Gitlab pre-receive webook 的添加与使用</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-04-12 </span>
+        <div class="post-category">
+            <a href="/categories/devops/"> Devops </a>
+            </div>
+          <span class="more-meta"> 约 2435 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明</a>
+      <ul>
+        <li><a href="#版本使用说明">版本使用说明</a></li>
+        <li><a href="#文档参考">文档参考</a></li>
+        <li><a href="#pre-receive-钩子概述">Pre-receive 钩子概述</a></li>
+      </ul>
+    </li>
+    <li><a href="#pre-receive-钩子添加">Pre-receive 钩子添加</a>
+      <ul>
+        <li><a href="#gitlab-服务端开启-自定义全局钩子选项">Gitlab 服务端开启 自定义全局钩子选项</a></li>
+        <li><a href="#添加全局-commit-字节长度验证">添加全局 <code>commit</code> 字节长度验证</a></li>
+      </ul>
+    </li>
+    <li><a href="#基于针对单个项目的-hook">基于针对单个项目的 hook</a>
+      <ul>
+        <li><a href="#添加局部-hook强制-git-commit-输入-jira-issue-id">添加局部 hook，强制 git <code>commit</code> 输入 jira issue id</a>
+          <ul>
+            <li><a href="#shell-脚本如下所示"><code>shell</code> 脚本如下所示</a></li>
+            <li><a href="#找到对应项目在磁盘中的路径">找到对应项目在磁盘中的路径</a></li>
+          </ul>
+        </li>
+        <li><a href="#测试效果">测试效果</a></li>
+      </ul>
+    </li>
+    <li><a href="#其他钩子">其他钩子</a>
+      <ul>
+        <li><a href="#限制上传文件的类型">限制上传文件的类型</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="环境说明">环境说明</h1>
+<h2 id="版本使用说明">版本使用说明</h2>
+<ul>
+<li>
+<p>Gitlab version:  13.10.2</p>
+<blockquote>
+<p>gitlab 服务器安装教程请参考 <a href="https://www.treesir.pub/post/gitlab-deploy/">文档</a>，本文档将示例在 <code>gitlab</code> 中如何添加和配置 <code>pre-receive</code> 钩子，并演示针对 <code>git push</code> 操作做相关的限制操作。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="文档参考">文档参考</h2>
+<ul>
+<li><a href="https://www.jianshu.com/p/03ac8a3c4629">gitlab pre-receive钩子</a></li>
+</ul>
+<h2 id="pre-receive-钩子概述">Pre-receive 钩子概述</h2>
+<blockquote>
+<p>当我们需要对 git 提交的相关内容做校验时，可以使用服务端的 <code>pre-receive</code> 钩子。相对于客户端的 <code>pre-commit</code> 钩子来说，它便于统一管理维护。<code>pre-commit</code> 需要将处理脚本添加到客户端代码仓库的 <code>.git/hooks </code>目录下，当 clone 后 <code>需要重新</code> 进行添加，所以通常采用服务端的 <code>pre-receive</code> 来替代。</p>
+<p><code>pre-receive</code> 可以对 push 中的内容做校验，如果校验脚本正常退出（exit 0）即允许push，反之会拒绝客户端进行push操作。</p>
+<p>在 gitlab  服务端中除了 <code>pre-receive</code> 钩子外还可以添加其他两种钩子即 <code>pre-receive</code> 和 <code>update</code> 钩子，详细文档说明请 <a href="https://docs.gitlab.com/ee/administration/server_hooks.html">参考</a></p>
+</blockquote>
+<h1 id="pre-receive-钩子添加">Pre-receive 钩子添加</h1>
+<blockquote>
+<p><code>pre-receive </code> 脚本的使用可以是 shell、python、ruby 等任何可执行程序，需要注意它的权限。<code>pre-receive</code> 钩子会从标准输入获取三个参数：<code>旧版本号</code>，<code>新版本号</code>，<code>分支</code>。同时还提供了内置的许多环境变量可以使用，详情可以参考<a href="https://help.github.com/enterprise/2.15/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/">官方文档</a>。</p>
+</blockquote>
+<h2 id="gitlab-服务端开启-自定义全局钩子选项">Gitlab 服务端开启 自定义全局钩子选项</h2>
+<blockquote>
+<p>下面示例中的 gitlab 使用 docker 进行部署，数据通过映射持久卷的形式进行保存。</p>
+<p>gitlab 中有 <code>全局</code> 的 webhook 和 针对 <code>单个项目</code>生效的 webhook，针对单个项目生效的 hook 我后面将会有说明。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nb">pwd</span>
+/application/gitlab
+
+$ ll
+total <span class="m">4</span>
+drwxrwxr-x  <span class="m">3</span> root root  <span class="m">239</span> Apr  <span class="m">9</span> 16:38 config
+drwxr-xr-x <span class="m">20</span> root root <span class="m">4096</span> Apr <span class="m">13</span> 10:14 data
+drwxr-xr-x <span class="m">20</span> root root  <span class="m">326</span> Apr  <span class="m">9</span> 16:41 logs
+
+vi config/gitlab.rb 
+gitlab_shell<span class="o">[</span><span class="s1">&#39;custom_hooks_dir&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&#34;/etc/gitlab/hooks&#34;</span>  <span class="c1"># 设置全局钩子文件夹，默认这行在配置文件中是注释的</span>
+
+mkdir -p config/hooks/pre-receive.d/  <span class="c1"># 创建文件夹</span>
+
+docker <span class="nb">exec</span> -it gitlab-ce bash -c <span class="s1">&#39;ls /etc/gitlab/hooks&#39;</span>  <span class="c1"># 查看容器中此文件夹是否存在，并验证映射关系是否正确</span>
+pre-receive.d 
+
+docker <span class="nb">exec</span> -it gitlab-ce bash -c <span class="s1">&#39;gitlab-ctl reconfigure&#39;</span> <span class="c1"># 配置重载生效，不执行此项配置将不会生效，重启容器也没有用。</span>
+
+docker restart gitlab-ce   <span class="c1"># 重启一下相关容器</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210413110811283.png" alt="image-20210413110811283"></p>
+<h2 id="添加全局-commit-字节长度验证">添加全局 <code>commit</code> 字节长度验证</h2>
+<blockquote>
+<p>此脚本为 shell 脚本，脚本示例如下所示</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat config/hooks/pre-receive.d/commit-length 
+
+<span class="c1">#!/bin/bash</span>
+<span class="c1">#pre-receive script</span>
+<span class="c1">#set -x #for debugging</span>
+<span class="nv">LG</span><span class="o">=</span><span class="m">18</span>  <span class="c1"># 字节长度</span>
+
+validate_ref<span class="o">()</span>
+<span class="o">{</span>
+    <span class="c1"># --- Arguments</span>
+    <span class="nv">oldrev</span><span class="o">=</span><span class="k">$(</span>git rev-parse <span class="nv">$1</span><span class="k">)</span>
+    <span class="nv">newrev</span><span class="o">=</span><span class="k">$(</span>git rev-parse <span class="nv">$2</span><span class="k">)</span>
+    <span class="nv">refname</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span>
+
+    <span class="nv">commitList</span><span class="o">=</span><span class="sb">`</span>git rev-list <span class="nv">$oldrev</span>..<span class="nv">$newrev</span><span class="sb">`</span>
+        <span class="c1">#echo $commitList</span>
+    <span class="nv">split</span><span class="o">=(</span><span class="nv">$commitList</span><span class="o">)</span>
+    <span class="k">for</span> s in <span class="si">${</span><span class="nv">split</span><span class="p">[@]</span><span class="si">}</span>
+    <span class="k">do</span>
+        <span class="nb">echo</span> <span class="s2">&#34;@@@@@@@&#34;</span>
+        <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$s</span><span class="s2">&#34;</span>
+        <span class="nv">msg</span><span class="o">=</span><span class="sb">`</span>git cat-file commit <span class="nv">$s</span> <span class="p">|</span> sed <span class="s1">&#39;1,/^$/d&#39;</span><span class="sb">`</span>
+        <span class="nb">echo</span> <span class="nv">$msg</span>
+        <span class="k">if</span> <span class="o">[</span> <span class="si">${#</span><span class="nv">msg</span><span class="si">}</span> -lt <span class="s2">&#34;</span><span class="nv">$LG</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span><span class="k">then</span>
+            <span class="nb">echo</span> <span class="s2">&#34;!!! Commit message length less than 18&#34;</span>
+            <span class="nb">exit</span> <span class="m">1</span>
+        <span class="k">else</span>
+            <span class="nb">echo</span> <span class="s2">&#34;bigger than </span><span class="nv">$LG</span><span class="s2"> by commit-length check&#34;</span>
+        <span class="k">fi</span>
+    <span class="k">done</span>
+
+<span class="o">}</span>
+
+<span class="nv">fail</span><span class="o">=</span><span class="s2">&#34;&#34;</span>
+
+<span class="c1"># Allow dual mode: run from the command line just like the update hook, or</span>
+<span class="c1"># if no arguments are given then run as a hook script</span>
+<span class="k">if</span> <span class="o">[</span> -n <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> -a -n <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> -a -n <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="c1"># Output to the terminal in command line mode - if someone wanted to</span>
+    <span class="c1"># resend an email; they could redirect the output to sendmail</span>
+    <span class="c1"># themselves</span>
+    <span class="nv">PAGER</span><span class="o">=</span> validate_ref <span class="nv">$2</span> <span class="nv">$3</span> <span class="nv">$1</span>
+<span class="k">else</span>
+    <span class="k">while</span> <span class="nb">read</span> oldrev newrev refname
+    <span class="k">do</span>
+        validate_ref <span class="nv">$oldrev</span> <span class="nv">$newrev</span> <span class="nv">$refname</span>
+    <span class="k">done</span>
+<span class="k">fi</span>
+
+<span class="k">if</span> <span class="o">[</span> -n <span class="s2">&#34;</span><span class="nv">$fail</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">exit</span> <span class="nv">$fail</span>
+<span class="k">fi</span>
+
+docker <span class="nb">exec</span> -it gitlab-ce bash -c <span class="s1">&#39;chmod 777 -R /etc/gitlab/hooks/&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>这里需要注意一下 1 个 <code>中文字符</code> 等于 3个 字节，也就是说最少需要 8 中文字符，当然 <code>空格</code> 也会被计入，如想排除空格，可修改一下脚本对应逻辑即可，这里不多赘述实现方法，熟悉 shell 脚本的人应该不难。</p>
+<p>这里的 <code>权限</code> 一定要，进行更改一下，否则将导致 hook 脚本不生效。</p>
+</blockquote>
+<p><strong>验证脚本是否可行</strong></p>
+<p><code>gitlab dashboard 验证</code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210413112643927.png" alt="image-20210413112643927"></p>
+<blockquote>
+<p>可以看到，已经提交不上去了，只是 dashboard 中无 message 错误输出。</p>
+</blockquote>
+<p><code>命令行验证</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /tmp
+git clone http://gitlab.treesir.pub/gitlab-instance-7c228ebb/Monitoring.git
+touch test.md
+git add ./*
+git commit -m <span class="s2">&#34;aaa&#34;</span>
+
+git push origin master  <span class="c1"># 可以看到 命令行是有正常输出的。</span>
+Enumerating objects: 4, <span class="k">done</span>.
+Counting objects: 100% <span class="o">(</span>4/4<span class="o">)</span>, <span class="k">done</span>.
+Delta compression using up to <span class="m">4</span> threads
+Compressing objects: 100% <span class="o">(</span>2/2<span class="o">)</span>, <span class="k">done</span>.
+Writing objects: 100% <span class="o">(</span>3/3<span class="o">)</span>, <span class="m">266</span> bytes <span class="p">|</span> 266.00 KiB/s, <span class="k">done</span>.
+Total <span class="m">3</span> <span class="o">(</span>delta 0<span class="o">)</span>, reused <span class="m">0</span> <span class="o">(</span>delta 0<span class="o">)</span>
+remote: @@@@@@@
+remote: d1d9d8d5cad9ece2e82e4a9252efacb271c4fd0f
+remote: aaa
+remote: !!! Commit message length less than <span class="m">18</span>
+To http://gitlab.treesir.pub/gitlab-instance-7c228ebb/Monitoring.git
+ ! <span class="o">[</span>remote rejected<span class="o">]</span> master -&gt; master <span class="o">(</span>pre-receive hook declined<span class="o">)</span>
+error: failed to push some refs to <span class="s1">&#39;http://gitlab.treesir.pub/gitlab-instance-7c228ebb/Monitoring.git&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="基于针对单个项目的-hook">基于针对单个项目的 hook</h1>
+<blockquote>
+<p>有些时候我们的限制不想针对于全局，只想针对于某个项目组，或者组中的某些项目。下面示例，创建一个新的仓库，并对这个仓库添加独立的 hook 限制。<code>全局钩子</code> 和 <code>局部钩子</code> 的脚本方式是一样的，只是放置的路径不同，全局即我们上面配置的容器中 <code>/etc/gitlab/hooks</code> 而 局部的 是在 <code>项目绝对路径/custom_hooks/</code> 下，可以局部的钩子，这样可能不太清晰，下面我演示一下就清楚了。</p>
+</blockquote>
+<h2 id="添加局部-hook强制-git-commit-输入-jira-issue-id">添加局部 hook，强制 git <code>commit</code> 输入 jira issue id</h2>
+<blockquote>
+<p>此 hook 常见与 gitlab 与 jira 进行集成后，并且 jira issue id 是有规律的，我们可以通过正则进行过滤匹配即可。</p>
+</blockquote>
+<h3 id="shell-脚本如下所示"><code>shell</code> 脚本如下所示</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat custom_hooks/pre-receive.d/require-jira-issue 
+<span class="c1">#!/bin/bash</span>
+<span class="c1">#</span>
+<span class="c1"># Reject pushes that contain commits with messages that do not adhere</span>
+<span class="c1"># to the defined regex.</span>
+
+<span class="c1"># This can be a useful pre-receive hook [1] if you want to ensure every</span>
+<span class="c1"># commit is associated with a ticket ID.</span>
+<span class="c1">#</span>
+<span class="c1"># As an example this hook ensures that the commit message contains a</span>
+<span class="c1"># JIRA issue formatted as [JIRA-&lt;issue number&gt;].</span>
+<span class="c1">#</span>
+<span class="c1"># [1] https://help.github.com/en/enterprise/user/articles/working-with-pre-receive-hooks</span>
+<span class="c1">#</span>
+
+<span class="nb">set</span> -e
+
+<span class="nv">zero_commit</span><span class="o">=</span><span class="s1">&#39;0000000000000000000000000000000000000000&#39;</span>
+<span class="nv">msg0_regex</span><span class="o">=</span><span class="s1">&#39;^DT-[0-9]+ &#39;</span>
+<span class="nv">msg1_regex</span><span class="o">=</span><span class="s1">&#39;^Merge&#39;</span>
+
+<span class="k">while</span> <span class="nb">read</span> -r oldrev newrev refname<span class="p">;</span> <span class="k">do</span>
+
+        <span class="c1"># Branch or tag got deleted, ignore the push</span>
+    <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$newrev</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="nv">$zero_commit</span><span class="s2">&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">continue</span>
+
+    <span class="c1"># Calculate range for new branch/updated branch</span>
+    <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$oldrev</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="nv">$zero_commit</span><span class="s2">&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">range</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$newrev</span><span class="s2">&#34;</span> <span class="o">||</span> <span class="nv">range</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$oldrev</span><span class="s2">..</span><span class="nv">$newrev</span><span class="s2">&#34;</span>
+
+        <span class="k">for</span> commit in <span class="k">$(</span>git rev-list <span class="s2">&#34;</span><span class="nv">$range</span><span class="s2">&#34;</span> --not --all<span class="k">)</span><span class="p">;</span> <span class="k">do</span>
+                <span class="k">if</span> ! git log --max-count<span class="o">=</span><span class="m">1</span> --format<span class="o">=</span>%B <span class="nv">$commit</span> <span class="p">|</span> egrep -iq <span class="s2">&#34;</span><span class="nv">$msg0_regex</span><span class="s2">|</span><span class="nv">$msg1_regex</span><span class="s2">&#34;</span><span class="p">;</span> <span class="k">then</span>
+                        <span class="nb">echo</span> <span class="s2">&#34;ERROR:&#34;</span>
+                        <span class="nb">echo</span> <span class="s2">&#34;ERROR: Your push was rejected because the commit&#34;</span>
+                        <span class="nb">echo</span> <span class="s2">&#34;ERROR: </span><span class="nv">$commit</span><span class="s2"> in </span><span class="si">${</span><span class="nv">refname</span><span class="p">#refs/heads/</span><span class="si">}</span><span class="s2">&#34;</span>
+                        <span class="nb">echo</span> <span class="s2">&#34;ERROR: is missing the JIRA Issue. Example: &#39;DT-123 This is a commit example.&#39;&#34;</span>
+                        <span class="nb">echo</span> <span class="s2">&#34;ERROR:&#34;</span>
+                        <span class="nb">echo</span> <span class="s2">&#34;ERROR: Please fix the commit message and push again.&#34;</span>
+                        <span class="nb">echo</span> <span class="s2">&#34;ERROR: https://help.github.com/en/articles/changing-a-commit-message&#34;</span>
+                        <span class="nb">echo</span> <span class="s2">&#34;ERROR&#34;</span>
+                        <span class="nb">exit</span> <span class="m">1</span>
+                <span class="k">fi</span>
+        <span class="k">done</span>
+
+<span class="k">done</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="找到对应项目在磁盘中的路径">找到对应项目在磁盘中的路径</h3>
+<blockquote>
+<p>从 gitlab 多少版本开始，项目的路径就是已 <code>hash</code> 形式存在磁盘中，目的好像是为了提高磁盘io性能，我看官方文档好像是这个说的。</p>
+</blockquote>
+<p><strong>创建一个新的项目</strong></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210413114851496.png" alt="image-20210413114851496"></p>
+<p><strong>找到刚才这个项目的 对应 hash 路径</strong></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210413114933852.png" alt="image-20210413114933852"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210413115002149.png" alt="image-20210413115002149"><img src="https://cdn.treesir.pub/img/image-20210413115025924.png" alt="image-20210413115025924"></p>
+<blockquote>
+<p>获得 hash 路径即 <code>@hashed/d4/73/d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35.git</code></p>
+</blockquote>
+<p><strong>添加钩子</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"> <span class="nb">cd</span> /application/gitlab/data/git-data/repositories/ <span class="se">\
+</span><span class="se"></span> <span class="o">&amp;&amp;</span> <span class="nb">cd</span> @hashed/d4/73/d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35.git  <span class="c1"># 刚才找到的路径</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210413115213400.png" alt="image-20210413115213400"></p>
+<p>创建 hook 文件夹</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mkdir -p custom_hooks/pre-receive.d/ 
+
+vim custom_hooks/pre-receive.d/require-jira-issue <span class="c1"># 将上面的脚本内容 添加至文件夹中</span>
+
+tree custom_hooks
+custom_hooks/
+└── pre-receive.d
+    └── require-jira-issue
+
+<span class="m">1</span> directory, <span class="m">1</span> file
+
+
+chmod <span class="m">777</span> -R ./custom_hooks  <span class="c1"># 授予权限，同理权限未设置将导致，hook无效。</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="测试效果">测试效果</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">git clone http://gitlab.treesir.pub/root/test-commit.git
+
+<span class="nb">cd</span> test-commit
+
+
+touch test.md
+
+git add ./*
+
+git commit -m <span class="s2">&#34;test&#34;</span>
+
+git push <span class="c1"># 可以看到下面输出 脚本已生效。</span>
+Enumerating objects: 3, <span class="k">done</span>.
+Counting objects: 100% <span class="o">(</span>3/3<span class="o">)</span>, <span class="k">done</span>.
+Writing objects: 100% <span class="o">(</span>3/3<span class="o">)</span>, <span class="m">205</span> bytes <span class="p">|</span> 205.00 KiB/s, <span class="k">done</span>.
+Total <span class="m">3</span> <span class="o">(</span>delta 0<span class="o">)</span>, reused <span class="m">0</span> <span class="o">(</span>delta 0<span class="o">)</span>
+remote: ERROR:
+remote: ERROR: Your push was rejected because the commit
+remote: ERROR: 38bcec39ffd4132c495a22af0ed1485fbe8852f4 in master
+remote: ERROR: is missing the JIRA Issue. Example: <span class="s1">&#39;DT-123 This is a commit example.&#39;</span>
+remote: ERROR:
+remote: ERROR: Please fix the commit message and push again.
+remote: ERROR: https://help.github.com/en/articles/changing-a-commit-message
+remote: ERROR
+To http://gitlab.treesir.pub/root/test-commit.git
+ ! <span class="o">[</span>remote rejected<span class="o">]</span> master -&gt; master <span class="o">(</span>pre-receive hook declined<span class="o">)</span>
+error: failed to push some refs to <span class="err">&#39;</span>http://gitlab.treesir.pub/root/test-commit.git
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>如果项目一多了话，一个一个的添加还是有些麻烦，可以使用 gitlab 提供的 <code>api</code> 功能 进行一键查询对应的 <code>hash path</code>，并添加对应的脚本，不过需要我们有一定的 脚本编写能力。</p>
+</blockquote>
+<h1 id="其他钩子">其他钩子</h1>
+<h2 id="限制上传文件的类型">限制上传文件的类型</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat custom_hooks/pre-receive.d/block-files 
+
+<span class="c1">#!/usr/bin/env bash</span>
+
+<span class="c1">#</span>
+<span class="c1"># Pre-receive hook that will block any new commits that contain files ending</span>
+<span class="c1"># with .gz, .zip or .tgz</span>
+<span class="c1">#</span>
+<span class="c1"># More details on pre-receive hooks and how to apply them can be found on</span>
+<span class="c1"># https://help.github.com/enterprise/admin/guides/developer-workflow/managing-pre-receive-hooks-on-the-github-enterprise-appliance/</span>
+<span class="c1">#</span>
+
+<span class="nv">zero_commit</span><span class="o">=</span><span class="s2">&#34;0000000000000000000000000000000000000000&#34;</span>
+
+<span class="c1"># Do not traverse over commits that are already in the repository</span>
+<span class="c1"># (e.g. in a different branch)</span>
+<span class="c1"># This prevents funny errors if pre-receive hooks got enabled after some</span>
+<span class="c1"># commits got already in and then somebody tries to create a new branch</span>
+<span class="c1"># If this is unwanted behavior, just set the variable to empty</span>
+<span class="nv">excludeExisting</span><span class="o">=</span><span class="s2">&#34;--not --all&#34;</span>
+
+<span class="k">while</span> <span class="nb">read</span> oldrev newrev refname<span class="p">;</span> <span class="k">do</span>
+  <span class="c1"># echo &#34;payload&#34;</span>
+  <span class="nb">echo</span> <span class="nv">$refname</span> <span class="nv">$oldrev</span> <span class="nv">$newrev</span>
+
+  <span class="c1"># branch or tag get deleted</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$newrev</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="nv">$zero_commit</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="k">continue</span>
+  <span class="k">fi</span>
+
+  <span class="c1"># Check for new branch or tag</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$oldrev</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="nv">$zero_commit</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nv">span</span><span class="o">=</span><span class="sb">`</span>git rev-list <span class="nv">$newrev</span> <span class="nv">$excludeExisting</span><span class="sb">`</span>
+  <span class="k">else</span>
+    <span class="nv">span</span><span class="o">=</span><span class="sb">`</span>git rev-list <span class="nv">$oldrev</span>..<span class="nv">$newrev</span> <span class="nv">$excludeExisting</span><span class="sb">`</span>
+  <span class="k">fi</span>
+
+  <span class="k">for</span> COMMIT in <span class="nv">$span</span><span class="p">;</span>
+  <span class="k">do</span>
+    <span class="k">for</span> FILE  in <span class="sb">`</span>git log -1 --name-only --pretty<span class="o">=</span>format:<span class="s1">&#39;&#39;</span> <span class="nv">$COMMIT</span><span class="sb">`</span><span class="p">;</span>
+    <span class="k">do</span>
+      <span class="k">case</span> <span class="nv">$FILE</span> in
+      *.zip<span class="p">|</span>*.gz<span class="p">|</span>*.tgz<span class="p">|</span>*.exe <span class="o">)</span>
+        <span class="nb">echo</span> <span class="s2">&#34;Hello there! We have restricted committing that filetype(*.zip|*.gz|*.tgz|*.exe). Please see Dave in IT to discuss alternatives.&#34;</span>
+        <span class="nb">exit</span> <span class="m">1</span>
+        <span class="p">;;</span>
+      <span class="k">esac</span>
+    <span class="k">done</span>
+  <span class="k">done</span>
+<span class="k">done</span>
+<span class="nb">exit</span> <span class="m">0</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>此脚本中对 <code>.zip、.gz、.tgz、.exe</code> 类型的文件做了 <code>block</code> 处理。</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-04-12
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/gitlab/">Gitlab</a>
+          <a href="/tags/webhook/">Webhook</a>
+          <a href="/tags/shell/">shell</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/gitlab-integration-jira/">
+            <span class="next-text nav-default">Gitlab 和 jira 之间的集成</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  
+
+  <span class="copyright-year">
+    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
+    </span>
+
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>
