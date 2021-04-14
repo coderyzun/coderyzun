@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Centos7 执行 shutdown 无法正常关机的解决 - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="记录一次 centos7 无法正常关机的解决。" /><meta name="keywords" content="Linux, Centos, 无法正常, 关机, 执行, 解决, Centos7" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/centos-shutdown-notpoweroff/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<meta property="og:title" content="Centos7 执行 shutdown 无法正常关机的解决" />
+<meta property="og:description" content="记录一次 centos7 无法正常关机的解决。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/centos-shutdown-notpoweroff/" />
+<meta property="article:published_time" content="2021-04-14T10:48:42+08:00" />
+<meta property="article:modified_time" content="2021-04-14T10:48:42+08:00" />
+<meta itemprop="name" content="Centos7 执行 shutdown 无法正常关机的解决">
+<meta itemprop="description" content="记录一次 centos7 无法正常关机的解决。">
+<meta itemprop="datePublished" content="2021-04-14T10:48:42+08:00" />
+<meta itemprop="dateModified" content="2021-04-14T10:48:42+08:00" />
+<meta itemprop="wordCount" content="477">
+
+
+
+<meta itemprop="keywords" content="Centos,Scripts," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Centos7 执行 shutdown 无法正常关机的解决"/>
+<meta name="twitter:description" content="记录一次 centos7 无法正常关机的解决。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
+</head>
+<body>
+  <header id="header" class="header">
+      <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+  </header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Centos7 执行 shutdown 无法正常关机的解决</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-04-14 </span>
+        <div class="post-category">
+            <a href="/categories/linux/"> Linux </a>
+            </div>
+          <span class="more-meta"> 约 477 字 </span>
+          <span class="more-meta"> 预计阅读 1 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明</a>
+      <ul>
+        <li><a href="#操作环境">操作环境</a></li>
+      </ul>
+    </li>
+    <li><a href="#优化">优化</a>
+      <ul>
+        <li><a href="#关闭图形界面">关闭图形界面</a></li>
+        <li><a href="#设置-systemctl-的超时时间">设置 systemctl 的超时时间</a></li>
+        <li><a href="#更新系统">更新系统</a></li>
+        <li><a href="#优化-acpi-管理模块">优化 <strong>acpi</strong> 管理模块</a></li>
+        <li><a href="#优化-watchdog-的超时时间">优化 watchdog 的超时时间</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考文档">参考文档</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="环境说明">环境说明</h1>
+<blockquote>
+<p>因为在公司中，有下班后有需要关闭 <code>服务器</code> 的操作，并且每天还需要去手动打开。有点违背 极客精神，所有自己通过 <code>shell script</code> + <code>cron</code> 的形式进行每天定时的 <code>开关服务器机</code> 操作。但是服务器中不乏有一些比较老的机型，没有提供类似于<code> ipmi</code> 管理功能，这些服务器自动启动依赖于主板自带的 <code>网络唤醒</code> 功能，如果服务器未正常关机时 (卡在关机界面)，第二天早上通过网络唤醒时是无法正常打开服务器的，需要管理人员的介入管理强制关机。这篇文档主要是介绍如何优化服务器的关机时间长，服务器关机卡死问题。</p>
+</blockquote>
+<h2 id="操作环境">操作环境</h2>
+<ul>
+<li>Centos7：<code>7.9.2009 </code></li>
+</ul>
+<h1 id="优化">优化</h1>
+<h2 id="关闭图形界面">关闭图形界面</h2>
+<blockquote>
+<p>如服务器中，存在图形界面的功能，建议是把他设置成命令行形式的。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">systemctl get-default <span class="c1"># 查看当前的工作模式</span>
+
+systemctl set-default multi-user.target <span class="c1"># 设置为命令行界面</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="设置-systemctl-的超时时间">设置 systemctl 的超时时间</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cp /etc/systemd/system.conf<span class="o">{</span>,.bak<span class="o">}</span>
+
+vi /etc/systemd/system.conf <span class="c1"># 编辑此文件</span>
+<span class="nv">DefaultTimeoutStopSec</span><span class="o">=</span>90s  <span class="c1"># 更改为 适合自己的时间</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210414111258932.png" alt="image-20210414111258932"></p>
+<h2 id="更新系统">更新系统</h2>
+<blockquote>
+<p>这里更新系统的原因是，可能是软件包中存在bug，导致关机时间长。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum update -y <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> yum upgrade -y
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="优化-acpi-管理模块">优化 <strong>acpi</strong> 管理模块</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum -y install acpid
+systemctl start acpid
+systemctl <span class="nb">enable</span> acpid
+
+vim /etc/default/grub
+<span class="nv">GRUB_CMDLINE_LINUX</span><span class="o">=</span><span class="s2">&#34;... acpi=force reboot=warm&#34;</span>  <span class="c1"># 在此行最后添加</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210414111742844.png" alt="image-20210414111742844"></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">grub2-mkconfig -o /boot/grub2/grub.cfg  <span class="c1"># 配置后，重新生成 grub 启动加载文件</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="优化-watchdog-的超时时间">优化 watchdog 的超时时间</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat /etc/systemd/system.conf<span class="p">|</span>grep -i ShutdownWatchdogSec  <span class="c1"># 默认此参数为 10min</span>
+<span class="nv">ShutdownWatchdogSec</span><span class="o">=</span>30s
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="参考文档">参考文档</h1>
+<blockquote>
+<ul>
+<li><a href="https://blog.csdn.net/F8qG7f9YD02Pe/article/details/108722168">https://blog.csdn.net/F8qG7f9YD02Pe/article/details/108722168</a></li>
+<li><a href="https://forums.centos.org/viewtopic.php?t=59735">https://forums.centos.org/viewtopic.php?t=59735</a></li>
+</ul>
+</blockquote>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-04-14
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/centos/">Centos</a>
+          <a href="/tags/scripts/">Scripts</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/gitlab-pre-receive-webhook/">
+            <span class="next-text nav-default">Gitlab pre-receive webook 的添加与使用</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  
+
+  <span class="copyright-year">
+    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
+    </span>
+
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

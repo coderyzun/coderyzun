@@ -6,7 +6,16 @@
     <description>Recent content in Centos on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 14 Jan 2021 20:09:58 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/centos/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 14 Apr 2021 10:48:42 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/centos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Centos7 执行 shutdown 无法正常关机的解决</title>
+      <link>https://cdryzun.github.io/post/centos-shutdown-notpoweroff/</link>
+      <pubDate>Wed, 14 Apr 2021 10:48:42 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/centos-shutdown-notpoweroff/</guid>
+      <description>环境说明 因为在公司中，有下班后有需要关闭 服务器 的操作，并且每天还需要去手动打开。有点违背 极客精神，所有自己通过 shell script + cron 的形式进行每天定时的 开</description>
+    </item>
+    
     <item>
       <title>记录一次，因误删容器导致的容器恢复过程</title>
       <link>https://cdryzun.github.io/post/delete-container-reset/</link>
