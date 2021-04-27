@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Docker on 「Yang&#39;zun」的网志博客</title>
+    <title>docker on 「Yang&#39;zun」的网志博客</title>
     <link>https://cdryzun.github.io/tags/docker/</link>
-    <description>Recent content in Docker on 「Yang&#39;zun」的网志博客</description>
+    <description>Recent content in docker on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 16 Jan 2021 14:39:59 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Rancher 单机部署，进行升级后，导致docker无法正常启动</title>
-      <link>https://cdryzun.github.io/post/rancher-upgrade-docker/</link>
-      <pubDate>Sat, 16 Jan 2021 14:39:59 +0800</pubDate>
-      
-      <guid>https://cdryzun.github.io/post/rancher-upgrade-docker/</guid>
-      <description>环境说明 操作系统: Centos 7.9.2009 Docker Version: 18.09.9 模拟复现 rancher 安装 1 2 3 4 5 6 7 8 docker pull rancher/rancher:v2.3.5 docker run -d \ --restart=unless-stopped \ --name rancher \ -p 80:80 -p 443:443 \ --privileged \ rancher/rancher:v2.3.5 升级 rancher 示例将 v2.3.5 升级至 v2.5.0 创建备份 1 2 3 4 5 docker</description>
-    </item>
-    
+    <lastBuildDate>Thu, 14 Jan 2021 20:09:58 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>记录一次，因误删容器导致的容器恢复过程</title>
       <link>https://cdryzun.github.io/post/delete-container-reset/</link>
@@ -26,48 +17,12 @@
     </item>
     
     <item>
-      <title>Kubeadm 部署 kubernetes-v1.19.x 集群</title>
-      <link>https://cdryzun.github.io/post/kubeadm-deploy-k8s1.9/</link>
-      <pubDate>Mon, 21 Dec 2020 13:19:31 +0800</pubDate>
-      
-      <guid>https://cdryzun.github.io/post/kubeadm-deploy-k8s1.9/</guid>
-      <description>系统环境说明 使用操作系统: Centos-7.9.2009 操作系统内核版本: 4.4.248 (lt) Docker容器版本: 18.09.9 Kubeadm 版本: 1.19.6 节点说明: master01: 192.168.8.70 ,192.168.88.70 node01: 192.168.8.71 ,192.168.88.71 (备注: 为每个节点配置了两个ip，</description>
-    </item>
-    
-    <item>
       <title>Centos7 安装之后必要的初始化操作</title>
       <link>https://cdryzun.github.io/post/centos-init-config/</link>
       <pubDate>Mon, 21 Dec 2020 09:34:01 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/centos-init-config/</guid>
       <description>⚠️ 注意此些操作在Centos7中得到验证且可行，其他发行版本请自己尝试 OS 调优 内核优化 ⚠️ 请更具实践业务场景进行调整，此示例中较适合kube</description>
-    </item>
-    
-    <item>
-      <title>部署 Devops 必备利器 OpenLdap</title>
-      <link>https://cdryzun.github.io/post/docker-deploy-ldap/</link>
-      <pubDate>Fri, 18 Dec 2020 16:24:43 +0800</pubDate>
-      
-      <guid>https://cdryzun.github.io/post/docker-deploy-ldap/</guid>
-      <description>环境说明: 操作系统: Centos Docker 版本: 19.03.8 使用容器: osixia/phpldapadmin:latest 、osixia/openldap:latest 、grams/ltb-self-service-p</description>
-    </item>
-    
-    <item>
-      <title>Docker Quickstart Redis Server</title>
-      <link>https://cdryzun.github.io/post/docker-quickstart-redis/</link>
-      <pubDate>Mon, 30 Nov 2020 10:35:47 +0800</pubDate>
-      
-      <guid>https://cdryzun.github.io/post/docker-quickstart-redis/</guid>
-      <description>环境说明: 系统镜像: Redis:5.x （示例容器为: redis:5.0.4 ） 操作系统: Centos Docker 版本: 19.03.8 具体实现步骤 操作系统简单优化 1 2 3 4 5 6 echo &amp;#39;vm.overcommit_memory=1 net.core.somaxconn=65535&amp;#39; &amp;gt;&amp;gt; /etc/sysctl.conf sysctl -p echo never &amp;gt; /sys/kernel/mm/transparent_hugepage/enable 下载容器 1 docker pull redis:5.0.4</description>
-    </item>
-    
-    <item>
-      <title>Docker 部署多网口软路由</title>
-      <link>https://cdryzun.github.io/post/openwrt-docker-multi-net/</link>
-      <pubDate>Thu, 19 Nov 2020 17:56:52 +0800</pubDate>
-      
-      <guid>https://cdryzun.github.io/post/openwrt-docker-multi-net/</guid>
-      <description>环境说明: 操作系统: Centos 7.8.2003 内核版本: 4.14.129-bbrplus Docker 版本: 19.03.12 使用 Docker 镜像: raymondwong/openwrt_r9:20.1.24-x86_64 网卡说明: 板载螃蟹网卡、绿联 usb3.0 千M 网卡 系统网卡配置 将对应网卡启动混淆模式 1 2 3 4</description>
     </item>
     
   </channel>

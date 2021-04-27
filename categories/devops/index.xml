@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Devops on 「Yang&#39;zun」的网志博客</title>
+    <title>devops on 「Yang&#39;zun」的网志博客</title>
     <link>https://cdryzun.github.io/categories/devops/</link>
-    <description>Recent content in Devops on 「Yang&#39;zun」的网志博客</description>
+    <description>Recent content in devops on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 12 Apr 2021 17:25:58 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/devops/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 25 Apr 2021 10:35:57 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/devops/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git 使用问题的记录</title>
+      <link>https://cdryzun.github.io/post/git-use-issue/</link>
+      <pubDate>Sun, 25 Apr 2021 10:35:57 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/git-use-issue/</guid>
+      <description>指定特定仓库拉取代码 1 2 3 4 5 git remote add origin https://github.com/demo/example.git git pull https://repo.csheidou.com/forestry_afterend/prevention_fire_test.git master git branch --set-upstream-to=origin/master git status git pull 更改远程仓库地址 1 2 3 4 5 git remote -v git remote set-url origin https://github.com/demo/example.git git pull origin master --allow-unrelated-histories git push git branch --set-upstream-to=origin/master 清理本地错误的用</description>
+    </item>
+    
     <item>
       <title>Gitlab pre-receive webook 的添加与使用</title>
       <link>https://cdryzun.github.io/post/gitlab-pre-receive-webhook/</link>
@@ -23,6 +32,15 @@
       
       <guid>https://cdryzun.github.io/post/gitlab-integration-jira/</guid>
       <description>环境说明 Gitlab-ce 版本： 13.10.2 Jira 版本：v8.13.4 Jira 获取 工作流结束 id 获取到工作流 结束 id 21 Gitlab 设置全局与 jira 集成 测试效果 找到需要关联 issue id 编辑 文件 commit</description>
+    </item>
+    
+    <item>
+      <title>使用 Docker 部署 Gitlab，及常用优化项的说明。</title>
+      <link>https://cdryzun.github.io/post/gitlab-deploy/</link>
+      <pubDate>Thu, 04 Mar 2021 16:31:06 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/gitlab-deploy/</guid>
+      <description>环境说明及准备工作 部署 Gitlab 版本说明: 1 docker pull gitlab/gitlab-ce:13.10.2-ce.0 提前拉取好镜像。 docker-compose 版本说明: 1 2 docker-compose --version docker-compose version 1.18.0, build 8dd22a9 docker version: 19.03.9 创建 Docker-Compose 部署文件 Gitlab docker-compose.yaml 部署文件如下所示 1 2 3 4 5 6</description>
     </item>
     
     <item>
@@ -53,6 +71,15 @@
     </item>
     
     <item>
+      <title>初探 Traefik ingress gateway</title>
+      <link>https://cdryzun.github.io/post/ingress-traefik/</link>
+      <pubDate>Sun, 17 Jan 2021 16:15:32 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/ingress-traefik/</guid>
+      <description>Traefik 基础概念说明 Traefik 是一个 开源 的边缘路由器，使发布服务变得有趣而轻松，是你整个平台的大门，拦截并匹配每一个传入的请求：它掌管着所有的匹配逻辑和路</description>
+    </item>
+    
+    <item>
       <title>使用 Docker 部署 Nexus3 私服的详细记录总结</title>
       <link>https://cdryzun.github.io/post/docker-deploy-nexus3-upgrade/</link>
       <pubDate>Tue, 22 Dec 2020 09:24:55 +0800</pubDate>
@@ -68,6 +95,15 @@
       
       <guid>https://cdryzun.github.io/post/docker-deploy-ldap/</guid>
       <description>环境说明: 操作系统: Centos Docker 版本: 19.03.8 使用容器: osixia/phpldapadmin:latest 、osixia/openldap:latest 、grams/ltb-self-service-p</description>
+    </item>
+    
+    <item>
+      <title>Kind 部署本地k8s集群的使用记录</title>
+      <link>https://cdryzun.github.io/post/first-kind/</link>
+      <pubDate>Sun, 15 Nov 2020 14:24:42 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/first-kind/</guid>
+      <description>参考资料 Github 地址 参考博客 安装 1 2 3 curl -Lo ./kind &amp;#34;https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64&amp;#34; chmod +x ./kind mv ./kind /some-dir-in-your-PATH/kind 启动集群 注意启动集群前 请确认 docker 服务是否启动 1 2 3 4 5 6 7 8 9 10 11 12 docker info|grep -A 2 Server # 确认 是否启</description>
     </item>
     
   </channel>

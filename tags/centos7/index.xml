@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Centos7 on 「Yang&#39;zun」的网志博客</title>
+    <title>centos7 on 「Yang&#39;zun」的网志博客</title>
     <link>https://cdryzun.github.io/tags/centos7/</link>
-    <description>Recent content in Centos7 on 「Yang&#39;zun」的网志博客</description>
+    <description>Recent content in centos7 on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 25 Feb 2021 09:07:25 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/centos7/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 14 Apr 2021 10:48:42 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/centos7/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Centos7 执行 shutdown 无法正常关机的解决</title>
+      <link>https://cdryzun.github.io/post/centos-shutdown-notpoweroff/</link>
+      <pubDate>Wed, 14 Apr 2021 10:48:42 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/centos-shutdown-notpoweroff/</guid>
+      <description>环境说明 因为在公司中，有下班后有需要关闭 服务器 的操作，并且每天还需要去手动打开。有点违背 极客精神，所有自己通过 shell script + cron 的形式进行每天定时的 开</description>
+    </item>
+    
+    <item>
+      <title>使用 Docker 部署 Gitlab，及常用优化项的说明。</title>
+      <link>https://cdryzun.github.io/post/gitlab-deploy/</link>
+      <pubDate>Thu, 04 Mar 2021 16:31:06 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/gitlab-deploy/</guid>
+      <description>环境说明及准备工作 部署 Gitlab 版本说明: 1 docker pull gitlab/gitlab-ce:13.10.2-ce.0 提前拉取好镜像。 docker-compose 版本说明: 1 2 docker-compose --version docker-compose version 1.18.0, build 8dd22a9 docker version: 19.03.9 创建 Docker-Compose 部署文件 Gitlab docker-compose.yaml 部署文件如下所示 1 2 3 4 5 6</description>
+    </item>
+    
     <item>
       <title>Centos7 编译安装 Qemu 及安装 libvirt 管理工具</title>
       <link>https://cdryzun.github.io/post/qume-libvirt-install/</link>
@@ -23,6 +41,42 @@
       
       <guid>https://cdryzun.github.io/post/centos-init-config/</guid>
       <description>⚠️ 注意此些操作在Centos7中得到验证且可行，其他发行版本请自己尝试 OS 调优 内核优化 ⚠️ 请更具实践业务场景进行调整，此示例中较适合kube</description>
+    </item>
+    
+    <item>
+      <title>部署 Devops 必备利器 OpenLdap</title>
+      <link>https://cdryzun.github.io/post/docker-deploy-ldap/</link>
+      <pubDate>Fri, 18 Dec 2020 16:24:43 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/docker-deploy-ldap/</guid>
+      <description>环境说明: 操作系统: Centos Docker 版本: 19.03.8 使用容器: osixia/phpldapadmin:latest 、osixia/openldap:latest 、grams/ltb-self-service-p</description>
+    </item>
+    
+    <item>
+      <title>Docker Quickstart Redis Server</title>
+      <link>https://cdryzun.github.io/post/docker-quickstart-redis/</link>
+      <pubDate>Mon, 30 Nov 2020 10:35:47 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/docker-quickstart-redis/</guid>
+      <description>环境说明: 系统镜像: Redis:5.x （示例容器为: redis:5.0.4 ） 操作系统: Centos Docker 版本: 19.03.8 具体实现步骤 操作系统简单优化 1 2 3 4 5 6 echo &amp;#39;vm.overcommit_memory=1 net.core.somaxconn=65535&amp;#39; &amp;gt;&amp;gt; /etc/sysctl.conf sysctl -p echo never &amp;gt; /sys/kernel/mm/transparent_hugepage/enable 下载容器 1 docker pull redis:5.0.4</description>
+    </item>
+    
+    <item>
+      <title>Docker 部署多网口软路由</title>
+      <link>https://cdryzun.github.io/post/openwrt-docker-multi-net/</link>
+      <pubDate>Thu, 19 Nov 2020 17:56:52 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/openwrt-docker-multi-net/</guid>
+      <description>环境说明: 操作系统: Centos 7.8.2003 内核版本: 4.14.129-bbrplus Docker 版本: 19.03.12 使用 Docker 镜像: raymondwong/openwrt_r9:20.1.24-x86_64 网卡说明: 板载螃蟹网卡、绿联 usb3.0 千M 网卡 系统网卡配置 将对应网卡启动混淆模式 1 2 3 4</description>
+    </item>
+    
+    <item>
+      <title>Kind 部署本地k8s集群的使用记录</title>
+      <link>https://cdryzun.github.io/post/first-kind/</link>
+      <pubDate>Sun, 15 Nov 2020 14:24:42 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/first-kind/</guid>
+      <description>参考资料 Github 地址 参考博客 安装 1 2 3 curl -Lo ./kind &amp;#34;https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64&amp;#34; chmod +x ./kind mv ./kind /some-dir-in-your-PATH/kind 启动集群 注意启动集群前 请确认 docker 服务是否启动 1 2 3 4 5 6 7 8 9 10 11 12 docker info|grep -A 2 Server # 确认 是否启</description>
     </item>
     
   </channel>

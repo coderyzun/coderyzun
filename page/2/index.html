@@ -46,7 +46,7 @@
 <meta property="og:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cdryzun.github.io/" />
-<meta property="og:updated_time" content="2021-04-14T10:48:42+08:00" />
+<meta property="og:updated_time" content="2021-04-26T14:59:36+08:00" />
 <meta itemprop="name" content="「Yang&#39;zun」的网志博客">
 <meta itemprop="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历">
 <meta name="twitter:card" content="summary"/>
@@ -130,11 +130,80 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/exsi-clone-hosts/">VMware ESXi Clone 复制虚拟机</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/qume-libvirt-install/">Centos7 编译安装 Qemu 及安装 libvirt 管理工具</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-02-25 </span>
+      <div class="post-category">
+          <a href="/categories/vm/"> vm </a>
+          </div>
+        <span class="more-meta"> 约 1148 字 </span>
+        <span class="more-meta"> 预计阅读 3 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      环境说明 操作系统: CentOS 7.9.2009 Qumu 版本: 5.2.0 Libvirt 版本: 5.4.0 Libvirt 高版本 没有尝试安装成功，如对高版本安装感兴趣的话可以参考这篇 文档 编译安装 Qemu ⚠️ 注意下面操作的命令
+    </div>
+    <div class="read-more">
+      <a href="/post/qume-libvirt-install/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/raid-megacli/">Raid 阵列卡 Megacli 管理工具的使用记录</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-02-24 </span>
+      <div class="post-category">
+          <a href="/categories/linux/"> linux </a>
+          </div>
+        <span class="more-meta"> 约 212 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      安装 参考文档 示例为： Centos7 中的安装步骤 1 2 3 4 5 6 7 wget https://docs.broadcom.com/docs-and-downloads/raid-controllers/raid-controllers-common-files/8-07-14_MegaCLI.zip unzip 8-07-14_MegaCLI.zip rpm -ivhU Linux/MegaCli-8.07.14-1.noarch.rpm cp -a /opt/MegaRAID/MegaCli/MegaCli64 /usr/local/bin/MegaCli 命令使用记录 将某块物理盘下线/上线 1 2 3 4 5 6 7 8 9 MegaCli -PDOffline -PhysDrv[31:8] -a0 MegaCli -PDRbld -ShowProg -PhysDrv[31:8] -aAll
+    </div>
+    <div class="read-more">
+      <a href="/post/raid-megacli/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/jira-install/">Jira &amp; confluence 安装 并 配置 破解激活</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-02-21 </span>
       <div class="post-category">
-          <a href="/categories/vm/"> Vm </a>
+          <a href="/categories/devops/"> devops </a>
+          </div>
+        <span class="more-meta"> 约 1260 字 </span>
+        <span class="more-meta"> 预计阅读 3 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      环境说明 操作系统: Centos 安装 Jira 版本: 8.13.4 使用数据库: Mysql 5.7 jdk 版本: openjdk 1.8 官方 jira 最新版本查看地址 环境初始化 安装 jdk 1 2 3 4 5 6 yum install -y java-1.8.0-openjdk [root@jira ~]# java -version openjdk version &#34;1.8.0_282&#34; OpenJDK Runtime Environment
+    </div>
+    <div class="read-more">
+      <a href="/post/jira-install/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/esxi-clone-hosts/">VMware ESXi Clone 复制虚拟机</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-02-21 </span>
+      <div class="post-category">
+          <a href="/categories/vm/"> vm </a>
           </div>
         <span class="more-meta"> 约 184 字 </span>
         <span class="more-meta"> 预计阅读 1 分钟 </span>
@@ -143,10 +212,10 @@
   
   <div class="post-content">
     <div class="post-summary">
-      环境说明 vmware exsi 版本: 6.7 被克隆虚拟机机: centos-source 目标克隆主机: jira-confluence 虚拟机文件路径: /vmfs/volumes/1t-data/centos-7-source 具体步骤 exis 开启 ssh 远程管理 开启远程管理后，使用 工具进行终端连接 复制源磁
+      环境说明 vmware esxi 版本: 6.7 被克隆虚拟机机: centos-source 目标克隆主机: jira-confluence 虚拟机文件路径: /vmfs/volumes/1t-data/centos-7-source 具体步骤 exis 开启 ssh 远程管理 开启远程管理后，使用 工具进行终端连接 复制源磁
     </div>
     <div class="read-more">
-      <a href="/post/exsi-clone-hosts/" class="read-more-link">阅读更多</a>
+      <a href="/post/esxi-clone-hosts/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>
@@ -158,6 +227,7 @@
       <span class="post-time"> 2021-01-26 </span>
       <div class="post-category">
           <a href="/categories/k3s/"> k3s </a>
+          <a href="/categories/openwrt/"> openwrt </a>
           </div>
         <span class="more-meta"> 约 3829 字 </span>
         <span class="more-meta"> 预计阅读 8 分钟 </span>
@@ -180,7 +250,8 @@
     <div class="post-meta">
       <span class="post-time"> 2021-01-19 </span>
       <div class="post-category">
-          <a href="/categories/devops/"> devOps </a>
+          <a href="/categories/devops/"> devops </a>
+          <a href="/categories/k8s/"> k8s </a>
           </div>
         <span class="more-meta"> 约 1098 字 </span>
         <span class="more-meta"> 预计阅读 3 分钟 </span>
@@ -203,8 +274,7 @@
     <div class="post-meta">
       <span class="post-time"> 2021-01-19 </span>
       <div class="post-category">
-          <a href="/categories/kubernetes/"> Kubernetes </a>
-          <a href="/categories/kafka/"> kafka </a>
+          <a href="/categories/k8s/"> k8s </a>
           </div>
         <span class="more-meta"> 约 1278 字 </span>
         <span class="more-meta"> 预计阅读 3 分钟 </span>
@@ -227,10 +297,8 @@
     <div class="post-meta">
       <span class="post-time"> 2021-01-17 </span>
       <div class="post-category">
-          <a href="/categories/kubernetes/"> Kubernetes </a>
-          <a href="/categories/ingress/"> Ingress </a>
-          <a href="/categories/gateway/"> Gateway </a>
-          <a href="/categories/traefik/"> Traefik </a>
+          <a href="/categories/k8s/"> k8s </a>
+          <a href="/categories/devops/"> devops </a>
           </div>
         <span class="more-meta"> 约 1782 字 </span>
         <span class="more-meta"> 预计阅读 4 分钟 </span>
@@ -243,78 +311,6 @@
     </div>
     <div class="read-more">
       <a href="/post/ingress-traefik/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/rancher-upgrade-docker/">Rancher 单机部署，进行升级后，导致docker无法正常启动</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-01-16 </span>
-      <div class="post-category">
-          <a href="/categories/rancher/"> Rancher </a>
-          <a href="/categories/%E9%94%99%E8%AF%AF%E4%BF%AE%E5%A4%8D/"> 错误修复 </a>
-          </div>
-        <span class="more-meta"> 约 619 字 </span>
-        <span class="more-meta"> 预计阅读 2 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      环境说明 操作系统: Centos 7.9.2009 Docker Version: 18.09.9 模拟复现 rancher 安装 1 2 3 4 5 6 7 8 docker pull rancher/rancher:v2.3.5 docker run -d \ --restart=unless-stopped \ --name rancher \ -p 80:80 -p 443:443 \ --privileged \ rancher/rancher:v2.3.5 升级 rancher 示例将 v2.3.5 升级至 v2.5.0 创建备份 1 2 3 4 5 docker
-    </div>
-    <div class="read-more">
-      <a href="/post/rancher-upgrade-docker/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/delete-container-reset/">记录一次，因误删容器导致的容器恢复过程</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-01-14 </span>
-      <div class="post-category">
-          <a href="/categories/docker/"> Docker </a>
-          <a href="/categories/datarecovery/"> DataRecovery </a>
-          </div>
-        <span class="more-meta"> 约 2094 字 </span>
-        <span class="more-meta"> 预计阅读 5 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      环境说明 因在日常维护过程中升级了docker的版本 ，碰到了一个 docker 的一个 bug, 导致 docker 服务无法正常启动。在恢复 docker 服务的过程中把 /var/lib/docker/containers 下的所有文件给 清空 了
-    </div>
-    <div class="read-more">
-      <a href="/post/delete-container-reset/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/intermittent-coredns-hosts/">Coredns 进行解析域名时，某些域名出现间断性无法正常解析问题</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-01-07 </span>
-      <div class="post-category">
-          <a href="/categories/kubernetes/"> Kubernetes </a>
-          <a href="/categories/coredns/"> Coredns </a>
-          </div>
-        <span class="more-meta"> 约 1672 字 </span>
-        <span class="more-meta"> 预计阅读 4 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      问题描述: Kubernetes 节点中，有一台节点使用 coredns 进行解析某个域名时，出现间断性无法正常解析问题，而解析另外一个域名时不会出现解析问题。 再次重复一下问题重
-    </div>
-    <div class="read-more">
-      <a href="/post/intermittent-coredns-hosts/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>

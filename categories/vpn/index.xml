@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vpn on 「Yang&#39;zun」的网志博客</title>
+    <link>https://cdryzun.github.io/categories/vpn/</link>
+    <description>Recent content in vpn on 「Yang&#39;zun」的网志博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 22 Apr 2021 16:19:56 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/vpn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OpenVpn 在 Centos 中的安装，并配置关联 openLdap 认证</title>
+      <link>https://cdryzun.github.io/post/openvpn-install/</link>
+      <pubDate>Thu, 22 Apr 2021 16:19:56 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/openvpn-install/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

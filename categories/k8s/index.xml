@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>k8s on 「Yang&#39;zun」的网志博客</title>
+    <link>https://cdryzun.github.io/categories/k8s/</link>
+    <description>Recent content in k8s on 「Yang&#39;zun」的网志博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 26 Apr 2021 14:59:36 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/k8s/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 Kubekey 一键 离线/在线 部署 kubernetes 集群</title>
+      <link>https://cdryzun.github.io/post/kubekey-install-k8s/</link>
+      <pubDate>Mon, 26 Apr 2021 14:59:36 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/kubekey-install-k8s/</guid>
+      <description>环境说明 概述 KubeSphere 是在 Kubernetes 之上构建的面向云原生应用的分布式操作系统，完全开源，支持多云与多集群管理，提供全栈的 IT 自动化运维能力，简化企业的 DevOps 工作流</description>
+    </item>
+    
+    <item>
+      <title>在 Kubernetes 中部署 nfs storageClass</title>
+      <link>https://cdryzun.github.io/post/k8s-nfs-strage-class/</link>
+      <pubDate>Tue, 19 Jan 2021 14:54:30 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/k8s-nfs-strage-class/</guid>
+      <description>环境说明： helm version: v3.4.2 kubernetes version: v1.19.6 nfs server: 192.168.8.66 sub-net: 192.168.8.0/24 nfs 服务端配置 1 yum install rpcbind nfs-utils -y # 安装 nfs server 创建用户 &amp;amp; 数据目录 1 2 3 4 5 6 7 8 9 groupadd -g 2233 nfs-user useradd nfs-user -M -s /sbin/nologin -u 2233 -g nfs-user id nfs-user mkdir -p /data/nfs.sharedir chown</description>
+    </item>
+    
+    <item>
+      <title>使用 Confluentinc 在 Kubernetes 集群中部署 Kafka 集群 </title>
+      <link>https://cdryzun.github.io/post/k8s-deploy-kafka-cluster/</link>
+      <pubDate>Tue, 19 Jan 2021 13:44:03 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/k8s-deploy-kafka-cluster/</guid>
+      <description>部署说明 kafka &amp;amp; zookeeper 集群部署工具: confluentinc 使用 helm 进行部署，并部署一个外置的 kafka 管理工具。 环境说明 kubernetes version: v1.17.4 helm version: v3.3.1 traefik version: v2.3.6 docker version: 18.09.6 k8s strage class: nfs kafka dashboard: kafka-manager 集群部署 Helm 应用下载 1</description>
+    </item>
+    
+    <item>
+      <title>初探 Traefik ingress gateway</title>
+      <link>https://cdryzun.github.io/post/ingress-traefik/</link>
+      <pubDate>Sun, 17 Jan 2021 16:15:32 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/ingress-traefik/</guid>
+      <description>Traefik 基础概念说明 Traefik 是一个 开源 的边缘路由器，使发布服务变得有趣而轻松，是你整个平台的大门，拦截并匹配每一个传入的请求：它掌管着所有的匹配逻辑和路</description>
+    </item>
+    
+    <item>
+      <title>Rancher 单机部署，进行升级后，导致docker无法正常启动</title>
+      <link>https://cdryzun.github.io/post/rancher-upgrade-docker/</link>
+      <pubDate>Sat, 16 Jan 2021 14:39:59 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/rancher-upgrade-docker/</guid>
+      <description>环境说明 操作系统: Centos 7.9.2009 Docker Version: 18.09.9 模拟复现 rancher 安装 1 2 3 4 5 6 7 8 docker pull rancher/rancher:v2.3.5 docker run -d \ --restart=unless-stopped \ --name rancher \ -p 80:80 -p 443:443 \ --privileged \ rancher/rancher:v2.3.5 升级 rancher 示例将 v2.3.5 升级至 v2.5.0 创建备份 1 2 3 4 5 docker</description>
+    </item>
+    
+    <item>
+      <title>Coredns 进行解析域名时，某些域名出现间断性无法正常解析问题</title>
+      <link>https://cdryzun.github.io/post/intermittent-coredns-hosts/</link>
+      <pubDate>Thu, 07 Jan 2021 14:34:16 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/intermittent-coredns-hosts/</guid>
+      <description>问题描述: Kubernetes 节点中，有一台节点使用 coredns 进行解析某个域名时，出现间断性无法正常解析问题，而解析另外一个域名时不会出现解析问题。 再次重复一下问题重</description>
+    </item>
+    
+    <item>
+      <title>部署 Nginx-Ingress 并配置暴露 kubernetes dashboard</title>
+      <link>https://cdryzun.github.io/post/ingress-to-dashboard/</link>
+      <pubDate>Tue, 22 Dec 2020 09:24:55 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/ingress-to-dashboard/</guid>
+      <description>环境说明 链接文档 软件版本说明 helm: v3.4.2 ingress: v3.16.1 Nginx Ingress 参考文档 安装 1 2 3 4 wget https://get.helm.sh/helm-v3.4.2-linux-amd64.tar.gz tar xf helm-v3.4.2-linux-amd64.tar.gz \ &amp;amp;&amp;amp; cp linux-amd64/helm /usr/local/bin/ 添加helm命令补全 1 2 helm completion bash \ &amp;amp;&amp;amp; helm completion bash &amp;gt; /etc/bash_completion.d/helm 添加 ingress repo 1 2 3 helm</description>
+    </item>
+    
+    <item>
+      <title>Kubeadm 部署 kubernetes-v1.19.x 集群</title>
+      <link>https://cdryzun.github.io/post/kubeadm-deploy-k8s1.9/</link>
+      <pubDate>Mon, 21 Dec 2020 13:19:31 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/kubeadm-deploy-k8s1.9/</guid>
+      <description>系统环境说明 使用操作系统: Centos-7.9.2009 操作系统内核版本: 4.4.248 (lt) Docker容器版本: 18.09.9 Kubeadm 版本: 1.19.6 节点说明: master01: 192.168.8.70 ,192.168.88.70 node01: 192.168.8.71 ,192.168.88.71 (备注: 为每个节点配置了两个ip，</description>
+    </item>
+    
+    <item>
+      <title>kubernetes集群中 controller-manager 及 scheduler 组件频繁发生重启的一次排查解决</title>
+      <link>https://cdryzun.github.io/post/flannel-exclusion-records/</link>
+      <pubDate>Fri, 18 Dec 2020 16:24:43 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/flannel-exclusion-records/</guid>
+      <description>环境说明 Kubernetes 版本: v1.19.6 使用操作系统: Centos-7.9.2009 现象说明 最近在使用k8s集群的时候，发现集群变慢了许多，排查发现 master 节点中 controller-manager 及 scheduler 组件频繁的发生重启 排查记录 抓</description>
+    </item>
+    
+    <item>
+      <title>Kind 部署本地k8s集群的使用记录</title>
+      <link>https://cdryzun.github.io/post/first-kind/</link>
+      <pubDate>Sun, 15 Nov 2020 14:24:42 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/first-kind/</guid>
+      <description>参考资料 Github 地址 参考博客 安装 1 2 3 curl -Lo ./kind &amp;#34;https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64&amp;#34; chmod +x ./kind mv ./kind /some-dir-in-your-PATH/kind 启动集群 注意启动集群前 请确认 docker 服务是否启动 1 2 3 4 5 6 7 8 9 10 11 12 docker info|grep -A 2 Server # 确认 是否启</description>
+    </item>
+    
+  </channel>
+</rss>

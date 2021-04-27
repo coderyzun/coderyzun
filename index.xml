@@ -6,7 +6,34 @@
     <description>Recent content on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 14 Apr 2021 10:48:42 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 26 Apr 2021 14:59:36 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 Kubekey 一键 离线/在线 部署 kubernetes 集群</title>
+      <link>https://cdryzun.github.io/post/kubekey-install-k8s/</link>
+      <pubDate>Mon, 26 Apr 2021 14:59:36 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/kubekey-install-k8s/</guid>
+      <description>环境说明 概述 KubeSphere 是在 Kubernetes 之上构建的面向云原生应用的分布式操作系统，完全开源，支持多云与多集群管理，提供全栈的 IT 自动化运维能力，简化企业的 DevOps 工作流</description>
+    </item>
+    
+    <item>
+      <title>Git 使用问题的记录</title>
+      <link>https://cdryzun.github.io/post/git-use-issue/</link>
+      <pubDate>Sun, 25 Apr 2021 10:35:57 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/git-use-issue/</guid>
+      <description>指定特定仓库拉取代码 1 2 3 4 5 git remote add origin https://github.com/demo/example.git git pull https://repo.csheidou.com/forestry_afterend/prevention_fire_test.git master git branch --set-upstream-to=origin/master git status git pull 更改远程仓库地址 1 2 3 4 5 git remote -v git remote set-url origin https://github.com/demo/example.git git pull origin master --allow-unrelated-histories git push git branch --set-upstream-to=origin/master 清理本地错误的用</description>
+    </item>
+    
+    <item>
+      <title>OpenVpn 在 Centos 中的安装，并配置关联 openLdap 认证</title>
+      <link>https://cdryzun.github.io/post/openvpn-install/</link>
+      <pubDate>Thu, 22 Apr 2021 16:19:56 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/openvpn-install/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Centos7 执行 shutdown 无法正常关机的解决</title>
       <link>https://cdryzun.github.io/post/centos-shutdown-notpoweroff/</link>
@@ -81,11 +108,11 @@
     
     <item>
       <title>VMware ESXi Clone 复制虚拟机</title>
-      <link>https://cdryzun.github.io/post/exsi-clone-hosts/</link>
+      <link>https://cdryzun.github.io/post/esxi-clone-hosts/</link>
       <pubDate>Sun, 21 Feb 2021 10:09:38 +0800</pubDate>
       
-      <guid>https://cdryzun.github.io/post/exsi-clone-hosts/</guid>
-      <description>环境说明 vmware exsi 版本: 6.7 被克隆虚拟机机: centos-source 目标克隆主机: jira-confluence 虚拟机文件路径: /vmfs/volumes/1t-data/centos-7-source 具体步骤 exis 开启 ssh 远程管理 开启远程管理后，使用 工具进行终端连接 复制源磁</description>
+      <guid>https://cdryzun.github.io/post/esxi-clone-hosts/</guid>
+      <description>环境说明 vmware esxi 版本: 6.7 被克隆虚拟机机: centos-source 目标克隆主机: jira-confluence 虚拟机文件路径: /vmfs/volumes/1t-data/centos-7-source 具体步骤 exis 开启 ssh 远程管理 开启远程管理后，使用 工具进行终端连接 复制源磁</description>
     </item>
     
     <item>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>storage-class on 「Yang&#39;zun」的网志博客</title>
+    <link>https://cdryzun.github.io/tags/storage-class/</link>
+    <description>Recent content in storage-class on 「Yang&#39;zun」的网志博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 19 Jan 2021 14:54:30 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/storage-class/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在 Kubernetes 中部署 nfs storageClass</title>
+      <link>https://cdryzun.github.io/post/k8s-nfs-strage-class/</link>
+      <pubDate>Tue, 19 Jan 2021 14:54:30 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/k8s-nfs-strage-class/</guid>
+      <description>环境说明： helm version: v3.4.2 kubernetes version: v1.19.6 nfs server: 192.168.8.66 sub-net: 192.168.8.0/24 nfs 服务端配置 1 yum install rpcbind nfs-utils -y # 安装 nfs server 创建用户 &amp;amp; 数据目录 1 2 3 4 5 6 7 8 9 groupadd -g 2233 nfs-user useradd nfs-user -M -s /sbin/nologin -u 2233 -g nfs-user id nfs-user mkdir -p /data/nfs.sharedir chown</description>
+    </item>
+    
+  </channel>
+</rss>

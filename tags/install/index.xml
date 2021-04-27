@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Install on 「Yang&#39;zun」的网志博客</title>
+    <title>install on 「Yang&#39;zun」的网志博客</title>
     <link>https://cdryzun.github.io/tags/install/</link>
-    <description>Recent content in Install on 「Yang&#39;zun」的网志博客</description>
+    <description>Recent content in install on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 02 Mar 2021 19:31:09 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/install/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 26 Apr 2021 14:59:36 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/install/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 Kubekey 一键 离线/在线 部署 kubernetes 集群</title>
+      <link>https://cdryzun.github.io/post/kubekey-install-k8s/</link>
+      <pubDate>Mon, 26 Apr 2021 14:59:36 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/kubekey-install-k8s/</guid>
+      <description>环境说明 概述 KubeSphere 是在 Kubernetes 之上构建的面向云原生应用的分布式操作系统，完全开源，支持多云与多集群管理，提供全栈的 IT 自动化运维能力，简化企业的 DevOps 工作流</description>
+    </item>
+    
+    <item>
+      <title>OpenVpn 在 Centos 中的安装，并配置关联 openLdap 认证</title>
+      <link>https://cdryzun.github.io/post/openvpn-install/</link>
+      <pubDate>Thu, 22 Apr 2021 16:19:56 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/openvpn-install/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Centos 7 Yum 安装 Jenkins 及常用配置的说明</title>
       <link>https://cdryzun.github.io/post/jenkins-install/</link>
@@ -32,6 +50,15 @@
       
       <guid>https://cdryzun.github.io/post/docker-deploy-nexus3-upgrade/</guid>
       <description>Nexus3.x 说明 功能介绍 Nexus3, 是一款支持仓库种类繁多的私服仓库管理工具，支持目前大众所知晓的仓库类型如：go、pypi、docker、maven、yum、</description>
+    </item>
+    
+    <item>
+      <title>Kubeadm 部署 kubernetes-v1.19.x 集群</title>
+      <link>https://cdryzun.github.io/post/kubeadm-deploy-k8s1.9/</link>
+      <pubDate>Mon, 21 Dec 2020 13:19:31 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/kubeadm-deploy-k8s1.9/</guid>
+      <description>系统环境说明 使用操作系统: Centos-7.9.2009 操作系统内核版本: 4.4.248 (lt) Docker容器版本: 18.09.9 Kubeadm 版本: 1.19.6 节点说明: master01: 192.168.8.70 ,192.168.88.70 node01: 192.168.8.71 ,192.168.88.71 (备注: 为每个节点配置了两个ip，</description>
     </item>
     
   </channel>

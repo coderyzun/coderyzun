@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Linux on 「Yang&#39;zun」的网志博客</title>
+    <title>linux on 「Yang&#39;zun」的网志博客</title>
     <link>https://cdryzun.github.io/categories/linux/</link>
-    <description>Recent content in Linux on 「Yang&#39;zun」的网志博客</description>
+    <description>Recent content in linux on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 14 Apr 2021 10:48:42 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 25 Apr 2021 10:35:57 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git 使用问题的记录</title>
+      <link>https://cdryzun.github.io/post/git-use-issue/</link>
+      <pubDate>Sun, 25 Apr 2021 10:35:57 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/git-use-issue/</guid>
+      <description>指定特定仓库拉取代码 1 2 3 4 5 git remote add origin https://github.com/demo/example.git git pull https://repo.csheidou.com/forestry_afterend/prevention_fire_test.git master git branch --set-upstream-to=origin/master git status git pull 更改远程仓库地址 1 2 3 4 5 git remote -v git remote set-url origin https://github.com/demo/example.git git pull origin master --allow-unrelated-histories git push git branch --set-upstream-to=origin/master 清理本地错误的用</description>
+    </item>
+    
+    <item>
+      <title>OpenVpn 在 Centos 中的安装，并配置关联 openLdap 认证</title>
+      <link>https://cdryzun.github.io/post/openvpn-install/</link>
+      <pubDate>Thu, 22 Apr 2021 16:19:56 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/openvpn-install/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Centos7 执行 shutdown 无法正常关机的解决</title>
       <link>https://cdryzun.github.io/post/centos-shutdown-notpoweroff/</link>
@@ -14,6 +32,24 @@
       
       <guid>https://cdryzun.github.io/post/centos-shutdown-notpoweroff/</guid>
       <description>环境说明 因为在公司中，有下班后有需要关闭 服务器 的操作，并且每天还需要去手动打开。有点违背 极客精神，所有自己通过 shell script + cron 的形式进行每天定时的 开</description>
+    </item>
+    
+    <item>
+      <title>Raid 阵列卡 Megacli 管理工具的使用记录</title>
+      <link>https://cdryzun.github.io/post/raid-megacli/</link>
+      <pubDate>Wed, 24 Feb 2021 20:54:13 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/raid-megacli/</guid>
+      <description>安装 参考文档 示例为： Centos7 中的安装步骤 1 2 3 4 5 6 7 wget https://docs.broadcom.com/docs-and-downloads/raid-controllers/raid-controllers-common-files/8-07-14_MegaCLI.zip unzip 8-07-14_MegaCLI.zip rpm -ivhU Linux/MegaCli-8.07.14-1.noarch.rpm cp -a /opt/MegaRAID/MegaCli/MegaCli64 /usr/local/bin/MegaCli 命令使用记录 将某块物理盘下线/上线 1 2 3 4 5 6 7 8 9 MegaCli -PDOffline -PhysDrv[31:8] -a0 MegaCli -PDRbld -ShowProg -PhysDrv[31:8] -aAll</description>
+    </item>
+    
+    <item>
+      <title>Centos7 安装之后必要的初始化操作</title>
+      <link>https://cdryzun.github.io/post/centos-init-config/</link>
+      <pubDate>Mon, 21 Dec 2020 09:34:01 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/centos-init-config/</guid>
+      <description>⚠️ 注意此些操作在Centos7中得到验证且可行，其他发行版本请自己尝试 OS 调优 内核优化 ⚠️ 请更具实践业务场景进行调整，此示例中较适合kube</description>
     </item>
     
   </channel>
