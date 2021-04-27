@@ -55,4 +55,4 @@ jobs:
           script: |
             cd /root/blog-upgrade/
             kubectl apply -f .
-            cat blog-deploy.yaml | sed "s#sed#1.0.\"\${{ env.GITHUB_RUN_NUMBER }}\"#g" | kubectl apply -f -
+            cat blog-deploy.yaml | sed "s#sed#1.0.${{ env.GITHUB_RUN_NUMBER }}#g" | kubectl apply -f -
