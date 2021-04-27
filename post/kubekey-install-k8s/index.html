@@ -50,7 +50,7 @@
 <meta itemprop="description" content="使用 kubekey 一键离线 或 在线部署 kubernetes 集群">
 <meta itemprop="datePublished" content="2021-04-26T14:59:36+08:00" />
 <meta itemprop="dateModified" content="2021-04-26T14:59:36+08:00" />
-<meta itemprop="wordCount" content="2629">
+<meta itemprop="wordCount" content="2632">
 
 
 
@@ -143,7 +143,7 @@
         <div class="post-category">
             <a href="/categories/k8s/"> k8s </a>
             </div>
-          <span class="more-meta"> 约 2629 字 </span>
+          <span class="more-meta"> 约 2632 字 </span>
           <span class="more-meta"> 预计阅读 6 分钟 </span>
         
       </div>
@@ -939,7 +939,7 @@ spec:
   - <span class="o">{</span>name: node3, address: 192.168.8.32, internalAddress: 192.168.8.32, user: root, password: 123456<span class="o">}</span>
   - <span class="o">{</span>name: node4, address: 192.168.8.33, internalAddress: 192.168.8.33, user: root, password: 123456<span class="o">}</span>
   roleGroups:
-    etcd:  <span class="c1"># 这里的 etcd 的节点数需要是奇数,所有也将 node2 也加入至 etcd 集群中。</span>
+    etcd:  <span class="c1"># 这里的 etcd 的节点数需要是奇数,所以也将 node2 也加入至 etcd集群中。</span>
     - node1
     - node2 
     - node3
