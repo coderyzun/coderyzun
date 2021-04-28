@@ -179,7 +179,7 @@
     <div class="post-content">
       <h1 id="环境说明">环境说明</h1>
 <blockquote>
-<p><a href="https://www.coderyzun.cyou/post/kubeadm-deploy-k8s1.9/">链接文档</a></p>
+<p><a href="https://www.treesir.pub/post/kubeadm-deploy-k8s1.9/">链接文档</a></p>
 </blockquote>
 <h2 id="软件版本说明">软件版本说明</h2>
 <ul>
@@ -397,7 +397,7 @@ watch kubectl get pod -n ingress-nginx <span class="c1"># 等待容器启动完�
 </span><span class="w">    </span><span class="nt">kubernetes.io/ingress.class</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;nginx&#34;</span><span class="w">
 </span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
 </span><span class="w">  </span><span class="nt">rules</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span>- <span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l">ngdemo.coderyzun.cyou </span><span class="w"> </span><span class="c"># 使用的域名映射，当访问 &#34;ngdemo.coderyzun.cyou&#34; 域名时转发至后端的pod</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l">ngdemo.treesir.pub </span><span class="w"> </span><span class="c"># 使用的域名映射，当访问 &#34;ngdemo.treesir.pub&#34; 域名时转发至后端的pod</span><span class="w">
 </span><span class="w">    </span><span class="nt">http</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span><span class="nt">paths</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span>- <span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/</span><span class="w">
@@ -465,10 +465,10 @@ watch kubectl get pod -n ingress-nginx <span class="c1"># 等待容器启动完�
 </span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
 </span><span class="w">  </span><span class="nt">tls</span><span class="p">:</span><span class="w">
 </span><span class="w">  </span>- <span class="nt">hosts</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span>- <span class="l">dashboard.coderyzun.cyou</span><span class="w">
+</span><span class="w">    </span>- <span class="l">dashboard.treesir.pub</span><span class="w">
 </span><span class="w">    </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes-dashboard-certs</span><span class="w">
 </span><span class="w">  </span><span class="nt">rules</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span>- <span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l">dashboard.coderyzun.cyou</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l">dashboard.treesir.pub</span><span class="w">
 </span><span class="w">    </span><span class="nt">http</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span><span class="nt">paths</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span>- <span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/</span><span class="w">
