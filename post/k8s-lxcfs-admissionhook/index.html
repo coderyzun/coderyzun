@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>K8s 部署 Lxcfs AdmissionHook 准入控制器，实现容器中资源单独可见 - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用 confluentinc 在 kubernetes 集群中部署 kafka 集群" /><meta name="keywords" content="Kubernetes, lxcfs, admission-webhook, 资源限制" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/k8s-lxcfs-admissionhook/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<meta property="og:title" content="K8s 部署 Lxcfs AdmissionHook 准入控制器，实现容器中资源单独可见" />
+<meta property="og:description" content="使用 confluentinc 在 kubernetes 集群中部署 kafka 集群" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/k8s-lxcfs-admissionhook/" />
+<meta property="article:published_time" content="2021-04-30T14:10:31+08:00" />
+<meta property="article:modified_time" content="2021-04-30T14:10:31+08:00" />
+<meta itemprop="name" content="K8s 部署 Lxcfs AdmissionHook 准入控制器，实现容器中资源单独可见">
+<meta itemprop="description" content="使用 confluentinc 在 kubernetes 集群中部署 kafka 集群">
+<meta itemprop="datePublished" content="2021-04-30T14:10:31+08:00" />
+<meta itemprop="dateModified" content="2021-04-30T14:10:31+08:00" />
+<meta itemprop="wordCount" content="1703">
+
+
+
+<meta itemprop="keywords" content="lxcfs,admission-webhook," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="K8s 部署 Lxcfs AdmissionHook 准入控制器，实现容器中资源单独可见"/>
+<meta name="twitter:description" content="使用 confluentinc 在 kubernetes 集群中部署 kafka 集群"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
+</head>
+<body>
+  <header id="header" class="header">
+      <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+  </header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">K8s 部署 Lxcfs AdmissionHook 准入控制器，实现容器中资源单独可见</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-04-30 </span>
+        <div class="post-category">
+            <a href="/categories/k8s/"> k8s </a>
+            </div>
+          <span class="more-meta"> 约 1703 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明</a></li>
+    <li><a href="#概述">概述</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#lxcfs"><strong>lxcfs</strong></a></li>
+            <li><a href="#admission-webhook"><strong>admission webhook</strong></a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#lxcfs-在-kubernetes-中实践部署">lxcfs 在 Kubernetes 中实践部署</a>
+      <ul>
+        <li><a href="#各节点-安装依赖"><code>各节点</code> 安装依赖</a></li>
+        <li><a href="#kubernetes-开启准入控制器">kubernetes 开启准入控制器</a></li>
+        <li><a href="#部署-lxcfs">部署 lxcfs</a></li>
+      </ul>
+    </li>
+    <li><a href="#测试">测试</a></li>
+    <li><a href="#问题记录">问题记录</a></li>
+    <li><a href="#参考文档">参考文档</a></li>
+    <li><a href="#done">Done</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="环境说明">环境说明</h1>
+<ul>
+<li>kubernetes version:   v1.17.9 (<code>kubeadmin</code>)</li>
+<li>os: 7.8.2003 (Core)</li>
+<li>kubernetes dashboard:  rancher <code>v2.4.15</code></li>
+</ul>
+<h1 id="概述">概述</h1>
+<blockquote>
+<p>docker 使用 linux 内核中的 <code>cgroup</code> 实现了对 容器使用资源的限制，默认容器启动后依旧挂载了宿主机的 <code>/proc</code> 目录，其中包涵了，<code>meminfo</code>、<code>cpuinfo</code>、<code>stat</code>、<code>uptime</code> 等资源信息。一些监控工具如 <code>free</code>、<code>top</code>、<code>htop</code> 或  <code>业务应用</code> 还依赖 <code>/proc</code> 下文件内容获取资源配置和使用情况。当它们在容器中运行时，实际还是查看到的是宿主机的资源使用，导致资源使用展示源不对，目前社区主流的解决方法是使用 <code>lxcfs</code> 的方法进行解决。</p>
+</blockquote>
+<h3 id="lxcfs"><strong>lxcfs</strong></h3>
+<ul>
+<li><a href="https://github.com/lxc/lxcfs">Github 地址</a></li>
+</ul>
+<blockquote>
+<p>lxcfs 是一个开源的 fuse（用户态文件系统）最先实现来支持 lxc 容器，但是它也可以支持 Docker 容器。lxcfs 通过用户态文件系统，在容器中提供下列 procfs 的文件。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">/proc/cpuinfo
+/proc/diskstats
+/proc/meminfo
+/proc/stat
+/proc/swaps
+/proc/uptime
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<p>lxcfs 使用示意图</p>
+<p><img src="https://cdn.treesir.pub/img/wqtcnpnizo.png" alt="wqtcnpnizo"></p>
+<blockquote>
+<p>比如，将宿主机的 <code>/var/lib/lxcfs/proc/memoinfo</code> 文件挂载到 docker 容器中对应的 <code>/proc/meminfo</code> 位置后。容器中的进程读取相应文件内容时，<code>lxcfs</code> 的 <code>fuse</code> 实现会从容器对应的 <code>cgroup</code> 中读取正确的内存限制。从而使得应用获得正确的资源使用情况。</p>
+</blockquote>
+<h3 id="admission-webhook"><strong>admission webhook</strong></h3>
+<blockquote>
+<p>在 Kubernetes apiserver 中包含两个特殊的准入控制器：<code>MutatingAdmissionWebhook</code> 和<code>ValidatingAdmissionWebhook</code>，这两个控制器将发送准入请求到外部的 HTTP 回调服务并接收一个准入响应。如果启用了这两个准入控制器，kubernetes 管理员可以在集群中创建和配置一个 admission webhook。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/k8s-api-request-lifecycle.png" alt="k8s-api-request-lifecycle"></p>
+<blockquote>
+<ul>
+<li>检查集群中是否启用了 admission webhook 控制器，并根据需要进行配置。</li>
+<li>编写处理准入请求的 HTTP 回调，回调可以是一个部署在集群中的简单 HTTP 服务，甚至也可以是一个 <code>serverless</code> 函数，例如 <a href="https://github.com/kelseyhightower/denyenv-validating-admission-webhook">https://github.com/kelseyhightower/denyenv-validating-admission-webhook</a> 这个项目。</li>
+<li>通过 <code>MutatingWebhookConfiguration</code> 和 <code>ValidatingWebhookConfiguration</code> 资源配置 admission webhook</li>
+</ul>
+</blockquote>
+<p>这两种 admission webhook 之间的区别是明显的：<code>validating webhooks</code> 可以拒绝请求，但是它们却不能修改准入请求中获取的对象，而 <code>mutating webhooks</code> 可以在返回准入响应之前通过创建补丁来修改对象，如果 webhook 拒绝了一个请求，则会向最终用户返回错误</p>
+<h1 id="lxcfs-在-kubernetes-中实践部署">lxcfs 在 Kubernetes 中实践部署</h1>
+<blockquote>
+<p>下面将示例使用 <a href="https://github.com/denverdino/lxcfs-admission-webhook">lxcfs-admission-webhook</a>，部署 <code>admission webhook</code> 给 pod 注入 lxcfs 。</p>
+</blockquote>
+<h2 id="各节点-安装依赖"><code>各节点</code> 安装依赖</h2>
+<blockquote>
+<p>注意这里是，所有节点多需要安装一下，否则节点会提示动态库缺失。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install -y fuse-libs
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="kubernetes-开启准入控制器">kubernetes 开启准入控制器</h2>
+<blockquote>
+<p>我这里使用的是 kubeadm 搭建的集群，可以通过下面命令查看 apiserver pod 的配置</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get node
+NAME    STATUS   ROLES           AGE     VERSION
+node1   Ready    master,worker   11d     v1.17.9
+node2   Ready    worker          11d     v1.17.9
+node3   Ready    master,worker   2d22h   v1.17.9
+node4   Ready    worker          2d22h   v1.17.9
+
+
+kubectl get pod kube-apiserver-node1 -n  kube-system -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-apiserver-node1
+  namespace: kube-system
+......
+spec:
+  containers:
+  - command:
+    - kube-apiserver
+    - --advertise-address<span class="o">=</span>192.168.8.30
+    - --allow-privileged<span class="o">=</span><span class="nb">true</span>
+    - --anonymous-auth<span class="o">=</span>True
+    - --apiserver-count<span class="o">=</span><span class="m">1</span>
+    - --authorization-mode<span class="o">=</span>Node,RBAC
+    - --bind-address<span class="o">=</span>0.0.0.0
+    - --client-ca-file<span class="o">=</span>/etc/kubernetes/pki/ca.crt
+    - --enable-admission-plugins<span class="o">=</span>NodeRestriction,NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota
+.....
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>上面的 <code>enable-admission-plugins</code> 参数中带上了 <code>MutatingAdmissionWebhook</code> 和<code>ValidatingAdmissionWebhook</code> 两个准入控制插件，如果没有的（当前 v1.19.x 版本是默认开启的），需要添加上这两个参数，然后重启 apiserver。</p>
+</blockquote>
+<p><strong>kubeadm 演示如何为 apiserver 添加参数，和重启 apiserver</strong></p>
+<blockquote>
+<p>使用 kubeadm 部署的集群的话，apiserver 使用的部署方式为 <code>静态pod</code>，即我们只要更改对应机器上的 <code>/etc/kubernetes/manifests/kube-apiserver.yaml</code> 文件即可，当 kubelet watch 到配置文件更改后，它将会为我们进行重启生效。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat /etc/kubernetes/manifests/kube-apiserver.yaml<span class="p">|</span>grep enable-admission-plugins
+    - --enable-admission-plugins<span class="o">=</span>NodeRestriction,NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>查看集群是否开启了 准入控制 <code>api</code></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl api-versions <span class="p">|</span>grep admission
+admissionregistration.k8s.io/v1
+admissionregistration.k8s.io/v1beta1
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="部署-lxcfs">部署 lxcfs</h2>
+<ul>
+<li>git clone 代码</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">git clone https://github.com/denverdino/lxcfs-admission-webhook.git
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>部署 lxcfs  资源清单</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> lxcfs-admission-webhook
+
+kubectl create ns lxcfs <span class="c1"># 创建 lxcfs 部署命名空间</span>
+
+<span class="c1"># sed -i &#34;s#default#lxcfs#g&#34; deployment/lxcfs-daemonset.yaml # 替换部署命名空间</span>
+
+kubectl apply -f deployment/lxcfs-daemonset.yaml -n lxcfs
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>更改一下 <code>deployment/install.sh</code> 中部署的命名空间，默认使用的是 <code>default</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">  
+sed -i <span class="s2">&#34;s#default#lxcfs#g&#34;</span> deployment/mutatingwebhook.yaml <span class="c1"># 替换默认模板文件中的命名空间</span>
+  
+  
+cat deployment/install.sh
+<span class="c1">#!/bin/bash</span>
+  
+./deployment/webhook-create-signed-cert.sh --namespace lxcfs
+kubectl get secret lxcfs-admission-webhook-certs -n lxcfs
+  
+kubectl create -f deployment/deployment.yaml -n  lxcfs
+kubectl create -f deployment/service.yaml -n lxcfs
+cat ./deployment/mutatingwebhook.yaml <span class="p">|</span> ./deployment/webhook-patch-ca-bundle.sh &gt; ./deployment/mutatingwebhook-ca-bundle.yaml
+kubectl create -f deployment/mutatingwebhook-ca-bundle.yaml -n lxcfs
+  
+bash deployment/install.sh  <span class="c1"># 执行部署</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<p><img src="https://cdn.treesir.pub/img/image-20210430151057426.png" alt="image-20210430151057426"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210430151002149.png" alt="image-20210430151002149"></p>
+<h1 id="测试">测试</h1>
+<blockquote>
+<p>这里将部署一个 python 程序，进行模拟测试</p>
+</blockquote>
+<ul>
+<li>为命名空间注入 lxcfs</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl label namespace default lxcfs-admission-webhook<span class="o">=</span>enabled  <span class="c1"># 为命名空间打入 lxcfs-admission-webhook label 即可</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>创建测试资源清单</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat <span class="s">&lt;&lt;EOF | kubectl apply -f -
+</span><span class="s">apiVersion: apps/v1
+</span><span class="s">kind: Deployment
+</span><span class="s">metadata:
+</span><span class="s">  name: python3
+</span><span class="s">  namespace: default
+</span><span class="s">  labels:
+</span><span class="s">    app: python3
+</span><span class="s">spec:
+</span><span class="s">  replicas: 1
+</span><span class="s">  selector:
+</span><span class="s">    matchLabels:
+</span><span class="s">      app: python3
+</span><span class="s">  template:
+</span><span class="s">    metadata:
+</span><span class="s">      labels:
+</span><span class="s">        app: python3
+</span><span class="s">    spec:
+</span><span class="s">      containers:
+</span><span class="s">      - args:
+</span><span class="s">        - sleep
+</span><span class="s">        - &#34;18000&#34;
+</span><span class="s">        name: python3
+</span><span class="s">        image: python:3.7-slim-buster
+</span><span class="s">        imagePullPolicy: Always
+</span><span class="s">        resources:
+</span><span class="s">          limits:
+</span><span class="s">            cpu: &#34;2&#34;
+</span><span class="s">            memory: 4Gi
+</span><span class="s">          requests:
+</span><span class="s">            cpu: &#34;1&#34;
+</span><span class="s">            memory: 2Gi
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>检查资源限制是否生效</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">
+kubectl get po
+NAME                       READY   STATUS    RESTARTS   AGE
+python3-5fcbcf5655-sw65s   1/1     Running   <span class="m">0</span>          22s
+
+
+
+kubectl <span class="nb">exec</span> -it python3-5fcbcf5655-sw65s  bash 
+
+cat /proc/cpuinfo<span class="p">|</span> grep <span class="s2">&#34;cpu cores&#34;</span><span class="p">|</span> uniq  <span class="c1"># 查看 cpu 核数</span>
+cpu cores       : <span class="m">2</span>
+
+cat /proc/meminfo <span class="p">|</span> grep MemTotal  <span class="c1"># 查看内存</span>
+MemTotal:        <span class="m">4194304</span> kB
+
+apt update <span class="se">\
+</span><span class="se"></span>apt install htop 
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>可以看到上面的资源清单，是更具 <code>limits</code> 设置来。展示输出的。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210430164850869.png" alt="image-20210430164850869"></p>
+<h1 id="问题记录">问题记录</h1>
+<ul>
+<li>
+<p>卸载</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl delete -f deployment/lxcfs-daemonset.yaml -n lxcfs
+  
+cat deployment/uninstall.sh 
+<span class="c1">#!/bin/bash</span>
+<span class="c1"># 对脚步中指定了命名空间卸载</span>
+kubectl delete -f deployment/mutatingwebhook-ca-bundle.yaml -n lxcfs
+kubectl delete -f deployment/service.yaml -n lxcfs
+kubectl delete -f deployment/deployment.yaml -n lxcfs
+kubectl delete secret lxcfs-admission-webhook-certs -n lxcfs 
+  
+rm -rf /var/lib/lxcfs/  <span class="c1"># 删除宿主机目录，如无法删除时，请尝试重启一下节点。</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>lxcfs 不支持 使用了 <code>alpine</code> 作为基础镜像的容器。</p>
+</li>
+</ul>
+<h1 id="参考文档">参考文档</h1>
+<ul>
+<li><a href="https://cloud.tencent.com/developer/article/1645542">https://cloud.tencent.com/developer/article/1645542</a></li>
+<li><a href="https://github.com/denverdino/lxcfs-admission-webhook">https://github.com/denverdino/lxcfs-admission-webhook</a></li>
+<li><a href="https://www.qikqiak.com/k8strain2/security/admission/">https://www.qikqiak.com/k8strain2/security/admission/</a></li>
+<li><a href="https://github.com/lxc/lxcfs">https://github.com/lxc/lxcfs</a></li>
+</ul>
+<h1 id="done">Done</h1>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-04-30
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/lxcfs/">lxcfs</a>
+          <a href="/tags/admission-webhook/">admission-webhook</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/kubekey-install-k8s/">
+            <span class="next-text nav-default">使用 Kubekey 一键 离线/在线 部署 kubernetes 集群</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  
+
+  <span class="copyright-year">
+    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
+    </span>
+
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>
