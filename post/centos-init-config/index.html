@@ -50,7 +50,7 @@
 <meta itemprop="description" content="Centos7安装完成后的初始化调优">
 <meta itemprop="datePublished" content="2020-12-21T09:34:01+08:00" />
 <meta itemprop="dateModified" content="2020-12-21T09:34:01+08:00" />
-<meta itemprop="wordCount" content="1525">
+<meta itemprop="wordCount" content="1528">
 
 
 
@@ -144,7 +144,7 @@
             <a href="/categories/linux/"> linux </a>
             <a href="/categories/centos/"> centos </a>
             </div>
-          <span class="more-meta"> 约 1525 字 </span>
+          <span class="more-meta"> 约 1528 字 </span>
           <span class="more-meta"> 预计阅读 4 分钟 </span>
         
       </div>
@@ -640,6 +640,7 @@ yum -y install docker-ce-18.09.9-3.el7
 </span><span class="lnt">25
 </span><span class="lnt">26
 </span><span class="lnt">27
+</span><span class="lnt">28
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">systemctl stop docker.service
@@ -655,6 +656,7 @@ cat &gt; /etc/docker/daemon.json <span class="s">&lt;&lt; EOF
 </span><span class="s">    &#34;max-file&#34;: &#34;3&#34;
 </span><span class="s">    },
 </span><span class="s">    &#34;max-concurrent-downloads&#34;: 10,
+</span><span class="s">    &#34;exec-opts&#34;: [&#34;native.cgroupdriver=systemd&#34;],
 </span><span class="s">    &#34;max-concurrent-uploads&#34;: 10,
 </span><span class="s">    &#34;insecure-registries&#34;: [&#34;idocker.io&#34;],
 </span><span class="s">    &#34;registry-mirrors&#34;: [&#34;https://7bezldxe.mirror.aliyuncs.com&#34;],
