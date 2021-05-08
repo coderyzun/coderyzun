@@ -317,7 +317,7 @@ spec:
 </code></pre></td></tr></table>
 </div>
 </div><blockquote>
-<p>上面的 <code>enable-admission-plugins</code> 参数中带上了 <code>MutatingAdmissionWebhook</code> 和<code>ValidatingAdmissionWebhook</code> 两个准入控制插件，如果没有的（当前 v1.19.x 版本是默认开启的），需要添加上这两个参数，然后重启 apiserver。</p>
+<p>上面的 <code>enable-admission-plugins</code> 参数中带上了 <code>MutatingAdmissionWebhook</code> 和<code>ValidatingAdmissionWebhook</code> 两个准入控制插件，如果没有的（在 v1.19.x 版本中是默认开启的），需要添加上这两个参数，然后重启 apiserver。</p>
 </blockquote>
 <p><strong>kubeadm 演示如何为 apiserver 添加参数，和重启 apiserver</strong></p>
 <blockquote>
