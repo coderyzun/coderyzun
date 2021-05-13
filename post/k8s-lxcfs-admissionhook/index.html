@@ -50,7 +50,7 @@
 <meta itemprop="description" content="K8s 部署 Lxcfs AdmissionHook 准入控制器，实现容器中资源单独可见的优化">
 <meta itemprop="datePublished" content="2021-04-30T14:10:31+08:00" />
 <meta itemprop="dateModified" content="2021-04-30T14:10:31+08:00" />
-<meta itemprop="wordCount" content="1704">
+<meta itemprop="wordCount" content="1715">
 
 
 
@@ -143,7 +143,7 @@
         <div class="post-category">
             <a href="/categories/k8s/"> k8s </a>
             </div>
-          <span class="more-meta"> 约 1704 字 </span>
+          <span class="more-meta"> 约 1715 字 </span>
           <span class="more-meta"> 预计阅读 4 分钟 </span>
         
       </div>
@@ -580,6 +580,9 @@ apt update <span class="se">\
 </span><span class="lnt"> 9
 </span><span class="lnt">10
 </span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">kubectl delete -f deployment/lxcfs-daemonset.yaml -n lxcfs
@@ -592,6 +595,9 @@ kubectl delete -f deployment/service.yaml -n lxcfs
 kubectl delete -f deployment/deployment.yaml -n lxcfs
 kubectl delete secret lxcfs-admission-webhook-certs -n lxcfs 
   
+deployment/uninstall.sh  <span class="c1"># 执行卸载脚本</span>
+
+
 rm -rf /var/lib/lxcfs/  <span class="c1"># 删除宿主机目录，如无法删除时，请尝试重启一下节点。</span>
 </code></pre></td></tr></table>
 </div>

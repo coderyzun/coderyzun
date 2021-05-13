@@ -22,7 +22,7 @@
       <pubDate>Thu, 22 Apr 2021 16:19:56 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/openvpn-install/</guid>
-      <description></description>
+      <description>环境说明 docker-compose：1.23.2 操作系统: armbian (斐讯n1) 部署软件 openldap 部署 省略 openldap 的部署配置 请参考之前整理的 文档 openvpn 安装 这里 openvpn 一键</description>
     </item>
     
     <item>

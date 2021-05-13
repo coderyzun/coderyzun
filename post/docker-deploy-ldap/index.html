@@ -50,7 +50,7 @@
 <meta itemprop="description" content="Centos使用Docker部署Devops必备利器-OpenLdap">
 <meta itemprop="datePublished" content="2020-12-18T16:24:43+08:00" />
 <meta itemprop="dateModified" content="2020-12-18T16:24:43+08:00" />
-<meta itemprop="wordCount" content="782">
+<meta itemprop="wordCount" content="795">
 
 
 
@@ -143,7 +143,7 @@
         <div class="post-category">
             <a href="/categories/devops/"> devops </a>
             </div>
-          <span class="more-meta"> 约 782 字 </span>
+          <span class="more-meta"> 约 795 字 </span>
           <span class="more-meta"> 预计阅读 2 分钟 </span>
         
       </div>
@@ -229,33 +229,41 @@
 </span><span class="lnt">23
 </span><span class="lnt">24
 </span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">version: <span class="s2">&#34;3&#34;</span>
-services:
-  openldap:
-    container_name: <span class="s2">&#34;openldap&#34;</span>
-    image: <span class="s2">&#34;osixia/openldap:latest&#34;</span>
-    restart: always
-    environment:
-      LDAP_ORGANISATION: <span class="s2">&#34;openldap&#34;</span>
-      LDAP_DOMAIN: <span class="s2">&#34;treesir.pub&#34;</span>
-      LDAP_ADMIN_PASSWORD: <span class="s2">&#34;123456&#34;</span>
-      LDAP_CONFIG_PASSWORD: <span class="s2">&#34;123456&#34;</span>
-    volumes:
-      - /data/openldap/data:/var/lib/ldap
-      - /data/openldap/config:/etc/ldap/slapd.d
-    ports:
-      - <span class="s1">&#39;389:389&#39;</span>
-  phpldapadmin:
-    container_name: <span class="s2">&#34;phpldapadmin&#34;</span>
-    image: <span class="s2">&#34;osixia/phpldapadmin:latest&#34;</span>
-    restart: always
-    environment:
-      PHPLDAPADMIN_HTTPS: <span class="s2">&#34;false&#34;</span>
-      PHPLDAPADMIN_LDAP_HOSTS: <span class="s2">&#34;192.168.8.1&#34;</span>
-    ports:
-      - <span class="s1">&#39;30004:80&#39;</span>
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat &gt; docker-compose.yaml <span class="s">&lt;&lt; EOF
+</span><span class="s">version: &#34;2&#34;
+</span><span class="s">services:
+</span><span class="s">  openldap:
+</span><span class="s">    container_name: &#34;openldap&#34;
+</span><span class="s">    image: &#34;osixia/openldap:latest&#34;
+</span><span class="s">    restart: always
+</span><span class="s">    environment:
+</span><span class="s">      LDAP_ORGANISATION: &#34;openldap&#34;
+</span><span class="s">      LDAP_DOMAIN: &#34;treesir.pub&#34;
+</span><span class="s">      LDAP_ADMIN_PASSWORD: &#34;123456&#34;
+</span><span class="s">      LDAP_CONFIG_PASSWORD: &#34;123456&#34;
+</span><span class="s">    volumes:
+</span><span class="s">      - /data/openldap/data:/var/lib/ldap
+</span><span class="s">      - /data/openldap/config:/etc/ldap/slapd.d
+</span><span class="s">    ports:
+</span><span class="s">      - &#39;389:389&#39;
+</span><span class="s">  phpldapadmin:
+</span><span class="s">    container_name: &#34;phpldapadmin&#34;
+</span><span class="s">    image: &#34;osixia/phpldapadmin:latest&#34;
+</span><span class="s">    restart: always
+</span><span class="s">    links:
+</span><span class="s">      - &#34;openldap&#34;
+</span><span class="s">    environment:
+</span><span class="s">      PHPLDAPADMIN_HTTPS: &#34;false&#34;
+</span><span class="s">      PHPLDAPADMIN_LDAP_HOSTS: &#34;openldap&#34;
+</span><span class="s">    ports:
+</span><span class="s">      - &#39;30004:80&#39;
+</span><span class="s">EOF</span>
 </code></pre></td></tr></table>
 </div>
 </div><h3 id="docker-compose-启动">docker-compose 启动</h3>

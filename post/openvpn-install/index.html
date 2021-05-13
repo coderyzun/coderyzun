@@ -50,7 +50,7 @@
 <meta itemprop="description" content="openvpn 在 centos 中的配置，并配置开启了 openldap 进行用户认证">
 <meta itemprop="datePublished" content="2021-04-22T16:19:56+08:00" />
 <meta itemprop="dateModified" content="2021-04-22T16:19:56+08:00" />
-<meta itemprop="wordCount" content="0">
+<meta itemprop="wordCount" content="902">
 
 
 
@@ -143,8 +143,8 @@
         <div class="post-category">
             <a href="/categories/linux/"> linux </a>
             </div>
-          <span class="more-meta"> 约 0 字 </span>
-          <span class="more-meta"> 预计阅读 0 分钟 </span>
+          <span class="more-meta"> 约 902 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
         
       </div>
     </header>
@@ -152,11 +152,347 @@
     <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
-    <nav id="TableOfContents"></nav>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明</a></li>
+    <li><a href="#部署软件">部署软件</a>
+      <ul>
+        <li><a href="#openldap-部署">openldap 部署</a></li>
+        <li><a href="#openvpn-安装">openvpn 安装</a></li>
+      </ul>
+    </li>
+    <li><a href="#配置关联openldap">配置关联openldap</a>
+      <ul>
+        <li><a href="#安装依赖包">安装依赖包</a></li>
+        <li><a href="#配置文件增加配置">配置文件增加配置</a></li>
+      </ul>
+    </li>
+    <li><a href="#测试验证">测试验证</a></li>
+    <li><a href="#部署-openldap-dashboard">部署 openldap dashboard</a></li>
+    <li><a href="#客户端软件下载">客户端软件下载</a></li>
+  </ul>
+</nav>
   </div>
 </div>
     <div class="post-content">
-      
+      <h1 id="环境说明">环境说明</h1>
+<ul>
+<li><code>docker-compose</code>：1.23.2</li>
+<li>操作系统: <code>armbian (斐讯n1)</code></li>
+</ul>
+<h1 id="部署软件">部署软件</h1>
+<h2 id="openldap-部署">openldap 部署</h2>
+<blockquote>
+<p>省略 openldap 的部署配置 请参考之前整理的 <a href="https://www.treesir.pub/post/docker-deploy-ldap/"><code>文档</code></a></p>
+</blockquote>
+<h2 id="openvpn-安装">openvpn 安装</h2>
+<blockquote>
+<p>这里 openvpn 一键安装使用 github 中的一键脚本</p>
+<p><a href="https://github.com/Nyr/openvpn-install">脚本地址</a></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">curl -o openvpn-install.sh  https://raw.githubusercontent.com/Nyr/openvpn-install/master/openvpn-install.sh
+
+
+chmod a+x openvpn-install.sh
+
+./openvpn-install.sh
+
+Welcome to this OpenVPN road warrior installer!
+
+Which IPv4 address should be used?
+     1<span class="o">)</span> 192.168.8.112
+     2<span class="o">)</span> 172.18.0.1
+     3<span class="o">)</span> 172.17.0.1
+     4<span class="o">)</span> 10.42.0.0
+     5<span class="o">)</span> 10.42.0.1
+IPv4 address <span class="o">[</span>1<span class="o">]</span>: <span class="m">1</span>
+
+This server is behind NAT. What is the public IPv4 address or hostname?
+
+Public IPv4 address / hostname <span class="o">[</span>23.105.194.216<span class="o">]</span>: 
+Which protocol should OpenVPN use?
+   1<span class="o">)</span> UDP <span class="o">(</span>recommended<span class="o">)</span>
+   2<span class="o">)</span> TCP
+Protocol <span class="o">[</span>1<span class="o">]</span>: <span class="m">1</span>
+
+What port should OpenVPN listen to?
+Port <span class="o">[</span>1194<span class="o">]</span>: <span class="m">1194</span>
+
+Select a DNS server <span class="k">for</span> the clients:
+   1<span class="o">)</span> Current system resolvers
+   2<span class="o">)</span> Google
+   3<span class="o">)</span> 1.1.1.1
+   4<span class="o">)</span> OpenDNS
+   5<span class="o">)</span> Quad9
+   6<span class="o">)</span> AdGuard
+DNS server <span class="o">[</span>1<span class="o">]</span>: <span class="m">1</span>
+
+Enter a name <span class="k">for</span> the first client:
+Name <span class="o">[</span>client<span class="o">]</span>: 192.168.8.1
+
+OpenVPN installation is ready to begin.
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210513212630543.png" alt="image-20210513212630543"></p>
+<blockquote>
+<p>等待程序的执行完毕 设置程序为开启自启动</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">systemctl <span class="nb">enable</span> openvpn-server@server.service
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<p><strong>开放端口</strong></p>
+<blockquote>
+<p>如开启和使用了防火墙，请注意将 对应端口开放</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">iptables -A INPUT -p udp --sport <span class="m">1194</span> -j ACCEPT
+iptables -A OUTPUT -p udp --dport <span class="m">1194</span> -j ACCEPT
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="配置关联openldap">配置关联openldap</h1>
+<h2 id="安装依赖包">安装依赖包</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"> apt install openvpn-auth-ldap  <span class="c1"># 如果是 centos 将前面命令更改为 yum 即可</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>安装完毕后，查看使用有如下 <code>依赖库文件</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">ls -lh  /usr/lib/openvpn/openvpn-auth-ldap.so 
+-rw-r--r-- <span class="m">1</span> root root 126K Nov  <span class="m">7</span>  <span class="m">2017</span> /usr/lib/openvpn/openvpn-auth-ldap.so
+</code></pre></td></tr></table>
+</div>
+</div><p>centos 下的文件路径为 <code>/usr/lib64/openvpn/plugin/lib/openvpn-auth-ldap.so</code></p>
+</blockquote>
+<h2 id="配置文件增加配置">配置文件增加配置</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">vi /etc/openvpn/server/server.conf  <span class="c1"># 在最后添加如下配置</span>
+
+plugin /usr/lib/openvpn/openvpn-auth-ldap.so  <span class="s2">&#34;/etc/openvpn/server/ldap.conf&#34;</span>
+client-cert-not-required
+username-as-common-name
+management 0.0.0.0 <span class="m">5555</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210513213649178.png" alt="image-20210513213649178"></p>
+<p><strong>增加 openldap配置文件</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat &gt; /etc/openvpn/server/ldap.conf <span class="s">&lt;&lt; EOF `# 注意修改下面对应的配置`
+</span><span class="s">&lt;LDAP&gt;
+</span><span class="s">    URL ldap://192.168.8.1:389
+</span><span class="s">    BindDN  cn=admin,dc=treesir,dc=pub
+</span><span class="s">    Password 123456
+</span><span class="s">    Timeout 15
+</span><span class="s">    TLSEnable no
+</span><span class="s">    FollowReferrals no
+</span><span class="s">&lt;/LDAP&gt;
+</span><span class="s">&lt;Authorization&gt;
+</span><span class="s">    BaseDN &#34;ou=users,dc=treesir,dc=pub&#34;
+</span><span class="s">    SearchFilter &#34;(uid=%u)&#34;
+</span><span class="s">    RequireGroup false
+</span><span class="s">&lt;/Authorization&gt;
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>示例中 ldap 目录使用结构 <a href="https://www.treesir.pub/post/docker-deploy-ldap/#openldap-%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96">参考文档</a></p>
+</blockquote>
+<p><strong>更改完成后，我们重启服务使其生效</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">service openvpn-server@server restart <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> service openvpn-server@server status
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="测试验证">测试验证</h1>
+<p><strong>下载安装时的 客户端配置文件</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sz -y /root/192_168_8_1.ovpn  <span class="c1">## 默认在 用户的家目录中</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>编辑下载的配置文件</strong></p>
+<blockquote>
+<p>将配置文件里的 <code>remote</code> 地址更改为公网地址，没有公网地址的话，可以使用第三方内网穿透工具实现, 下面示例将使用自建的 <code>nps</code> 作为演示</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210513215613617.png" alt="image-20210513215613617"></p>
+<blockquote>
+<p>注意这个映射地址外面设置成了 <code>21174</code> 那么在对应的配置文件中也要相应更改成这个，还有就是协议需要 和安装时选择的对应上，我这里使用的是 <code>udp</code> 协议。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">remote nps.treesir.pub <span class="m">21194</span> <span class="c1"># 将此地址更改为 公网地址，没有公网地址的话，可以使用第三方内网穿透工具实现</span>
+
+auth-user-pass <span class="c1"># 添加用户密码认证</span>
+auth-nocache <span class="c1"># 认证不缓存</span>
+setenv opt block-outside-dns <span class="c1"># Prevent Windows 10 DNS leak</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210513223000606.png" alt="image-20210513223000606"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210513223013339.png" alt="image-20210513223013339"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210513223023620.png" alt="image-20210513223023620"></p>
+<p><strong>手机端测试</strong></p>
+<blockquote>
+<p>将配置文件上传至手机端进行测试</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210513223326718.png" alt="image-20210513223326718"></p>
+<blockquote>
+<p>可以看到手机端使用流量，测试也是正常可以访问到内网的。</p>
+</blockquote>
+<h1 id="部署-openldap-dashboard">部署 openldap dashboard</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker run --name openvpn-monitor <span class="se">\
+</span><span class="se"></span>  -e <span class="nv">OPENVPNMONITOR_DEFAULT_DATETIMEFORMAT</span><span class="o">=</span><span class="s2">&#34;%%d/%%m/%%Y&#34;</span> <span class="se">\
+</span><span class="se"></span>  -e <span class="nv">OPENVPNMONITOR_DEFAULT_LATITUDE</span><span class="o">=</span>-37 <span class="se">\
+</span><span class="se"></span>  -e <span class="nv">OPENVPNMONITOR_DEFAULT_LOGO</span><span class="o">=</span>logo.jpg <span class="se">\
+</span><span class="se"></span>  -e <span class="nv">OPENVPNMONITOR_DEFAULT_LONGITUDE</span><span class="o">=</span><span class="m">144</span> <span class="se">\
+</span><span class="se"></span>  -e <span class="nv">OPENVPNMONITOR_DEFAULT_MAPS</span><span class="o">=</span>True <span class="se">\
+</span><span class="se"></span>  -e <span class="nv">OPENVPNMONITOR_DEFAULT_SITE</span><span class="o">=</span>Test <span class="se">\
+</span><span class="se"></span>  -e <span class="nv">OPENVPNMONITOR_SITES_0_ALIAS</span><span class="o">=</span>UDP <span class="se">\
+</span><span class="se"></span>  -e <span class="nv">OPENVPNMONITOR_SITES_0_HOST</span><span class="o">=</span>192.168.8.112 <span class="se">\
+</span><span class="se"></span>  -e <span class="nv">OPENVPNMONITOR_SITES_0_NAME</span><span class="o">=</span>UDP <span class="se">\
+</span><span class="se"></span>  -e <span class="nv">OPENVPNMONITOR_SITES_0_PORT</span><span class="o">=</span><span class="m">5555</span> <span class="se">\
+</span><span class="se"></span>  -e <span class="nv">OPENVPNMONITOR_SITES_1_ALIAS</span><span class="o">=</span>TCP <span class="se">\
+</span><span class="se"></span>  -e <span class="nv">OPENVPNMONITOR_SITES_1_HOST</span><span class="o">=</span>192.168.8.112 <span class="se">\
+</span><span class="se"></span>  -e <span class="nv">OPENVPNMONITOR_SITES_1_NAME</span><span class="o">=</span>TCP <span class="se">\
+</span><span class="se"></span>  -e <span class="nv">OPENVPNMONITOR_SITES_1_PORT</span><span class="o">=</span><span class="m">5555</span> <span class="se">\
+</span><span class="se"></span>  --restart<span class="o">=</span>always <span class="se">\
+</span><span class="se"></span>  -p 8210:80 <span class="se">\
+</span><span class="se"></span>  -d ruimarinho/openvpn-monitor
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210513224453580.png" alt="image-20210513224453580"></p>
+<h1 id="客户端软件下载">客户端软件下载</h1>
+<p><a href="https://cdn.treesir.pub/tools/openvpn/openvpn-install-2.4.8-I602-Win10.exe">openvpn-install-2.4.8-I602-Win10</a></p>
+<p><a href="https://cdn.treesir.pub/tools/openvpn/openvpn-install-2.4.6-I602-Win7.exe">openvpn-install-2.4.6-I602-Win7</a></p>
+<p><a href="https://cdn.treesir.pub/tools/openvpn/openvpn-android-install.apk">openvpn-android-install</a></p>
+
     </div>
 
     <div class="post-copyright">
