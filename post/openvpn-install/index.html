@@ -50,7 +50,7 @@
 <meta itemprop="description" content="openvpn 在 centos 中的配置，并配置开启了 openldap 进行用户认证">
 <meta itemprop="datePublished" content="2021-04-22T16:19:56+08:00" />
 <meta itemprop="dateModified" content="2021-04-22T16:19:56+08:00" />
-<meta itemprop="wordCount" content="902">
+<meta itemprop="wordCount" content="1037">
 
 
 
@@ -143,8 +143,8 @@
         <div class="post-category">
             <a href="/categories/linux/"> linux </a>
             </div>
-          <span class="more-meta"> 约 902 字 </span>
-          <span class="more-meta"> 预计阅读 2 分钟 </span>
+          <span class="more-meta"> 约 1037 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
         
       </div>
     </header>
@@ -400,7 +400,15 @@ management 0.0.0.0 <span class="m">5555</span>
 </code></pre></td></tr></table>
 </div>
 </div><h1 id="测试验证">测试验证</h1>
-<p><strong>下载安装时的 客户端配置文件</strong></p>
+<p><strong>配置 nps 内网穿透的使用</strong></p>
+<blockquote>
+<p>将配置文件里的 <code>remote</code> 地址更改为公网地址，没有公网地址的话，可以使用第三方内网穿透工具实现, 下面示例将使用自建的 <code>nps</code> 作为演示</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210513215613617.png" alt="image-20210513215613617"></p>
+<blockquote>
+<p>注意这个映射地址外面设置成了 <code>21174</code> 那么在对应的配置文件中也要相应更改成这个，还有就是协议需要 和安装时选择的对应上，我这里使用的是 <code>udp</code> 协议。</p>
+</blockquote>
+<p><strong>下载安装 vpn 时的客户端配置文件</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -410,13 +418,6 @@ management 0.0.0.0 <span class="m">5555</span>
 </code></pre></td></tr></table>
 </div>
 </div><p><strong>编辑下载的配置文件</strong></p>
-<blockquote>
-<p>将配置文件里的 <code>remote</code> 地址更改为公网地址，没有公网地址的话，可以使用第三方内网穿透工具实现, 下面示例将使用自建的 <code>nps</code> 作为演示</p>
-</blockquote>
-<p><img src="https://cdn.treesir.pub/img/image-20210513215613617.png" alt="image-20210513215613617"></p>
-<blockquote>
-<p>注意这个映射地址外面设置成了 <code>21174</code> 那么在对应的配置文件中也要相应更改成这个，还有就是协议需要 和安装时选择的对应上，我这里使用的是 <code>udp</code> 协议。</p>
-</blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -488,6 +489,9 @@ setenv opt block-outside-dns <span class="c1"># Prevent Windows 10 DNS leak</spa
 </code></pre></td></tr></table>
 </div>
 </div><p><img src="https://cdn.treesir.pub/img/image-20210513224453580.png" alt="image-20210513224453580"></p>
+<blockquote>
+<p>可以看到，dashboard 中的 <code>remote ip</code> 是 192.168.8.113，且map中无对应显示地址 ( map 更具 remote ip 显示 )， 这是因为我使用了内网穿透技术的缘故，企业中建议是绑定到对应的公网ip中，并使用 <code>DNAT</code> 作为端口映射，这样dashboard 中的 map 显示将呈现正常。</p>
+</blockquote>
 <h1 id="客户端软件下载">客户端软件下载</h1>
 <p><a href="https://cdn.treesir.pub/tools/openvpn/openvpn-install-2.4.8-I602-Win10.exe">openvpn-install-2.4.8-I602-Win10</a></p>
 <p><a href="https://cdn.treesir.pub/tools/openvpn/openvpn-install-2.4.6-I602-Win7.exe">openvpn-install-2.4.6-I602-Win7</a></p>
