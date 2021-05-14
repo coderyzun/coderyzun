@@ -8,7 +8,7 @@
     <language>en-us</language>
     <lastBuildDate>Thu, 22 Apr 2021 16:19:56 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/openvpn/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>OpenVpn 在 Centos 中的安装，并配置关联 openLdap 认证</title>
+      <title>OpenVpn 的安装，并配置关联 openLdap 认证</title>
       <link>https://cdryzun.github.io/post/openvpn-install/</link>
       <pubDate>Thu, 22 Apr 2021 16:19:56 +0800</pubDate>
       
