@@ -6,7 +6,16 @@
     <description>Recent content in openldap on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 18 Dec 2020 16:24:43 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/openldap/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 15 May 2021 16:20:46 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/openldap/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 Docker-Compose 部署 openConnect Vpn Server</title>
+      <link>https://cdryzun.github.io/post/ocserv-vpn-install/</link>
+      <pubDate>Sat, 15 May 2021 16:20:46 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/ocserv-vpn-install/</guid>
+      <description>环境说明 docker-compose：1.18.0 操作系统: openwrt (x86) docker version: 19.03.12 docker image yangzun/docker-openconnect-ldap:latest 此镜像基于 morganonbass/ocserv-ldap 之上做了修饰修改，原因为此容器存在 bug，无法正常启</description>
+    </item>
+    
     <item>
       <title>部署 Devops 必备利器 OpenLdap</title>
       <link>https://cdryzun.github.io/post/docker-deploy-ldap/</link>

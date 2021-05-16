@@ -2,14 +2,77 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://cdryzun.github.io/tags/admission-webhook/</loc>
-    <lastmod>2021-04-30T14:10:31+08:00</lastmod>
+    <loc>https://cdryzun.github.io/categories/</loc>
+    <lastmod>2021-05-15T16:20:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/categories/</loc>
+    <loc>https://cdryzun.github.io/tags/docker-compose/</loc>
+    <lastmod>2021-05-15T16:20:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/linux/</loc>
+    <lastmod>2021-05-15T16:20:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/network/</loc>
+    <lastmod>2021-05-15T16:20:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/openconnect/</loc>
+    <lastmod>2021-05-15T16:20:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/openldap/</loc>
+    <lastmod>2021-05-15T16:20:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/</loc>
+    <lastmod>2021-05-15T16:20:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/</loc>
+    <lastmod>2021-05-15T16:20:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/</loc>
+    <lastmod>2021-05-15T16:20:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/ocserv-vpn-install/</loc>
+    <lastmod>2021-05-15T16:20:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/admission-webhook/</loc>
     <lastmod>2021-04-30T14:10:31+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -31,27 +94,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/tags/lxcfs/</loc>
-    <lastmod>2021-04-30T14:10:31+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/post/</loc>
-    <lastmod>2021-04-30T14:10:31+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/</loc>
-    <lastmod>2021-04-30T14:10:31+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/</loc>
     <lastmod>2021-04-30T14:10:31+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -95,20 +137,6 @@
   <url>
     <loc>https://cdryzun.github.io/post/git-use-issue/</loc>
     <lastmod>2021-04-25T10:35:57+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/categories/linux/</loc>
-    <lastmod>2021-04-25T10:35:57+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/categories/network/</loc>
-    <lastmod>2021-04-22T16:19:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -556,13 +584,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/post/flannel-exclusion-records/</loc>
-    <lastmod>2020-12-18T16:24:43+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/openldap/</loc>
     <lastmod>2020-12-18T16:24:43+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
