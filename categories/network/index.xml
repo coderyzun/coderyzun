@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>network on 「Yang&#39;zun」PlayGround</title>
+    <link>https://cdryzun.github.io/categories/network/</link>
+    <description>Recent content in network on 「Yang&#39;zun」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 22 Apr 2021 16:19:56 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/network/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OpenVpn 的安装，并配置关联 openLdap 认证</title>
+      <link>https://cdryzun.github.io/post/openvpn-install/</link>
+      <pubDate>Thu, 22 Apr 2021 16:19:56 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/openvpn-install/</guid>
+      <description>环境说明 docker-compose：1.23.2 操作系统: armbian (斐讯n1) 部署软件 openldap 部署 省略 openldap 的部署配置 请参考之前整理的 文档 openvpn 安装 这里 openvpn 一键</description>
+    </item>
+    
+  </channel>
+</rss>

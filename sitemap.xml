@@ -107,6 +107,13 @@
   </url>
   
   <url>
+    <loc>https://cdryzun.github.io/categories/network/</loc>
+    <lastmod>2021-04-22T16:19:56+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://cdryzun.github.io/tags/openvpn/</loc>
     <lastmod>2021-04-22T16:19:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
