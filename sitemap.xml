@@ -3,7 +3,105 @@
   
   <url>
     <loc>https://cdryzun.github.io/categories/</loc>
-    <lastmod>2021-05-15T16:20:46+08:00</lastmod>
+    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/devops/</loc>
+    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/exporter/</loc>
+    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/k8s/</loc>
+    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/k8s/</loc>
+    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/kubekey/</loc>
+    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/operator/</loc>
+    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/</loc>
+    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/prometheus/</loc>
+    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/prometheus/</loc>
+    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/rancher/</loc>
+    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/rancher-monitor-config/</loc>
+    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/</loc>
+    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/</loc>
+    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/maven-release-plugin/</loc>
+    <lastmod>2021-05-16T17:52:05+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -44,27 +142,6 @@
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/post/</loc>
-    <lastmod>2021-05-15T16:20:46+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/</loc>
-    <lastmod>2021-05-15T16:20:46+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/</loc>
-    <lastmod>2021-05-15T16:20:46+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://cdryzun.github.io/post/ocserv-vpn-install/</loc>
     <lastmod>2021-05-15T16:20:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -73,13 +150,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/tags/admission-webhook/</loc>
-    <lastmod>2021-04-30T14:10:31+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/categories/k8s/</loc>
     <lastmod>2021-04-30T14:10:31+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -107,22 +177,8 @@
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/tags/kubekey/</loc>
-    <lastmod>2021-04-26T14:59:36+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://cdryzun.github.io/post/kubekey-install-k8s/</loc>
     <lastmod>2021-04-26T14:59:36+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/categories/devops/</loc>
-    <lastmod>2021-04-25T10:35:57+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -430,13 +486,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/categories/fix/</loc>
-    <lastmod>2021-01-16T14:39:59+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/rancher/</loc>
     <lastmod>2021-01-16T14:39:59+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
