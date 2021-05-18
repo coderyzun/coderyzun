@@ -155,18 +155,20 @@
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/maven-release-plugin/">Maven Release Plugin</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/maven-release-plugin/">Maven ReleasePlugin 的使用记录</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-05-16 </span>
-      
-        <span class="more-meta"> 约 278 字 </span>
+      <div class="post-category">
+          <a href="/categories/devops/"> devops </a>
+          </div>
+        <span class="more-meta"> 约 327 字 </span>
         <span class="more-meta"> 预计阅读 1 分钟 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      插件打包的使用 1 2 3 mvn -B release:prepare -DtagNameFormat=@{project.version} -DreleaseVersion=1.0.4 -DpushChanges=false -Dmaven.test.skip=true -T $(nproc) # 指定发布 &#34;1.0.4&#34; 的 release mvn release:perform -Darguments=&#39;-Dmaven.javadoc.skip=true&#39; -Dmaven.test.skip=true -DlocalCheckout=true -T $(nproc) # 上传至 maven 私服 maven 使用配置 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+      maven settings.xml 配置使用展示 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62
     </div>
     <div class="read-more">
       <a href="/post/maven-release-plugin/" class="read-more-link">阅读更多</a>

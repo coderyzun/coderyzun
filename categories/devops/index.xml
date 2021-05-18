@@ -17,6 +17,15 @@
     </item>
     
     <item>
+      <title>Maven ReleasePlugin 的使用记录</title>
+      <link>https://cdryzun.github.io/post/maven-release-plugin/</link>
+      <pubDate>Sun, 16 May 2021 17:52:05 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/maven-release-plugin/</guid>
+      <description>maven settings.xml 配置使用展示 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62</description>
+    </item>
+    
+    <item>
       <title>Git 使用问题的记录</title>
       <link>https://cdryzun.github.io/post/git-use-issue/</link>
       <pubDate>Sun, 25 Apr 2021 10:35:57 +0800</pubDate>
