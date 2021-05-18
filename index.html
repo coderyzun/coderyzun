@@ -130,7 +130,58 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/rancher-monitor-config/">Rancher 开启监控，及生产应用的优化配置工作说明 (一)</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/rancher-monitor-config-second/">Rancher 开启监控后的，外部 exporter 的添加说明 (二)</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-05-17 </span>
+      <div class="post-category">
+          <a href="/categories/devops/"> devops </a>
+          <a href="/categories/k8s/"> k8s </a>
+          <a href="/categories/prometheus/"> prometheus </a>
+          </div>
+        <span class="more-meta"> 约 1139 字 </span>
+        <span class="more-meta"> 预计阅读 3 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      环境说明 上期 介绍了 rancher prometheus operator 的安装和基础 targets 的修复工作。有的时候我们抓取的 exporter metrics 并不在同集群且与集群没有任何关联时，应该怎么和 rancher monitor 进行关联配置呢？下
+    </div>
+    <div class="read-more">
+      <a href="/post/rancher-monitor-config-second/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/rancher-monitor-config-third/">Rancher 开启监控后的，阈值告警配置说明 (二)</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-05-17 </span>
+      <div class="post-category">
+          <a href="/categories/devops/"> devops </a>
+          <a href="/categories/k8s/"> k8s </a>
+          <a href="/categories/prometheus/"> prometheus </a>
+          <a href="/categories/alertmanage/"> alertmanage </a>
+          </div>
+        <span class="more-meta"> 约 23 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      环境说明 kubernetes version: v1.17.9alertmanage rancher dashboard: v2.3.5 操作系统: centos 7.8.2003 基础环境配置
+    </div>
+    <div class="read-more">
+      <a href="/post/rancher-monitor-config-third/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/rancher-monitor-config-first/">Rancher 开启监控，及生产应用的优化配置工作说明 (一)</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-05-17 </span>
       <div class="post-category">
@@ -148,7 +199,7 @@
       环境说明 kubernetes version: v1.17.9 rancher dashboard: v2.3.5 操作系统: centos 7.8.2003 基础环境配置 使用 kubekey 部署 kubernetes 集群 由于篇幅原因，此处省略部署说明，请参考较早期的 文档说明 rancher 单机部署 安装 docker-compose 1 yum install -y
     </div>
     <div class="read-more">
-      <a href="/post/rancher-monitor-config/" class="read-more-link">阅读更多</a>
+      <a href="/post/rancher-monitor-config-first/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>
@@ -266,53 +317,6 @@
     </div>
     <div class="read-more">
       <a href="/post/git-use-issue/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/openvpn-install/">OpenVpn 的安装，并配置关联 openLdap 认证</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-04-22 </span>
-      <div class="post-category">
-          <a href="/categories/linux/"> linux </a>
-          <a href="/categories/network/"> network </a>
-          </div>
-        <span class="more-meta"> 约 1037 字 </span>
-        <span class="more-meta"> 预计阅读 3 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      环境说明 docker-compose：1.23.2 操作系统: armbian (斐讯n1) 部署软件 openldap 部署 省略 openldap 的部署配置 请参考之前整理的 文档 openvpn 安装 这里 openvpn 一键
-    </div>
-    <div class="read-more">
-      <a href="/post/openvpn-install/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/centos-shutdown-notpoweroff/">Centos7 执行 shutdown 无法正常关机的解决</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-04-14 </span>
-      <div class="post-category">
-          <a href="/categories/linux/"> linux </a>
-          </div>
-        <span class="more-meta"> 约 477 字 </span>
-        <span class="more-meta"> 预计阅读 1 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      环境说明 因为在公司中，有下班后有需要关闭 服务器 的操作，并且每天还需要去手动打开。有点违背 极客精神，所有自己通过 shell script + cron 的形式进行每天定时的 开
-    </div>
-    <div class="read-more">
-      <a href="/post/centos-shutdown-notpoweroff/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>

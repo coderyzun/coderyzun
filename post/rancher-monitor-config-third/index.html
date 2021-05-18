@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>k8s · 「Yang&#39;zun」PlayGround</title>
+  <title>Rancher 开启监控后的，阈值告警配置说明 (二) - 「Yang&#39;zun」PlayGround</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Yang&#39;zun" /><meta name="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" /><meta name="keywords" content="github action, pipeline, gitlab, nexus3, 技术分享, 前端技术, 计算机网络, devops, kubernetes, jenkins, centos, 技术积累, 个人文档, 个人总结, mysql, 运维, 自动化, python, hugo, k3s, kafka, go lang, helm, traefik, kubeadm, rancher, redis, rke, nginx, apache, 网络安全" />
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用 rancher prometheus operator 开启监控后的监控阈值告警配置" /><meta name="keywords" content="rancher, prometheus, operator, devops, k8s, kubernetes, alertmanage" />
 
 
 
@@ -26,9 +26,7 @@
 <meta name="generator" content="Hugo 0.78.2 with theme even" />
 
 
-<link rel="canonical" href="https://cdryzun.github.io/tags/k8s/" />
-  <link href="https://cdryzun.github.io/tags/k8s/index.xml" rel="alternate" type="application/rss+xml" title="「Yang&#39;zun」PlayGround" />
-  <link href="https://cdryzun.github.io/tags/k8s/index.xml" rel="feed" type="application/rss+xml" title="「Yang&#39;zun」PlayGround" />
+<link rel="canonical" href="https://cdryzun.github.io/post/rancher-monitor-config-third/" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -42,16 +40,24 @@
 <link rel="stylesheet" href="/css/custom.css">
 
 
-<meta property="og:title" content="k8s" />
-<meta property="og:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://cdryzun.github.io/tags/k8s/" />
-<meta property="og:updated_time" content="2021-05-17T10:41:26+08:00" />
-<meta itemprop="name" content="k8s">
-<meta itemprop="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历">
+<meta property="og:title" content="Rancher 开启监控后的，阈值告警配置说明 (二)" />
+<meta property="og:description" content="使用 rancher prometheus operator 开启监控后的监控阈值告警配置" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/rancher-monitor-config-third/" />
+<meta property="article:published_time" content="2021-05-17T10:41:26+08:00" />
+<meta property="article:modified_time" content="2021-05-17T10:41:26+08:00" />
+<meta itemprop="name" content="Rancher 开启监控后的，阈值告警配置说明 (二)">
+<meta itemprop="description" content="使用 rancher prometheus operator 开启监控后的监控阈值告警配置">
+<meta itemprop="datePublished" content="2021-05-17T10:41:26+08:00" />
+<meta itemprop="dateModified" content="2021-05-17T10:41:26+08:00" />
+<meta itemprop="wordCount" content="23">
+
+
+
+<meta itemprop="keywords" content="rancher,prometheus,operator,k8s,kubekey,exporter," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="k8s"/>
-<meta name="twitter:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历"/>
+<meta name="twitter:title" content="Rancher 开启监控后的，阈值告警配置说明 (二)"/>
+<meta name="twitter:description" content="使用 rancher prometheus operator 开启监控后的监控阈值告警配置"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -127,47 +133,109 @@
     <main id="main" class="main">
       <div class="content-wrapper">
         <div id="content" class="content">
-          <section id="archive" class="archive">
-  <div class="archive-title tag">
-        <h2 class="archive-name">k8s</h2>
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Rancher 开启监控后的，阈值告警配置说明 (二)</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-05-17 </span>
+        <div class="post-category">
+            <a href="/categories/devops/"> devops </a>
+            <a href="/categories/k8s/"> k8s </a>
+            <a href="/categories/prometheus/"> prometheus </a>
+            <a href="/categories/alertmanage/"> alertmanage </a>
+            </div>
+          <span class="more-meta"> 约 23 字 </span>
+          <span class="more-meta"> 预计阅读 1 分钟 </span>
+        
       </div>
+    </header>
 
-  <div class="archive-post">
-      <span class="archive-post-time">
-        2021-05-17
-      </span>
-      <span class="archive-post-title">
-        <a href="/post/rancher-monitor-config-second/" class="archive-post-link">
-          Rancher 开启监控后的，外部 exporter 的添加说明 (二)
-        </a>
-      </span>
-    </div><div class="archive-post">
-      <span class="archive-post-time">
-        2021-05-17
-      </span>
-      <span class="archive-post-title">
-        <a href="/post/rancher-monitor-config-third/" class="archive-post-link">
-          Rancher 开启监控后的，阈值告警配置说明 (二)
-        </a>
-      </span>
-    </div><div class="archive-post">
-      <span class="archive-post-time">
-        2021-05-17
-      </span>
-      <span class="archive-post-title">
-        <a href="/post/rancher-monitor-config-first/" class="archive-post-link">
-          Rancher 开启监控，及生产应用的优化配置工作说明 (一)
-        </a>
-      </span>
-    </div>
-</section>
-
-<nav class="pagination">
-  
-  
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明</a></li>
+    <li><a href="#基础环境配置">基础环境配置</a></li>
+  </ul>
 </nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="环境说明">环境说明</h1>
+<ul>
+<li>kubernetes version: <code>v1.17.9</code>alertmanage</li>
+<li>rancher dashboard: <code>v2.3.5</code></li>
+<li>操作系统:  <code>centos 7.8.2003 </code></li>
+</ul>
+<h1 id="基础环境配置">基础环境配置</h1>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-05-17
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/rancher/">rancher</a>
+          <a href="/tags/prometheus/">prometheus</a>
+          <a href="/tags/operator/">operator</a>
+          <a href="/tags/k8s/">k8s</a>
+          <a href="/tags/kubekey/">kubekey</a>
+          <a href="/tags/exporter/">exporter</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/rancher-monitor-config-second/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Rancher 开启监控后的，外部 exporter 的添加说明 (二)</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/rancher-monitor-config-first/">
+            <span class="next-text nav-default">Rancher 开启监控，及生产应用的优化配置工作说明 (一)</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
         
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
 
       </div>
     </main>

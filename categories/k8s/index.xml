@@ -8,11 +8,29 @@
     <language>en-us</language>
     <lastBuildDate>Mon, 17 May 2021 10:41:26 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/k8s/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Rancher 开启监控，及生产应用的优化配置工作说明 (一)</title>
-      <link>https://cdryzun.github.io/post/rancher-monitor-config/</link>
+      <title>Rancher 开启监控后的，外部 exporter 的添加说明 (二)</title>
+      <link>https://cdryzun.github.io/post/rancher-monitor-config-second/</link>
       <pubDate>Mon, 17 May 2021 10:41:26 +0800</pubDate>
       
-      <guid>https://cdryzun.github.io/post/rancher-monitor-config/</guid>
+      <guid>https://cdryzun.github.io/post/rancher-monitor-config-second/</guid>
+      <description>环境说明 上期 介绍了 rancher prometheus operator 的安装和基础 targets 的修复工作。有的时候我们抓取的 exporter metrics 并不在同集群且与集群没有任何关联时，应该怎么和 rancher monitor 进行关联配置呢？下</description>
+    </item>
+    
+    <item>
+      <title>Rancher 开启监控后的，阈值告警配置说明 (二)</title>
+      <link>https://cdryzun.github.io/post/rancher-monitor-config-third/</link>
+      <pubDate>Mon, 17 May 2021 10:41:26 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/rancher-monitor-config-third/</guid>
+      <description>环境说明 kubernetes version: v1.17.9alertmanage rancher dashboard: v2.3.5 操作系统: centos 7.8.2003 基础环境配置</description>
+    </item>
+    
+    <item>
+      <title>Rancher 开启监控，及生产应用的优化配置工作说明 (一)</title>
+      <link>https://cdryzun.github.io/post/rancher-monitor-config-first/</link>
+      <pubDate>Mon, 17 May 2021 10:41:26 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/rancher-monitor-config-first/</guid>
       <description>环境说明 kubernetes version: v1.17.9 rancher dashboard: v2.3.5 操作系统: centos 7.8.2003 基础环境配置 使用 kubekey 部署 kubernetes 集群 由于篇幅原因，此处省略部署说明，请参考较早期的 文档说明 rancher 单机部署 安装 docker-compose 1 yum install -y</description>
     </item>
     
