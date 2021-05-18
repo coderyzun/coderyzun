@@ -50,7 +50,7 @@
 <meta itemprop="description" content="使用 rancher prometheus operator 开启监控后，外部 exporter 的添加关联工作">
 <meta itemprop="datePublished" content="2021-05-17T10:41:26+08:00" />
 <meta itemprop="dateModified" content="2021-05-17T10:41:26+08:00" />
-<meta itemprop="wordCount" content="1139">
+<meta itemprop="wordCount" content="1435">
 
 
 
@@ -145,7 +145,7 @@
             <a href="/categories/k8s/"> k8s </a>
             <a href="/categories/prometheus/"> prometheus </a>
             </div>
-          <span class="more-meta"> 约 1139 字 </span>
+          <span class="more-meta"> 约 1435 字 </span>
           <span class="more-meta"> 预计阅读 3 分钟 </span>
         
       </div>
@@ -167,6 +167,14 @@
             <li><a href="#配置集成-rancher-中的prometheus-operator">配置集成 rancher 中的<code>prometheus operator</code></a></li>
           </ul>
         </li>
+        <li><a href="#php-fpm_exporter-"><code>php-fpm_exporter </code></a>
+          <ul>
+            <li><a href="#配置添加-php-参数">配置添加 php 参数</a></li>
+            <li><a href="#添加配置-关联-nginx">添加配置 关联 nginx</a></li>
+            <li><a href="#配置关联为-systemd--服务并配置自启">配置关联为 <code>systemd</code>  服务，并配置自启</a></li>
+          </ul>
+        </li>
+        <li><a href="#win_exporter"><code>win_exporter</code></a></li>
       </ul>
     </li>
   </ul>
@@ -180,7 +188,7 @@
 </blockquote>
 <h1 id="exporter-列表">exporter 列表</h1>
 <blockquote>
-<p><code>exporter</code> 列表文档可能是在不太同时期编写整理可能存在 <code>时间差异</code>。</p>
+<p>此 <code>exporter</code>列表使用文档为不同时期 整理归纳，阅读过程中存在一定的 <code>时间差异</code>。被官方文档收录收集的完整 <a href="https://prometheus.io/docs/instrumenting/exporters/"><code>exporter 列表</code></a> 查看。</p>
 </blockquote>
 <h2 id="scripts-exporter"><code>scripts exporter</code></h2>
 <blockquote>
@@ -460,7 +468,133 @@ kubectl get secrets prometheus-cluster-monitoring-additional-scrape-configs  -n 
 <blockquote>
 <p>从上述结果展示中，可以看到正常关联上了。</p>
 </blockquote>
+<h2 id="php-fpm_exporter-"><code>php-fpm_exporter </code></h2>
+<blockquote>
+<p>此处省略 <code>lnmp</code> 环境的安装，网上提供很多 <code>一键安装</code> 面板，如需实现自行安装配置即可。</p>
+<p><a href="https://github.com/hipages/php-fpm_exporter">github 地址</a></p>
+</blockquote>
+<h3 id="配置添加-php-参数">配置添加 php 参数</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">egrep <span class="s1">&#39;/ping|/status&#39;</span> /usr/local/php/etc/php-fpm.d/walle.conf 
+pm.status_path <span class="o">=</span> /status
+ping.path <span class="o">=</span> /ping
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="添加配置-关联-nginx">添加配置 关联 nginx</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>root@hadoopname ~<span class="o">]</span><span class="c1"># cat /usr/local/nginx/conf/conf.d/</span>
+cobra.conf       jumpserver.conf  official.conf    php_status.conf  walle.conf       zabbix.conf      
+<span class="o">[</span>root@hadoopname ~<span class="o">]</span><span class="c1"># cat /usr/local/nginx/conf/conf.d/php_status.conf </span>
+server <span class="o">{</span>
+    listen 9010<span class="p">;</span>
+    allow 127.0.0.1<span class="p">;</span>
+    allow 192.168.8.0/24<span class="p">;</span>
+    deny all<span class="p">;</span>
 
+    location ~ ^/<span class="o">(</span>status<span class="p">|</span>ping<span class="o">)</span>$ <span class="o">{</span>
+         fastcgi_pass 127.0.0.1:9000<span class="p">;</span>
+         fastcgi_param SCRIPT_FILENAME <span class="nv">$document_root$fastcgi_script_name</span><span class="p">;</span>
+         include fastcgi_params<span class="p">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+nohup php-fpm-exporter --addr 0.0.0.0:9190 --endpoint http://127.0.0.1:9010/status &gt; /tmp/php-fpm-exporter.log 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">&amp;</span>
+sudo firewall-cmd --zone<span class="o">=</span>public --add-port<span class="o">=</span>9190/tcp --permanent
+firewall-cmd --reload  <span class="c1"># 测试启动</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="配置关联为-systemd--服务并配置自启">配置关联为 <code>systemd</code>  服务，并配置自启</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"> cat  &gt; /usr/lib/systemd/system/php-fpm-exporter.service <span class="s">&lt;&lt;EOF
+</span><span class="s">[Unit]
+</span><span class="s">Description=php-fpm-exporter
+</span><span class="s">Documentation=https://github.com/hipages/php-fpm_exporter
+</span><span class="s">After=network.target
+</span><span class="s">
+</span><span class="s">[Service]
+</span><span class="s">Type=simple
+</span><span class="s">User=root
+</span><span class="s">ExecStart=/usr/local/bin/php-fpm-exporter --addr 0.0.0.0:9190 --endpoint http://127.0.0.1:9010/status 
+</span><span class="s">Restart=on-failure
+</span><span class="s">
+</span><span class="s">[Install]
+</span><span class="s">WantedBy=multi-user.target
+</span><span class="s">EOF</span>
+
+systemctl daemon-reload <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> systemctl start php-fpm-exporter <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> systemctl status php-fpm-exporter
+
+
+systemctl <span class="nb">enable</span> php-fpm-exporter  <span class="c1"># 正常启动后，配置开机自启动</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="win_exporter"><code>win_exporter</code></h2>
+<blockquote>
+<p><a href="https://github.com/prometheus-community/windows_exporter">github地址</a></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">msiexec /i wmi_exporter-0.7.0-amd64.msi <span class="nv">ENABLED_COLLECTORS</span><span class="o">=</span>cpu,cs,logical_disk,net,os,service,system,textfile,memory,tcp <span class="nv">LISTEN_PORT</span><span class="o">=</span><span class="m">9010</span>  <span class="c1"># 下载软件包后，使用可执行程序注册为服务</span>
+</code></pre></td></tr></table>
+</div>
+</div>
     </div>
 
     <div class="post-copyright">
