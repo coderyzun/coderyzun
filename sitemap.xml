@@ -3,84 +3,105 @@
   
   <url>
     <loc>https://cdryzun.github.io/categories/alertmanage/</loc>
-    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <lastmod>2021-05-19T08:41:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/categories/</loc>
-    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <lastmod>2021-05-19T08:41:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/categories/devops/</loc>
-    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <lastmod>2021-05-19T08:41:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/tags/exporter/</loc>
-    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <lastmod>2021-05-19T08:41:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/tags/k8s/</loc>
-    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <lastmod>2021-05-19T08:41:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/categories/k8s/</loc>
-    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <lastmod>2021-05-19T08:41:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/tags/kubekey/</loc>
-    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <lastmod>2021-05-19T08:41:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/tags/operator/</loc>
-    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <lastmod>2021-05-19T08:41:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/post/</loc>
-    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <lastmod>2021-05-19T08:41:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/tags/prometheus/</loc>
-    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <lastmod>2021-05-19T08:41:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/categories/prometheus/</loc>
-    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <lastmod>2021-05-19T08:41:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/tags/rancher/</loc>
-    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
+    <lastmod>2021-05-19T08:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/rancher-monitor-config-third/</loc>
+    <lastmod>2021-05-19T08:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/</loc>
+    <lastmod>2021-05-19T08:41:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/</loc>
+    <lastmod>2021-05-19T08:41:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -93,28 +114,7 @@
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/post/rancher-monitor-config-third/</loc>
-    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://cdryzun.github.io/post/rancher-monitor-config-first/</loc>
-    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/</loc>
-    <lastmod>2021-05-17T10:41:26+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/</loc>
     <lastmod>2021-05-17T10:41:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

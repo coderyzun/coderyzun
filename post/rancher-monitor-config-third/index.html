@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Rancher 开启监控后的，阈值告警配置说明 (二) - 「Yang&#39;zun」PlayGround</title>
+  <title>Rancher 开启监控后的，阈值告警配置说明 (三) - 「Yang&#39;zun」PlayGround</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -40,23 +40,23 @@
 <link rel="stylesheet" href="/css/custom.css">
 
 
-<meta property="og:title" content="Rancher 开启监控后的，阈值告警配置说明 (二)" />
+<meta property="og:title" content="Rancher 开启监控后的，阈值告警配置说明 (三)" />
 <meta property="og:description" content="使用 rancher prometheus operator 开启监控后的监控阈值告警配置" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cdryzun.github.io/post/rancher-monitor-config-third/" />
-<meta property="article:published_time" content="2021-05-17T10:41:26+08:00" />
-<meta property="article:modified_time" content="2021-05-17T10:41:26+08:00" />
-<meta itemprop="name" content="Rancher 开启监控后的，阈值告警配置说明 (二)">
+<meta property="article:published_time" content="2021-05-19T08:41:26+08:00" />
+<meta property="article:modified_time" content="2021-05-19T08:41:26+08:00" />
+<meta itemprop="name" content="Rancher 开启监控后的，阈值告警配置说明 (三)">
 <meta itemprop="description" content="使用 rancher prometheus operator 开启监控后的监控阈值告警配置">
-<meta itemprop="datePublished" content="2021-05-17T10:41:26+08:00" />
-<meta itemprop="dateModified" content="2021-05-17T10:41:26+08:00" />
-<meta itemprop="wordCount" content="23">
+<meta itemprop="datePublished" content="2021-05-19T08:41:26+08:00" />
+<meta itemprop="dateModified" content="2021-05-19T08:41:26+08:00" />
+<meta itemprop="wordCount" content="1061">
 
 
 
 <meta itemprop="keywords" content="rancher,prometheus,operator,k8s,kubekey,exporter," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Rancher 开启监控后的，阈值告警配置说明 (二)"/>
+<meta name="twitter:title" content="Rancher 开启监控后的，阈值告警配置说明 (三)"/>
 <meta name="twitter:description" content="使用 rancher prometheus operator 开启监控后的监控阈值告警配置"/>
 
 <!--[if lte IE 9]>
@@ -136,18 +136,18 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">Rancher 开启监控后的，阈值告警配置说明 (二)</h1>
+      <h1 class="post-title">Rancher 开启监控后的，阈值告警配置说明 (三)</h1>
 
       <div class="post-meta">
-        <span class="post-time"> 2021-05-17 </span>
+        <span class="post-time"> 2021-05-19 </span>
         <div class="post-category">
             <a href="/categories/devops/"> devops </a>
             <a href="/categories/k8s/"> k8s </a>
             <a href="/categories/prometheus/"> prometheus </a>
             <a href="/categories/alertmanage/"> alertmanage </a>
             </div>
-          <span class="more-meta"> 约 23 字 </span>
-          <span class="more-meta"> 预计阅读 1 分钟 </span>
+          <span class="more-meta"> 约 1061 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
         
       </div>
     </header>
@@ -158,19 +158,271 @@
     <nav id="TableOfContents">
   <ul>
     <li><a href="#环境说明">环境说明</a></li>
-    <li><a href="#基础环境配置">基础环境配置</a></li>
+    <li><a href="#配置安装-dingtalk-webhook">配置安装 dingtalk webhook</a>
+      <ul>
+        <li><a href="#安装-kustomize">安装 <code>kustomize</code></a></li>
+        <li><a href="#使用-kustomize-部署-deployment">使用 kustomize 部署 deployment</a></li>
+      </ul>
+    </li>
+    <li><a href="#rancher-alertmanage-配置">Rancher alertmanage 配置</a>
+      <ul>
+        <li><a href="#关联前面部署的-dingtalk-webhook">关联前面部署的 dingtalk <code>webhook</code></a></li>
+        <li><a href="#手动测试告警是否有生效">手动测试，告警是否有生效</a></li>
+      </ul>
+    </li>
+    <li><a href="#通知优化及阈值告警配置">通知优化及阈值告警配置</a>
+      <ul>
+        <li><a href="#阈值告警配置">阈值告警配置</a></li>
+        <li><a href="#通知优化">通知优化</a></li>
+      </ul>
+    </li>
+    <li><a href="#todone">ToDone</a></li>
   </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
       <h1 id="环境说明">环境说明</h1>
+<blockquote>
+<p>此文档为 rancher <code>monitor</code>  使用系列的 <code>第三篇</code> ，主要介绍与 <code>dingtalk</code> 关联配置告警通知、prometheus 告警阈值的配置使用</p>
+</blockquote>
+<h1 id="配置安装-dingtalk-webhook">配置安装 dingtalk webhook</h1>
+<blockquote>
+<p><a href="https://github.com/timonwong/prometheus-webhook-dingtalk">webhook github 地址</a></p>
+</blockquote>
+<h2 id="安装-kustomize">安装 <code>kustomize</code></h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">curl -s <span class="s2">&#34;https://raw.githubusercontent.com/\
+</span><span class="s2">kubernetes-sigs/kustomize/master/hack/install_kustomize.sh&#34;</span>  <span class="p">|</span> bash
+
+mv kustomize /usr/local/bin/
+
+kustomize version
+<span class="o">{</span>Version:kustomize/v4.1.2 GitCommit:a5914abad89e0b18129eaf1acc784f9fe7d21439 BuildDate:2021-04-15T20:38:06Z GoOs:linux GoArch:amd64<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="使用-kustomize-部署-deployment">使用 kustomize 部署 deployment</h2>
 <ul>
-<li>kubernetes version: <code>v1.17.9</code>alertmanage</li>
-<li>rancher dashboard: <code>v2.3.5</code></li>
-<li>操作系统:  <code>centos 7.8.2003 </code></li>
+<li>
+<p>clone 代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install -y git  <span class="c1"># 安装 git</span>
+  
+git clone https://github.com/timonwong/prometheus-webhook-dingtalk.git
+  
+<span class="nb">cd</span> prometheus-webhook-dingtalk/contrib/k8s/
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>创建 dingtalk  自定义机器人</p>
+<blockquote>
+<p>安全设置这里我们选择 <code>加签</code> 处理</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210519133905640.png" alt="image-20210519133905640"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519133947031.png" alt="image-20210519133947031"></p>
+</li>
 </ul>
-<h1 id="基础环境配置">基础环境配置</h1>
+<blockquote>
+<p>复制机器人 <code>webhook</code> 信息填入至配置文件中</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">vi config/config.yaml 
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210519134222203.png" alt="image-20210519134222203"></p>
+<ul>
+<li>
+<p>部署 <code>yaml</code> 配置文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sed -i <span class="s2">&#34;s#monitoring#prometheus#g&#34;</span> kustomization.yaml <span class="c1"># 修改 配置文件中指定部署的 命名空间</span>
+  
+kustomize build<span class="p">|</span>kubectl apply -f -  <span class="c1"># 执行部署</span>
+configmap/alertmanager-webhook-dingtalk-f5hkbg7g25 created
+service/alertmanager-webhook-dingtalk created
+deployment.apps/alertmanager-webhook-dingtalk created
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210519134932057.png" alt="image-20210519134932057"></p>
+</li>
+<li>
+<p>测试是否可以正常发送通知</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get po alertmanager-webhook-dingtalk-5c7b48fd9d-bcpxb  -n prometheus  -o wide <span class="c1"># 获取 pod ip</span>
+  
+curl <span class="s1">&#39;http://10.233.90.19:8060/dingtalk/webhook1/send&#39;</span> <span class="se">\
+</span><span class="se"></span>-H <span class="s1">&#39;Content-Type: application/json&#39;</span> <span class="se">\
+</span><span class="se"></span>-d <span class="s1">&#39;{&#34;Status&#34;: &#34;testing&#34;}&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210519135949715.png" alt="image-20210519135949715"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519140006822.png" alt=""></p>
+</li>
+</ul>
+<blockquote>
+<p>正常将信息发送至 机器人，而且还做了转 <code>大写</code> 处理，这是因为我们默认使用的 <a href="https://github.com/timonwong/prometheus-webhook-dingtalk/blob/master/template/default.tmpl"><code>template</code></a> 里面做了操作导致。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210519140244159.png" alt="image-20210519140244159"></p>
+<h1 id="rancher-alertmanage-配置">Rancher alertmanage 配置</h1>
+<blockquote>
+<p>alertmanage 的安装非常简单 只需要在 rancher 对应的 dashboard 中设置开启通知， 就会自动帮我去创建相应的 <code>alertmanage</code> clustert。</p>
+</blockquote>
+<h2 id="关联前面部署的-dingtalk-webhook">关联前面部署的 dingtalk <code>webhook</code></h2>
+<p><strong>点击通知</strong></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519141008974.png" alt="image-20210519141008974"></p>
+<p><strong>添加通知</strong></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519141030325.png" alt="image-20210519141030325"></p>
+<blockquote>
+<p>选择添加 <code>webhook</code> 类型通知，名称随意设置，webhook 的地址，我们这里配置使用 k8s <code>内部域名</code>，测试时无法解析此域名属于正常现象，因为所部署的 <code>rancher</code> 并不在当前k8s中，只要保证后面的 <code>alertmanage</code>可以正常访问即可，确认后点击添加。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210519141310991.png" alt="image-20210519141310991"></p>
+<h2 id="手动测试告警是否有生效">手动测试，告警是否有生效</h2>
+<p><strong>点击告警</strong></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519141856845.png" alt="image-20210519141856845"></p>
+<p><strong>选择一组告警组 关联刚才添加的通知</strong></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519141933493.png" alt="image-20210519141933493"></p>
+<p><code>拉到最下面</code> 设置为我们上面添加的 告警</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519141953871.png" alt="image-20210519141953871"></p>
+<p>可以看到此时我们关联告警后，<code>operator</code> 后端为我们自动去创建了 <code>alertmanger </code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519142151126.png" alt="image-20210519142151126"></p>
+<p><strong>手动将阈值降低，触发告警</strong></p>
+<blockquote>
+<p>这里我们已 cpu 一分钟平均负载情况，作为示例，更改为 使用到 <code>5% </code>就触发告警，持续时间更改为 1s</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210519142449382.png" alt="image-20210519142449382"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519142639541.png" alt="image-20210519142639541"></p>
+<p>等待一会后，已触发告警的发送了</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519142918636.png" alt="image-20210519142918636"></p>
+<blockquote>
+<p>这里告警出来后，alertmanger 这边还需要一段时间进行处理，趁这个时间，我们把 alertmanager 的 service 类型更改为前面 prometheus 一样的 <code>NodePort</code> 类型。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl edit svc access-alertmanager -n cattle-prometheus
+...
+    app: alertmanager
+    chart: alertmanager-0.0.1
+    release: cluster-alerting
+  sessionAffinity: None
+  type: NodePort
+...
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<p><strong>我们使用 对应的 NodePort 进行访问 alertmanger 的 dashboard</strong></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519143437776.png" alt="image-20210519143437776"></p>
+<blockquote>
+<p>可以看到 <code>alertmanger</code> 中也已有对应的告警通知，再次查看一下 dingtalk 这边也正常将通知出来了。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210519143557394.png" alt="image-20210519143557394"></p>
+<p><strong>当我们把 阈值还原时，恢复通知也正常发送了出来</strong></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519143800615.png" alt="image-20210519143800615"></p>
+<h1 id="通知优化及阈值告警配置">通知优化及阈值告警配置</h1>
+<h2 id="阈值告警配置">阈值告警配置</h2>
+<blockquote>
+<p><code>alert rule</code> 请参考 <a href="https://awesome-prometheus-alerts.grep.to/rules.html">此链接</a>。</p>
+</blockquote>
+<p>**在对应的告警组或新键的告警组中，参考上面<code>链接</code>中的 rule 配置添加即可 **</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519153020606.png" alt="image-20210519153020606"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519153249261.png" alt="image-20210519153249261"></p>
+<blockquote>
+<p>这里需要注意一下的就是，使用 <code>表达式</code> 的这种方法相对更加灵活一些，还有就是需要注意一下 <code>rancher</code> 中也有逻辑判断符的，这里需要注意一下，不要 <code>重复</code> 添加了。</p>
+</blockquote>
+<h2 id="通知优化">通知优化</h2>
+<ul>
+<li>
+<p>图标链接更改优化</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519145601687.png" alt="image-20210519145601687"></p>
+</li>
+</ul>
+<p><img src="https://cdn.treesir.pub/img/image-20210519145649321.png" alt="image-20210519145649321"></p>
+<blockquote>
+<p>可以看到点击图标跳转的这个地址不对，对于故障的定位排除，点击就能跳转到正确的页面还是非常有之必要的。</p>
+</blockquote>
+<ul>
+<li>
+<p>修改 <code>prometheus</code> 资源对象进行添加 <code>externalUrl</code> 配置即可</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl edit prometheus -n cattle-prometheus
+...
+  securityContext:
+    fsGroup: <span class="m">2000</span>
+    runAsNonRoot: <span class="nb">true</span>
+    runAsUser: <span class="m">1000</span>
+  serviceAccountName: cluster-monitoring
+  externalUrl: http://192.168.8.30:32209
+...
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210519151205707.png" alt="image-20210519151205707"></p>
+</li>
+</ul>
+<p><img src="https://cdn.treesir.pub/img/image-20210519151239181.png" alt="image-20210519151239181"></p>
+<blockquote>
+<p>检查对应的 <code>yaml</code> 可以看到 args 中 已添加了 <code>--web.external-url</code> 配置了,  <code>alertmanger</code> 的配置添加也是一样的，同样添加 <code>externalUrl</code>  字段即可。</p>
+</blockquote>
+<h1 id="todone">ToDone</h1>
+<p>&hellip;..</p>
 
     </div>
 
@@ -182,7 +434,7 @@
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
     <span class="item-content">
-        2021-05-17
+        2021-05-19
         
     </span>
   </p>
@@ -202,13 +454,9 @@
           <a href="/tags/exporter/">exporter</a>
           </div>
       <nav class="post-nav">
-        <a class="prev" href="/post/rancher-monitor-config-second/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">Rancher 开启监控后的，外部 exporter 的添加说明 (二)</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        <a class="next" href="/post/rancher-monitor-config-first/">
-            <span class="next-text nav-default">Rancher 开启监控，及生产应用的优化配置工作说明 (一)</span>
+        
+        <a class="next" href="/post/rancher-monitor-config-second/">
+            <span class="next-text nav-default">Rancher 开启监控后的，内外部 exporter 的添加说明 (二)</span>
             <span class="next-text nav-mobile">下一篇</span>
             <i class="iconfont icon-right"></i>
           </a>

@@ -6,14 +6,14 @@
     <description>Recent content in alertmanage on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 17 May 2021 10:41:26 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/alertmanage/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 May 2021 08:41:26 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/alertmanage/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Rancher 开启监控后的，阈值告警配置说明 (二)</title>
+      <title>Rancher 开启监控后的，阈值告警配置说明 (三)</title>
       <link>https://cdryzun.github.io/post/rancher-monitor-config-third/</link>
-      <pubDate>Mon, 17 May 2021 10:41:26 +0800</pubDate>
+      <pubDate>Wed, 19 May 2021 08:41:26 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/rancher-monitor-config-third/</guid>
-      <description>环境说明 kubernetes version: v1.17.9alertmanage rancher dashboard: v2.3.5 操作系统: centos 7.8.2003 基础环境配置</description>
+      <description>环境说明 此文档为 rancher monitor 使用系列的 第三篇 ，主要介绍与 dingtalk 关联配置告警通知、prometheus 告警阈值的配置使用 配置安装 dingtalk webhook webhook github 地址 安装 kustomize 1 2 3 4</description>
     </item>
     
   </channel>

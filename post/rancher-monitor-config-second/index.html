@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Rancher 开启监控后的，外部 exporter 的添加说明 (二) - 「Yang&#39;zun」PlayGround</title>
+  <title>Rancher 开启监控后的，内外部 exporter 的添加说明 (二) - 「Yang&#39;zun」PlayGround</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -40,23 +40,23 @@
 <link rel="stylesheet" href="/css/custom.css">
 
 
-<meta property="og:title" content="Rancher 开启监控后的，外部 exporter 的添加说明 (二)" />
+<meta property="og:title" content="Rancher 开启监控后的，内外部 exporter 的添加说明 (二)" />
 <meta property="og:description" content="使用 rancher prometheus operator 开启监控后，外部 exporter 的添加关联工作" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cdryzun.github.io/post/rancher-monitor-config-second/" />
 <meta property="article:published_time" content="2021-05-17T10:41:26+08:00" />
 <meta property="article:modified_time" content="2021-05-17T10:41:26+08:00" />
-<meta itemprop="name" content="Rancher 开启监控后的，外部 exporter 的添加说明 (二)">
+<meta itemprop="name" content="Rancher 开启监控后的，内外部 exporter 的添加说明 (二)">
 <meta itemprop="description" content="使用 rancher prometheus operator 开启监控后，外部 exporter 的添加关联工作">
 <meta itemprop="datePublished" content="2021-05-17T10:41:26+08:00" />
 <meta itemprop="dateModified" content="2021-05-17T10:41:26+08:00" />
-<meta itemprop="wordCount" content="1435">
+<meta itemprop="wordCount" content="2612">
 
 
 
 <meta itemprop="keywords" content="rancher,prometheus,operator,k8s,kubekey,exporter," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Rancher 开启监控后的，外部 exporter 的添加说明 (二)"/>
+<meta name="twitter:title" content="Rancher 开启监控后的，内外部 exporter 的添加说明 (二)"/>
 <meta name="twitter:description" content="使用 rancher prometheus operator 开启监控后，外部 exporter 的添加关联工作"/>
 
 <!--[if lte IE 9]>
@@ -136,7 +136,7 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">Rancher 开启监控后的，外部 exporter 的添加说明 (二)</h1>
+      <h1 class="post-title">Rancher 开启监控后的，内外部 exporter 的添加说明 (二)</h1>
 
       <div class="post-meta">
         <span class="post-time"> 2021-05-17 </span>
@@ -145,8 +145,8 @@
             <a href="/categories/k8s/"> k8s </a>
             <a href="/categories/prometheus/"> prometheus </a>
             </div>
-          <span class="more-meta"> 约 1435 字 </span>
-          <span class="more-meta"> 预计阅读 3 分钟 </span>
+          <span class="more-meta"> 约 2612 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
         
       </div>
     </header>
@@ -175,8 +175,16 @@
           </ul>
         </li>
         <li><a href="#win_exporter"><code>win_exporter</code></a></li>
+        <li><a href="#blackbox_exporter"><code>blackbox_exporter</code></a>
+          <ul>
+            <li><a href="#使用-helm-进行安装">使用 helm 进行安装</a></li>
+            <li><a href="#安装后与-prometheus-operator-的集成">安装后与 prometheus operator 的集成</a></li>
+            <li><a href="#检查-prometheus-operator-配置是否有更新">检查 prometheus operator 配置是否有更新</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
+    <li><a href="#总结">总结</a></li>
   </ul>
 </nav>
   </div>
@@ -594,7 +602,474 @@ systemctl <span class="nb">enable</span> php-fpm-exporter  <span class="c1"># �
 <pre class="chroma"><code class="language-bash" data-lang="bash">msiexec /i wmi_exporter-0.7.0-amd64.msi <span class="nv">ENABLED_COLLECTORS</span><span class="o">=</span>cpu,cs,logical_disk,net,os,service,system,textfile,memory,tcp <span class="nv">LISTEN_PORT</span><span class="o">=</span><span class="m">9010</span>  <span class="c1"># 下载软件包后，使用可执行程序注册为服务</span>
 </code></pre></td></tr></table>
 </div>
+</div><h2 id="blackbox_exporter"><code>blackbox_exporter</code></h2>
+<h3 id="使用-helm-进行安装">使用 helm 进行安装</h3>
+<ul>
+<li>
+<p>添加配置 <code>chart</code> 应用仓库</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+  
+helm repo update
+</code></pre></td></tr></table>
 </div>
+</div></li>
+<li>
+<p>初始化 <code>values.yaml</code> 部署文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">helm show values prometheus-community/prometheus-blackbox-exporter &gt; values.yaml <span class="c1"># 将默认配置重定向至文件</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>使用 修改精简化处理后的 <code>values.yaml</code> 部署</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="l">cat &gt; values.yaml &lt;&lt; EOF</span><span class="w">
+</span><span class="w"></span><span class="nt">config</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">modules</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">http_2xx</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">http</span><span class="w">
+</span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
+</span><span class="w">      </span><span class="nt">http</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">basic_auth</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;admin&#34;</span><span class="w">  </span><span class="c"># 配置账号密码 防止 http 探针出现 &#34;401&#34; 状态码，导致不通过</span><span class="w">
+</span><span class="w">          </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;admin&#34;</span><span class="w">
+</span><span class="w">    </span><span class="nt">http_post_2xx</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">http</span><span class="w">
+</span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
+</span><span class="w">      </span><span class="nt">http</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="l">POST</span><span class="w">
+</span><span class="w">        </span><span class="nt">basic_auth</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;admin&#34;</span><span class="w">
+</span><span class="w">          </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;admin&#34;</span><span class="w">
+</span><span class="w">    </span><span class="nt">tcp_connect</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">tcp</span><span class="w">
+</span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
+</span><span class="w">    </span><span class="nt">pop3s_banner</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">tcp</span><span class="w">
+</span><span class="w">      </span><span class="nt">tcp</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">query_response</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;^+OK&#34;</span><span class="w">
+</span><span class="w">        </span><span class="nt">tls</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">        </span><span class="nt">tls_config</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="nt">insecure_skip_verify</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w">    </span><span class="nt">ssh_banner</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">tcp</span><span class="w">
+</span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
+</span><span class="w">      </span><span class="nt">tcp</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">query_response</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;^SSH-2.0-&#34;</span><span class="w">
+</span><span class="w">    </span><span class="nt">smtp_starttls</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">tcp</span><span class="w">
+</span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
+</span><span class="w">      </span><span class="nt">tcp</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">query_response</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;^220 &#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;EHLO prober&#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;^250-STARTTLS&#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;STARTTLS&#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;^220&#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">starttls</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;EHLO prober&#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;^250-AUTH&#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;QUIT&#34;</span><span class="w">
+</span><span class="w">    </span><span class="nt">irc_banner</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">tcp</span><span class="w">
+</span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
+</span><span class="w">      </span><span class="nt">tcp</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">query_response</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;NICK prober&#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;USER prober prober prober :prober&#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;PING :([^ ]+)&#34;</span><span class="w">
+</span><span class="w">          </span><span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;PONG &#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;^:[^ ]+ 001&#34;</span><span class="w">
+</span><span class="w">    </span><span class="nt">icmp_test</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">icmp</span><span class="w">
+</span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
+</span><span class="w">      </span><span class="nt">icmp</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">preferred_ip_protocol</span><span class="p">:</span><span class="w"> </span><span class="l">ip4</span><span class="w">
+</span><span class="w">    </span><span class="nt">dns_test</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">dns</span><span class="w">
+</span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
+</span><span class="w">      </span><span class="nt">dns</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">query_name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;kubernetes.default.svc.cluster.local&#34;</span><span class="w">
+</span><span class="w">        </span><span class="nt">preferred_ip_protocol</span><span class="p">:</span><span class="w"> </span><span class="l">ip4</span><span class="w">
+</span><span class="w">        </span><span class="nt">ip_protocol_fallback</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w">        </span><span class="nt">validate_answer_rrs</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="nt">fail_if_matches_regexp</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="l">test]</span><span class="w">
+</span><span class="w">    </span><span class="nt">http_header_match_origin</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">http</span><span class="w">
+</span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
+</span><span class="w">      </span><span class="nt">http</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="l">GET</span><span class="w">
+</span><span class="w">        </span><span class="nt">headers</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="nt">Origin</span><span class="p">:</span><span class="w"> </span><span class="l">example.com</span><span class="w">
+</span><span class="w">        </span><span class="nt">fail_if_header_not_matches</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span>- <span class="nt">header</span><span class="p">:</span><span class="w"> </span><span class="l">Access-Control-Allow-Origin</span><span class="w">
+</span><span class="w">            </span><span class="nt">regexp</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;(\*|example\.com)&#39;</span><span class="w">
+</span><span class="w">            </span><span class="nt">allow_missing</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w"></span><span class="nt">allowIcmp</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">  </span><span class="c"># 允许使用使用 icmp 协议，默认为 未打开状态</span><span class="w">
+</span><span class="w"></span><span class="l">EOF</span><span class="w">
+</span><span class="w">  
+</span><span class="w"></span><span class="l">kubectl create ns prometheus</span><span class="w">
+</span><span class="w">  
+</span><span class="w"></span><span class="l">helm upgrade --install blackbox -f ./values.yaml prometheus-community/prometheus-blackbox-exporter -n prometheus</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210519091850925.png" alt="image-20210519091850925"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519092102301.png" alt="image-20210519092102301"></p>
+</li>
+</ul>
+<h3 id="安装后与-prometheus-operator-的集成">安装后与 prometheus operator 的集成</h3>
+<blockquote>
+<p>同样与上面 <code>scripts exporter</code> 关联步骤类似，更改 <code>secrets</code> 资源对象</p>
+</blockquote>
+<ul>
+<li></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get secrets prometheus-cluster-monitoring-additional-scrape-configs  -n cattle-prometheus -o yaml<span class="p">|</span> awk -F <span class="s1">&#39;:&#39;</span> <span class="s1">&#39;NR==3{print $2}&#39;</span><span class="p">|</span>tr -d <span class="s1">&#39; &#39;</span><span class="p">|</span>base64 -d &gt; prometheus-cluster-monitoring-additional-scrape-configs.yaml <span class="c1"># 重定向至文件中 进行更改</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>在重定向生成的文件中追加配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span><span class="lnt">91
+</span><span class="lnt">92
+</span><span class="lnt">93
+</span><span class="lnt">94
+</span><span class="lnt">95
+</span><span class="lnt">96
+</span><span class="lnt">97
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat prometheus-cluster-monitoring-additional-scrape-configs.yaml  
+....
+- job_name: <span class="s1">&#39;http-blackbox&#39;</span>
+  metrics_path: /probe
+  params:
+    module: <span class="o">[</span>http_2xx<span class="o">]</span>  <span class="c1">#使用 http 模块</span>
+  static_configs:
+    - targets:
+      - 192.168.8.1
+      labels:  <span class="c1"># 配置标签</span>
+        group: http
+        net: <span class="nb">local</span>
+    - targets:
+      - www.baidu.com
+      labels:
+        group: http
+        net: public
+  relabel_configs:
+  - source_labels: <span class="o">[</span>__address__<span class="o">]</span>
+    target_label: __param_target
+  - source_labels: <span class="o">[</span>__param_target<span class="o">]</span>
+    target_label: instance
+  - target_label: __address__
+    replacement: blackbox-prometheus-blackbox-exporter.prometheus:9115  <span class="c1"># 使用 k8s 内部域名进行通讯</span>
+  
+- job_name: <span class="s1">&#39;icmp-ping&#39;</span>
+  metrics_path: /probe
+  params:
+    module: <span class="o">[</span>icmp_test<span class="o">]</span>
+  static_configs:
+    - targets:
+      - 192.168.8.1
+      labels:
+        dc: <span class="s1">&#39;ancun-local&#39;</span>
+        group: <span class="s1">&#39;icmp&#39;</span>
+        instance: <span class="s1">&#39;icmp-status&#39;</span>
+  relabel_configs:
+  - source_labels: <span class="o">[</span>__address__<span class="o">]</span>
+    regex: <span class="o">(</span>.*<span class="o">)(</span>:80<span class="o">)</span>?
+    target_label: __param_target
+    replacement: <span class="si">${</span><span class="nv">1</span><span class="si">}</span>
+  - source_labels: <span class="o">[</span>__param_target<span class="o">]</span>
+    target_label: instance
+  - source_labels: <span class="o">[</span>__param_target<span class="o">]</span>
+    regex: <span class="o">(</span>.*<span class="o">)</span>
+    target_label: ping
+    replacement: <span class="si">${</span><span class="nv">1</span><span class="si">}</span>
+  - source_labels: <span class="o">[]</span>
+    regex: .*
+    target_label: __address__
+    replacement: blackbox-prometheus-blackbox-exporter.prometheus:9115
+  
+- job_name: <span class="s1">&#39;tcp-port-status&#39;</span>
+  metrics_path: /probe
+  params:
+    module: <span class="o">[</span>tcp_connect<span class="o">]</span>
+  static_configs:
+    - targets:
+      - 192.168.8.1:80
+      - 192.168.8.1:9000
+      labels:
+        group: tcp
+        net: <span class="s1">&#39;local&#39;</span>
+        type: nginx
+    - targets:
+      - 192.168.1.31:32379
+      labels:
+        group: tcp
+        net: <span class="s1">&#39;local&#39;</span>
+        type: <span class="s1">&#39;redis&#39;</span>
+    - targets:
+      - 192.168.1.50:3306
+      - 192.168.1.51:3306
+      - 192.168.1.33:3306
+      - 192.168.1.232:3306
+      labels:
+        group: tcp
+        net: <span class="s1">&#39;local&#39;</span>
+        type: <span class="s1">&#39;mysql&#39;</span>
+  relabel_configs:
+  - source_labels: <span class="o">[</span>__address__<span class="o">]</span>
+    target_label: __param_target 
+  - source_labels: <span class="o">[</span>__address__<span class="o">]</span>
+    regex: <span class="o">(</span>.*<span class="o">)</span>:<span class="o">(</span>.*<span class="o">)</span>
+    target_label: host_ip
+    replacement: <span class="nv">$1</span>
+  - source_labels: <span class="o">[</span>__address__<span class="o">]</span>
+    regex: <span class="o">(</span>.*<span class="o">)</span>:<span class="o">(</span>.*<span class="o">)</span>
+    target_label: host_port
+    replacement: <span class="nv">$2</span>
+  - target_label: __address__
+    replacement: blackbox-prometheus-blackbox-exporter.prometheus:9115
+      
+      
+      
+      
+cat prometheus-cluster-monitoring-additional-scrape-configs.yaml <span class="p">|</span>base64 <span class="p">|</span>tr -d <span class="s1">&#39;\n&#39;</span> <span class="c1"># 对配置文件进行 base 转码</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>进行 <code>secrets</code> 资源对象的更改</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat prometheus-cluster-monitoring-additional-scrape-configs.yaml <span class="p">|</span>base64 <span class="p">|</span>tr -d <span class="s1">&#39;\n&#39;</span> <span class="c1"># 对配置文件进行 base 转码</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210519095529359.png" alt="image-20210519095529359"></p>
+</li>
+</ul>
+<h3 id="检查-prometheus-operator-配置是否有更新">检查 prometheus operator 配置是否有更新</h3>
+<p><img src="https://cdn.treesir.pub/img/image-20210519095713025.png" alt="image-20210519095713025"></p>
+<blockquote>
+<p>可以看到所添加的配置项已 在 dashboard 页面有所展示了</p>
+</blockquote>
+<p><strong>我们在 查询页面输入 <code>probe_success</code>  看看探针执行情况</strong></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519100159941.png" alt="image-20210519100159941"></p>
+<blockquote>
+<p>可以看到可以正常看到探针检查情况，标注的两处探针检查未通过说明:  <code>1</code> 位置，检查未通过是因为 blackbox 配置的 <code>basic_auth</code> 认证密钥不匹配导致，<code>2</code> 位置为 无法访问的局域网，属于正常情况。</p>
+</blockquote>
+<h1 id="总结">总结</h1>
+<blockquote>
+<p>此篇文档主要介绍了外部 exporter 与 rancher 中 <code>monitor</code>  的配置关联工作的另外一种方法，那就是直接更改 <code>secret</code> 资源对象。对比使用 <a href="https://www.treesir.pub/post/rancher-monitor-config-first/#%E6%B7%BB%E5%8A%A0-etcd-%E6%8C%87%E6%A0%87%E5%8F%91%E7%8E%B0">前面</a> 的使用创建的<code>serviceMonitor</code> 资源对象，此方法相较于没有那么优雅，为保证 <code>prometheus  operator</code> 使用理念，如果不是像 <code>scripts exporter</code> &amp; <code>blackbox exporter</code> 这种配置比较繁琐麻烦的使用 <code>serviceMonitor</code>关联难管理的 ，还是 <code>偏向建议</code> 于使用 <code>serviceMonitor</code> 资源对象进行配置关联。</p>
+</blockquote>
+
     </div>
 
     <div class="post-copyright">
@@ -625,9 +1100,13 @@ systemctl <span class="nb">enable</span> php-fpm-exporter  <span class="c1"># �
           <a href="/tags/exporter/">exporter</a>
           </div>
       <nav class="post-nav">
-        
-        <a class="next" href="/post/rancher-monitor-config-third/">
-            <span class="next-text nav-default">Rancher 开启监控后的，阈值告警配置说明 (二)</span>
+        <a class="prev" href="/post/rancher-monitor-config-third/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Rancher 开启监控后的，阈值告警配置说明 (三)</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/rancher-monitor-config-first/">
+            <span class="next-text nav-default">Rancher 开启监控，及生产应用的优化配置工作说明 (一)</span>
             <span class="next-text nav-mobile">下一篇</span>
             <i class="iconfont icon-right"></i>
           </a>
