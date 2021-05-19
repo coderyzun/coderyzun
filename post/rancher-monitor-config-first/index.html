@@ -50,7 +50,7 @@
 <meta itemprop="description" content="使用 rancher prometheus operator 开启监控，并配置常用优化项的说明">
 <meta itemprop="datePublished" content="2021-05-17T10:41:26+08:00" />
 <meta itemprop="dateModified" content="2021-05-17T10:41:26+08:00" />
-<meta itemprop="wordCount" content="3246">
+<meta itemprop="wordCount" content="3281">
 
 
 
@@ -145,7 +145,7 @@
             <a href="/categories/k8s/"> k8s </a>
             <a href="/categories/prometheus/"> prometheus </a>
             </div>
-          <span class="more-meta"> 约 3246 字 </span>
+          <span class="more-meta"> 约 3281 字 </span>
           <span class="more-meta"> 预计阅读 7 分钟 </span>
         
       </div>
@@ -316,7 +316,7 @@ docker-compose logs -f  <span class="c1"># 启动后观察 一下启动日志，
 <h1 id="监控系统优化">监控系统优化</h1>
 <h2 id="更改-service-模式为-nodeport">更改 service 模式为 <code>NodePort</code></h2>
 <blockquote>
-<p>虽然 rancher 对 prometheus operator 做了一层 <code>多租户</code> 的处理，但是 <code>granfana</code> 却并没有做关联 rancher 的多租户处理，<code>个人</code> 感觉不是很好用，使用起来也有点有点鸡肋。这里演示配置将 service 更改为 <code>NodePort</code> 模式。</p>
+<p>虽然 rancher 对 prometheus operator 做了一层 <code>多租户</code> 的处理，但是 <code>granfana</code> 却并没有做关联 rancher 的多租户处理， grafana 默认 U/P <code>admin/admin</code>。<code>个人</code> 觉得监控系统的多租户不是很好用，使用起来也有点有点鸡肋。这里演示配置将 service 更改为 <code>NodePort</code> 模式，绕过 rancher 多租户进行使用。</p>
 </blockquote>
 <p><strong>查看 目前 service 资源对象</strong></p>
 <div class="highlight"><div class="chroma">
@@ -1538,7 +1538,7 @@ service etcd restart <span class="c1"># 重启服务生效</span>
       <nav class="post-nav">
         <a class="prev" href="/post/rancher-monitor-config-second/">
             <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">Rancher 开启监控后的，内外部 exporter 的添加说明 (二)</span>
+            <span class="prev-text nav-default">Rancher 开启监控后的，内外部 exporter/metrics 的添加说明 (二)</span>
             <span class="prev-text nav-mobile">上一篇</span>
           </a>
         <a class="next" href="/post/maven-release-plugin/">
