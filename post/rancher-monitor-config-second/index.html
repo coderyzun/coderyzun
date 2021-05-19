@@ -50,7 +50,7 @@
 <meta itemprop="description" content="使用 rancher prometheus operator 开启监控后，外部 exporter 的添加关联工作">
 <meta itemprop="datePublished" content="2021-05-17T10:41:26+08:00" />
 <meta itemprop="dateModified" content="2021-05-17T10:41:26+08:00" />
-<meta itemprop="wordCount" content="3126">
+<meta itemprop="wordCount" content="3127">
 
 
 
@@ -145,7 +145,7 @@
             <a href="/categories/k8s/"> k8s </a>
             <a href="/categories/prometheus/"> prometheus </a>
             </div>
-          <span class="more-meta"> 约 3126 字 </span>
+          <span class="more-meta"> 约 3127 字 </span>
           <span class="more-meta"> 预计阅读 7 分钟 </span>
         
       </div>
@@ -186,9 +186,9 @@
           <ul>
             <li><a href="#helm-安装-traefik并配置开启-metrcis">helm 安装 traefik，并配置开启 <code>metrcis</code></a></li>
             <li><a href="#创建-serviceminitor-资源配置关联-operator">创建 <code>serviceMinitor</code> 资源配置关联 operator</a></li>
+            <li><a href="#配置-grafana-dashboard">配置 grafana dashboard</a></li>
           </ul>
         </li>
-        <li><a href="#配置-grafana-dashboard">配置 grafana dashboard</a></li>
       </ul>
     </li>
     <li><a href="#总结">总结</a></li>
@@ -835,17 +835,17 @@ helm repo update
 <p>同样与上面 <code>scripts exporter</code> 关联步骤类似，更改 <code>secrets</code> 资源对象</p>
 </blockquote>
 <ul>
-<li></li>
-</ul>
+<li>
+<p>重定向至文件中方便进行更改</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get secrets prometheus-cluster-monitoring-additional-scrape-configs  -n cattle-prometheus -o yaml<span class="p">|</span> awk -F <span class="s1">&#39;:&#39;</span> <span class="s1">&#39;NR==3{print $2}&#39;</span><span class="p">|</span>tr -d <span class="s1">&#39; &#39;</span><span class="p">|</span>base64 -d &gt; prometheus-cluster-monitoring-additional-scrape-configs.yaml <span class="c1"># 重定向至文件中 进行更改</span>
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get secrets prometheus-cluster-monitoring-additional-scrape-configs  -n cattle-prometheus -o yaml<span class="p">|</span> awk -F <span class="s1">&#39;:&#39;</span> <span class="s1">&#39;NR==3{print $2}&#39;</span><span class="p">|</span>tr -d <span class="s1">&#39; &#39;</span><span class="p">|</span>base64 -d &gt; prometheus-cluster-monitoring-additional-scrape-configs.yaml
 </code></pre></td></tr></table>
 </div>
-</div><ul>
+</div></li>
 <li>
 <p>在重定向生成的文件中追加配置</p>
 <div class="highlight"><div class="chroma">
@@ -1249,7 +1249,7 @@ kubectl get po -n traefik -o wide<span class="p">|</span>awk <span class="s1">&#
 </div>
 </div><p><img src="https://cdn.treesir.pub/img/image-20210519165145388.png" alt="image-20210519165145388"></p>
 <p><img src="https://cdn.treesir.pub/img/image-20210519165317938.png" alt="image-20210519165317938"></p>
-<h2 id="配置-grafana-dashboard">配置 grafana dashboard</h2>
+<h3 id="配置-grafana-dashboard">配置 grafana dashboard</h3>
 <p>进入system 项目下，点击 <code>服务发现</code>, 点击访问 grafana 的 nodePort 地址</p>
 <p><img src="https://cdn.treesir.pub/img/image-20210519165409341.png" alt="image-20210519165409341"></p>
 <p><img src="https://cdn.treesir.pub/img/image-20210519165514913.png" alt="image-20210519165514913"></p>
