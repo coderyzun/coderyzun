@@ -46,7 +46,7 @@
 <meta property="og:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cdryzun.github.io/" />
-<meta property="og:updated_time" content="2021-05-19T08:41:26+08:00" />
+<meta property="og:updated_time" content="2021-05-23T15:50:31+08:00" />
 <meta itemprop="name" content="「Yang&#39;zun」PlayGround">
 <meta itemprop="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历">
 <meta name="twitter:card" content="summary"/>
@@ -130,6 +130,30 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/helm-k8s-deploy-nexus/">使用 helm 在 Kubernetes 中部署 Nexus 私服</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-05-23 </span>
+      <div class="post-category">
+          <a href="/categories/k8s/"> k8s </a>
+          <a href="/categories/devops/"> devops </a>
+          </div>
+        <span class="more-meta"> 约 479 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      环境说明 helm version: helm version kubernetes: v1.17.9 nexus: 3.29.0 部署 准备 storageClass 非 必要 操作，可以选择手动创建 pvc &amp; pv，如果想部署 nfsStorageClass 的话，请参考早期整理的 文档。此篇文档实战部署步骤中也是基
+    </div>
+    <div class="read-more">
+      <a href="/post/helm-k8s-deploy-nexus/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/rancher-monitor-config-third/">Rancher 开启监控后的，阈值告警配置说明 (三)</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-05-19 </span>
@@ -156,7 +180,7 @@
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/rancher-monitor-config-second/">Rancher 开启监控后的，内外部 exporter/metrics 的添加说明 (二)</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/rancher-monitor-config-second/">Rancher 开启监控后，exporter/metrics 的添加说明 (二)</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-05-17 </span>
       <div class="post-category">
@@ -253,7 +277,7 @@
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/k8s-lxcfs-admissionhook/">K8s 部署 Lxcfs AdmissionHook 准入控制器，实现容器中资源单独可见</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/k8s-lxcfs-admissionhook/">K8s 部署 Lxcfs 准入控制器，实现容器中资源单独可见</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-04-30 </span>
       <div class="post-category">
@@ -293,30 +317,6 @@
     </div>
     <div class="read-more">
       <a href="/post/kubekey-install-k8s/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/git-use-issue/">Git 使用问题的记录</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-04-25 </span>
-      <div class="post-category">
-          <a href="/categories/devops/"> devops </a>
-          <a href="/categories/linux/"> linux </a>
-          </div>
-        <span class="more-meta"> 约 338 字 </span>
-        <span class="more-meta"> 预计阅读 1 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      指定特定仓库拉取代码 1 2 3 4 5 git remote add origin https://github.com/demo/example.git git pull https://repo.csheidou.com/forestry_afterend/prevention_fire_test.git master git branch --set-upstream-to=origin/master git status git pull 更改远程仓库地址 1 2 3 4 5 git remote -v git remote set-url origin https://github.com/demo/example.git git pull origin master --allow-unrelated-histories git push git branch --set-upstream-to=origin/master 清理本地错误的用
-    </div>
-    <div class="read-more">
-      <a href="/post/git-use-issue/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>

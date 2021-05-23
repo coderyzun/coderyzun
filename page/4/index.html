@@ -46,7 +46,7 @@
 <meta property="og:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cdryzun.github.io/" />
-<meta property="og:updated_time" content="2021-05-19T08:41:26+08:00" />
+<meta property="og:updated_time" content="2021-05-23T15:50:31+08:00" />
 <meta itemprop="name" content="「Yang&#39;zun」PlayGround">
 <meta itemprop="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历">
 <meta name="twitter:card" content="summary"/>
@@ -130,7 +130,30 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/intermittent-coredns-hosts/">Coredns 进行解析域名时，某些域名出现间断性无法正常解析问题</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/delete-container-reset/">记录一次，因误删容器导致的容器恢复过程</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-01-14 </span>
+      <div class="post-category">
+          <a href="/categories/docker/"> docker </a>
+          </div>
+        <span class="more-meta"> 约 2094 字 </span>
+        <span class="more-meta"> 预计阅读 5 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      环境说明 因在日常维护过程中升级了docker的版本 ，碰到了一个 docker 的一个 bug, 导致 docker 服务无法正常启动。在恢复 docker 服务的过程中把 /var/lib/docker/containers 下的所有文件给 清空 了
+    </div>
+    <div class="read-more">
+      <a href="/post/delete-container-reset/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/intermittent-coredns-hosts/">Coredns 出现间断性无法正常解析域名问题</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-01-07 </span>
       <div class="post-category">
@@ -248,7 +271,7 @@
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/flannel-exclusion-records/">kubernetes集群中 controller-manager 及 scheduler 组件频繁发生重启的一次排查解决</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/flannel-exclusion-records/">kubernetes 集群中 控制平面 组件频繁发生重启的问题排查记录</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2020-12-18 </span>
       <div class="post-category">
@@ -277,8 +300,8 @@
       <div class="post-category">
           <a href="/categories/devops/"> devops </a>
           </div>
-        <span class="more-meta"> 约 795 字 </span>
-        <span class="more-meta"> 预计阅读 2 分钟 </span>
+        <span class="more-meta"> 约 1021 字 </span>
+        <span class="more-meta"> 预计阅读 3 分钟 </span>
     </div>
   </header>
   
@@ -288,29 +311,6 @@
     </div>
     <div class="read-more">
       <a href="/post/docker-deploy-ldap/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/docker-quickstart-redis/">Docker Quickstart Redis Server</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-11-30 </span>
-      <div class="post-category">
-          <a href="/categories/docker/"> docker </a>
-          </div>
-        <span class="more-meta"> 约 192 字 </span>
-        <span class="more-meta"> 预计阅读 1 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      环境说明: 系统镜像: Redis:5.x （示例容器为: redis:5.0.4 ） 操作系统: Centos Docker 版本: 19.03.8 具体实现步骤 操作系统简单优化 1 2 3 4 5 6 echo &#39;vm.overcommit_memory=1 net.core.somaxconn=65535&#39; &gt;&gt; /etc/sysctl.conf sysctl -p echo never &gt; /sys/kernel/mm/transparent_hugepage/enable 下载容器 1 docker pull redis:5.0.4
-    </div>
-    <div class="read-more">
-      <a href="/post/docker-quickstart-redis/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>

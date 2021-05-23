@@ -50,7 +50,7 @@
 <meta itemprop="description" content="Centos使用Docker部署Devops必备利器-OpenLdap">
 <meta itemprop="datePublished" content="2020-12-18T16:24:43+08:00" />
 <meta itemprop="dateModified" content="2020-12-18T16:24:43+08:00" />
-<meta itemprop="wordCount" content="795">
+<meta itemprop="wordCount" content="1021">
 
 
 
@@ -143,8 +143,8 @@
         <div class="post-category">
             <a href="/categories/devops/"> devops </a>
             </div>
-          <span class="more-meta"> 约 795 字 </span>
-          <span class="more-meta"> 预计阅读 2 分钟 </span>
+          <span class="more-meta"> 约 1021 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
         
       </div>
     </header>
@@ -165,7 +165,6 @@
         </li>
       </ul>
     </li>
-    <li><a href="#自助-修改密码服务-搭建"><code>自助</code> 修改密码服务 搭建</a></li>
     <li><a href="#openldap-目录结构的初始化">openLdap 目录结构的初始化</a>
       <ul>
         <li><a href="#创建-users-ou-组">创建 <code>users</code> ou 组</a></li>
@@ -174,10 +173,17 @@
         <li><a href="#创建-group-组对象并将-用户拉入这个组中">创建 <code>group</code> 组对象，并将 用户拉入这个组中</a></li>
       </ul>
     </li>
-    <li><a href="#服务关联">服务关联</a>
+    <li><a href="#openldap-优化">openLdap 优化</a>
+      <ul>
+        <li><a href="#自助-修改密码服务-搭建"><code>自助</code> 修改密码服务 搭建</a></li>
+        <li><a href="#使用脚本定期备份-ldap-数据">使用脚本定期备份 ldap 数据</a></li>
+      </ul>
+    </li>
+    <li><a href="#配置服务关联列表">配置服务关联列表</a>
       <ul>
         <li><a href="#jenkins">Jenkins</a></li>
         <li><a href="#gitlab">Gitlab</a></li>
+        <li><a href="#rancher">Rancher</a></li>
       </ul>
     </li>
   </ul>
@@ -275,7 +281,51 @@
 <pre class="chroma"><code class="language-bash" data-lang="bash">docker-compose up -d
 </code></pre></td></tr></table>
 </div>
-</div><h1 id="自助-修改密码服务-搭建"><code>自助</code> 修改密码服务 搭建</h1>
+</div><h1 id="openldap-目录结构的初始化">openLdap 目录结构的初始化</h1>
+<blockquote>
+<p><strong>下面演示的的目录结构的创建，不一定适用于你们的环境，更具实际使用情况调整即可。</strong></p>
+</blockquote>
+<h2 id="创建-users-ou-组">创建 <code>users</code> ou 组</h2>
+<p><img src="https://cdn.treesir.pub/img/image-20210304153242949.png" alt="image-20210304153242949"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304153317510.png" alt="image-20210304153317510"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304153335150.png" alt="image-20210304153335150"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304153345469.png" alt="image-20210304153345469"></p>
+<h2 id="创建-groups-ou-组">创建 <code>groups</code> ou 组</h2>
+<blockquote>
+<p>与 <code>上面</code>  创建 users ou 组一样的</p>
+</blockquote>
+<p>此时我们得到两个 ou组了，在接着创建 <code>user</code> &amp; <code>group</code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304153525116.png" alt="image-20210304153525116"></p>
+<h2 id="创建-user-用户对象">创建 <code>user</code> 用户对象</h2>
+<p><img src="https://cdn.treesir.pub/img/image-20210304154011218.png" alt="image-20210304154011218"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304154024308.png" alt="image-20210304154024308"></p>
+<blockquote>
+<p>选择创建 <code>defuault</code> 对象，这样的 <code>好处</code> 是我们可以自定义字段，<code>将无用的字段进行排除</code> 只保留有效的字段。。</p>
+</blockquote>
+<p>找到 <code>inetOrgPerson</code> , 点击 <code>Proceed</code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304154458948.png" alt="image-20210304154458948"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304155017955.png" alt="image-20210304155017955"></p>
+<blockquote>
+<p>创建完成后选择提交，如果提交 <code>没有任何响应</code>,将最上面的对象设置为 <code>cn</code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304155216888.png" alt="image-20210304155216888"></p>
+</blockquote>
+<h2 id="创建-group-组对象并将-用户拉入这个组中">创建 <code>group</code> 组对象，并将 用户拉入这个组中</h2>
+<p><img src="https://cdn.treesir.pub/img/image-20210304155549187.png" alt="image-20210304155549187"></p>
+<p>和上面一样，创建 <code>default</code> 对象</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304154024308.png" alt="image-20210304154024308"></p>
+<p>找到 <code>groupOfUniqueNames</code> 点击创建</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304155840895.png" alt="image-20210304155840895"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304160001868.png" alt="image-20210304160001868"></p>
+<p>复制用户的信息，粘贴至 <code>uniqueMember</code> 中</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304160137645.png" alt="image-20210304160137645"></p>
+<blockquote>
+<p><strong>其他字段留空</strong>，点击并提交。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210304160222401.png" alt=""></p>
+<p><strong>如需添加其他用户至这个组</strong></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210304160550296.png" alt="image-20210304160550296"></p>
+<h1 id="openldap-优化">openLdap 优化</h1>
+<h2 id="自助-修改密码服务-搭建"><code>自助</code> 修改密码服务 搭建</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -338,54 +388,108 @@ firewall-cmd --zone<span class="o">=</span>public --add-port<span class="o">=</s
 <p><code>config.inc.php</code> 配置文件为最基础配置，比如你需要配置 <code>邮件通知</code> 及 <code>密码的安全级别</code>等高级功能请参考详细 <a href="https://ltb-project.org/documentation"><code>文档</code></a> 。</p>
 </blockquote>
 <p><img src="https://cdn.treesir.pub/img/image-20210304152035767.png" alt="image-20210304152035767"></p>
-<h1 id="openldap-目录结构的初始化">openLdap 目录结构的初始化</h1>
+<h2 id="使用脚本定期备份-ldap-数据">使用脚本定期备份 ldap 数据</h2>
+<p>脚本如下所示:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="c1">##########################################################</span>
+<span class="c1"># Author        : Yang&#39;Zun</span>
+<span class="c1"># Email         : amoaloas@gmail.com</span>
+<span class="c1"># Last modified : 2020-12-21 10:38:27</span>
+<span class="c1"># Description   : openLdap backupup</span>
+<span class="c1"># License: Attribution-NonCommercial 4.0 International</span>
+<span class="c1">###########################################################</span>
+  
+<span class="nv">PATH</span><span class="o">=</span>/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
+<span class="nb">export</span> PATH
+<span class="nv">BACKPATH</span><span class="o">=</span>/data/rsyncd-backup/openldap
+<span class="nv">KEEPVERSION</span><span class="o">=</span><span class="m">30</span>
+<span class="k">function</span> BACK<span class="o">()</span> <span class="o">{</span>
+        ldapsearch -x -D <span class="s2">&#34;cn=admin,dc=treesir,dc=pub&#34;</span> -w <span class="s1">&#39;123456&#39;</span> -b <span class="s1">&#39;dc=treesir,dc=pub&#39;</span> -LLL -H ldap://192.168.8.1 &gt; <span class="s2">&#34;</span><span class="si">${</span><span class="nv">BACKPATH</span><span class="si">}</span><span class="s2">&#34;</span>/<span class="sb">`</span>date +<span class="s2">&#34;%Y%m%d&#34;</span><span class="sb">`</span>.ldif
+<span class="o">}</span>
+
+<span class="k">function</span> CLEAR<span class="o">()</span> <span class="o">{</span>
+        <span class="nv">NUB</span><span class="o">=</span><span class="sb">`</span>ls <span class="s2">&#34;</span><span class="nv">$BACKPATH</span><span class="s2">&#34;</span><span class="p">|</span>wc -l<span class="sb">`</span>
+        <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$NUB</span><span class="s2">&#34;</span> -gt <span class="s2">&#34;</span><span class="nv">$KEEPVERSION</span><span class="s2">&#34;</span> <span class="o">]</span>
+        <span class="k">then</span>
+                <span class="nv">KEEP</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$NUB</span><span class="s2"> - </span><span class="nv">$KEEPVERSION</span><span class="s2">&#34;</span><span class="p">|</span>bc<span class="sb">`</span>
+                <span class="k">for</span> DEL in <span class="sb">`</span>ls <span class="s2">&#34;</span><span class="nv">$BACKPATH</span><span class="s2">&#34;</span><span class="p">|</span>sort -nr 2&gt;<span class="p">&amp;</span>1<span class="p">|</span>tail -n <span class="s2">&#34;</span><span class="nv">$KEEP</span><span class="s2">&#34;</span><span class="sb">`</span> 
+                <span class="k">do</span>
+                        rm -rf  <span class="s2">&#34;</span><span class="nv">$BACKPATH</span><span class="s2">&#34;</span>/<span class="s2">&#34;</span><span class="nv">$DEL</span><span class="s2">&#34;</span>
+                <span class="k">done</span>
+        <span class="k">fi</span>
+<span class="o">}</span>
+
+
+<span class="k">function</span> main<span class="o">()</span> <span class="o">{</span>
+        BACK
+        CLEAR
+<span class="o">}</span>
+main
+</code></pre></td></tr></table>
+</div>
+</div><p>配合 cron 进行定期执行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">0</span> <span class="m">0</span> * * 1-5 bash /data/scripts/openldap-backup.sh &gt;/dev/null 2&gt;<span class="p">&amp;</span><span class="m">1</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>数据恢复还原</p>
 <blockquote>
-<p><strong>下面演示的的目录结构的创建，不一定适用于你们的环境，更具实际使用情况调整即可。</strong></p>
+<p><code>数据恢复</code> 此处省略，请此篇 <a href="https://www.ilanni.com/?p=14065">文档</a></p>
 </blockquote>
-<h2 id="创建-users-ou-组">创建 <code>users</code> ou 组</h2>
-<p><img src="https://cdn.treesir.pub/img/image-20210304153242949.png" alt="image-20210304153242949"></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210304153317510.png" alt="image-20210304153317510"></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210304153335150.png" alt="image-20210304153335150"></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210304153345469.png" alt="image-20210304153345469"></p>
-<h2 id="创建-groups-ou-组">创建 <code>groups</code> ou 组</h2>
-<blockquote>
-<p>与 <code>上面</code>  创建 users ou 组一样的</p>
-</blockquote>
-<p>此时我们得到两个 ou组了，在接着创建 <code>user</code> &amp; <code>group</code></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210304153525116.png" alt="image-20210304153525116"></p>
-<h2 id="创建-user-用户对象">创建 <code>user</code> 用户对象</h2>
-<p><img src="https://cdn.treesir.pub/img/image-20210304154011218.png" alt="image-20210304154011218"></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210304154024308.png" alt="image-20210304154024308"></p>
-<blockquote>
-<p>选择创建 <code>defuault</code> 对象，这样的 <code>好处</code> 是我们可以自定义字段，<code>将无用的字段进行排除</code> 只保留有效的字段。。</p>
-</blockquote>
-<p>找到 <code>inetOrgPerson</code> , 点击 <code>Proceed</code></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210304154458948.png" alt="image-20210304154458948"></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210304155017955.png" alt="image-20210304155017955"></p>
-<blockquote>
-<p>创建完成后选择提交，如果提交 <code>没有任何响应</code>,将最上面的对象设置为 <code>cn</code></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210304155216888.png" alt="image-20210304155216888"></p>
-</blockquote>
-<h2 id="创建-group-组对象并将-用户拉入这个组中">创建 <code>group</code> 组对象，并将 用户拉入这个组中</h2>
-<p><img src="https://cdn.treesir.pub/img/image-20210304155549187.png" alt="image-20210304155549187"></p>
-<p>和上面一样，创建 <code>default</code> 对象</p>
-<p><img src="https://cdn.treesir.pub/img/image-20210304154024308.png" alt="image-20210304154024308"></p>
-<p>找到 <code>groupOfUniqueNames</code> 点击创建</p>
-<p><img src="https://cdn.treesir.pub/img/image-20210304155840895.png" alt="image-20210304155840895"></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210304160001868.png" alt="image-20210304160001868"></p>
-<p>复制用户的信息，粘贴至 <code>uniqueMember</code> 中</p>
-<p><img src="https://cdn.treesir.pub/img/image-20210304160137645.png" alt="image-20210304160137645"></p>
-<blockquote>
-<p><strong>其他字段留空</strong>，点击并提交。</p>
-</blockquote>
-<p><img src="https://cdn.treesir.pub/img/image-20210304160222401.png" alt=""></p>
-<p><strong>如需添加其他用户至这个组</strong></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210304160550296.png" alt="image-20210304160550296"></p>
-<h1 id="服务关联">服务关联</h1>
+<h1 id="配置服务关联列表">配置服务关联列表</h1>
 <h2 id="jenkins">Jenkins</h2>
-<p>参考 <a href="https://www.treesir.pub/post/jenkins-install/#%E5%85%B3%E8%81%94-openldap">配置链接</a></p>
+<blockquote>
+<p>jenkins 配置关联，在此篇 <a href="https://www.treesir.pub/post/jenkins-install/#%E5%85%B3%E8%81%94-openldap">文档</a> 中已有配置说明。</p>
+</blockquote>
 <h2 id="gitlab">Gitlab</h2>
-<p>Gitlab <code>gitlab.rb</code> 配置文, 添加配置</p>
+<blockquote>
+<p>编辑 Gitlab 对应配置文件 <code>gitlab.rb</code> ，在最后面添加如下配置列即可</p>
+</blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -436,7 +540,7 @@ gitlab_rails<span class="o">[</span><span class="s1">&#39;ldap_servers&#39;</spa
 </span><span class="s">EOS</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>修改完成后，需要重载 <code>Gitlab</code> 配置文件, 否则不会生效</p>
+</div><p><code>修改完成后，需要重载 </code> Gitlab 使其配置文件生效, <code>不执行将导致不会生效</code>。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -449,7 +553,8 @@ gitlab_rails<span class="o">[</span><span class="s1">&#39;ldap_servers&#39;</spa
 gitlab-ctl restart  <span class="c1"># 重载配置 后 重启服务器生效</span>
 </code></pre></td></tr></table>
 </div>
-</div>
+</div><h2 id="rancher">Rancher</h2>
+
     </div>
 
     <div class="post-copyright">
@@ -478,7 +583,7 @@ gitlab-ctl restart  <span class="c1"># 重载配置 后 重启服务器生效</s
       <nav class="post-nav">
         <a class="prev" href="/post/flannel-exclusion-records/">
             <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">kubernetes集群中 controller-manager 及 scheduler 组件频繁发生重启的一次排查解决</span>
+            <span class="prev-text nav-default">kubernetes 集群中 控制平面 组件频繁发生重启的问题排查记录</span>
             <span class="prev-text nav-mobile">上一篇</span>
           </a>
         <a class="next" href="/post/docker-quickstart-redis/">

@@ -8,7 +8,7 @@
     <language>en-us</language>
     <lastBuildDate>Fri, 30 Apr 2021 14:10:31 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/lxcfs/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>K8s 部署 Lxcfs AdmissionHook 准入控制器，实现容器中资源单独可见</title>
+      <title>K8s 部署 Lxcfs 准入控制器，实现容器中资源单独可见</title>
       <link>https://cdryzun.github.io/post/k8s-lxcfs-admissionhook/</link>
       <pubDate>Fri, 30 Apr 2021 14:10:31 +0800</pubDate>
       
