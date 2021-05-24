@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>使用 helm 在 Kubernetes 中部署 Nexus 私服 - 「Yang&#39;zun」PlayGround</title>
+  <title>使用 Helm 部署 Spinnaker 持续部署(CD)平台 - 「Yang&#39;zun」PlayGround</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用 helm 在 Kubernetes 中部署 Nexus 私服" /><meta name="keywords" content="helm, devops, nexus, 私服, nexus, maven, docker, nfsStorageClass" />
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用 helm 快速部署 Spinnaker 持续部署(CD)平台" /><meta name="keywords" content="spinnaker, helm, ci-cd, devops, k8s, kubernetes" />
 
 
 
@@ -26,7 +26,7 @@
 <meta name="generator" content="Hugo 0.78.2 with theme even" />
 
 
-<link rel="canonical" href="https://cdryzun.github.io/post/helm-k8s-deploy-nexus/" />
+<link rel="canonical" href="https://cdryzun.github.io/post/spinnaker-helm-installd/" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -40,24 +40,24 @@
 <link rel="stylesheet" href="/css/custom.css">
 
 
-<meta property="og:title" content="使用 helm 在 Kubernetes 中部署 Nexus 私服" />
-<meta property="og:description" content="使用 helm 在 Kubernetes 中部署 Nexus 私服" />
+<meta property="og:title" content="使用 Helm 部署 Spinnaker 持续部署(CD)平台" />
+<meta property="og:description" content="使用 helm 快速部署 Spinnaker 持续部署(CD)平台" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://cdryzun.github.io/post/helm-k8s-deploy-nexus/" />
-<meta property="article:published_time" content="2021-05-23T15:50:31+08:00" />
-<meta property="article:modified_time" content="2021-05-23T15:50:31+08:00" />
-<meta itemprop="name" content="使用 helm 在 Kubernetes 中部署 Nexus 私服">
-<meta itemprop="description" content="使用 helm 在 Kubernetes 中部署 Nexus 私服">
-<meta itemprop="datePublished" content="2021-05-23T15:50:31+08:00" />
-<meta itemprop="dateModified" content="2021-05-23T15:50:31+08:00" />
-<meta itemprop="wordCount" content="479">
+<meta property="og:url" content="https://cdryzun.github.io/post/spinnaker-helm-installd/" />
+<meta property="article:published_time" content="2021-05-24T16:33:49+08:00" />
+<meta property="article:modified_time" content="2021-05-24T16:33:49+08:00" />
+<meta itemprop="name" content="使用 Helm 部署 Spinnaker 持续部署(CD)平台">
+<meta itemprop="description" content="使用 helm 快速部署 Spinnaker 持续部署(CD)平台">
+<meta itemprop="datePublished" content="2021-05-24T16:33:49+08:00" />
+<meta itemprop="dateModified" content="2021-05-24T16:33:49+08:00" />
+<meta itemprop="wordCount" content="304">
 
 
 
-<meta itemprop="keywords" content="helm,nexus," />
+<meta itemprop="keywords" content="helm,spinnaker,ci-cd," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="使用 helm 在 Kubernetes 中部署 Nexus 私服"/>
-<meta name="twitter:description" content="使用 helm 在 Kubernetes 中部署 Nexus 私服"/>
+<meta name="twitter:title" content="使用 Helm 部署 Spinnaker 持续部署(CD)平台"/>
+<meta name="twitter:description" content="使用 helm 快速部署 Spinnaker 持续部署(CD)平台"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -136,15 +136,15 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">使用 helm 在 Kubernetes 中部署 Nexus 私服</h1>
+      <h1 class="post-title">使用 Helm 部署 Spinnaker 持续部署(CD)平台</h1>
 
       <div class="post-meta">
-        <span class="post-time"> 2021-05-23 </span>
+        <span class="post-time"> 2021-05-24 </span>
         <div class="post-category">
-            <a href="/categories/k8s/"> k8s </a>
             <a href="/categories/devops/"> devops </a>
+            <a href="/categories/k8s/"> k8s </a>
             </div>
-          <span class="more-meta"> 约 479 字 </span>
+          <span class="more-meta"> 约 304 字 </span>
           <span class="more-meta"> 预计阅读 1 分钟 </span>
         
       </div>
@@ -156,20 +156,7 @@
     <nav id="TableOfContents">
   <ul>
     <li><a href="#环境说明">环境说明</a></li>
-    <li><a href="#部署">部署</a>
-      <ul>
-        <li><a href="#准备-storageclass">准备 storageClass</a></li>
-        <li><a href="#使用-helm-进行安装">使用 <code>helm</code> 进行安装</a>
-          <ul>
-            <li><a href="#添加-helm-仓库">添加 helm 仓库</a></li>
-            <li><a href="#设置部署-valuesyaml-配置文件">设置部署 <code>values.yaml</code> 配置文件</a></li>
-            <li><a href="#创建部署应用">创建部署应用</a></li>
-          </ul>
-        </li>
-        <li><a href="#使用-traefik-将其暴露">使用 traefik 将其暴露</a></li>
-      </ul>
-    </li>
-    <li><a href="#done">Done</a></li>
+    <li><a href="#使用-helm-部署">使用 <code>helm</code> 部署</a></li>
   </ul>
 </nav>
   </div>
@@ -177,42 +164,61 @@
     <div class="post-content">
       <h1 id="环境说明">环境说明</h1>
 <ul>
-<li>helm version: <code>helm version</code></li>
-<li>kubernetes: <code>v1.17.9</code></li>
-<li>nexus: <code>3.29.0</code></li>
-</ul>
-<h1 id="部署">部署</h1>
-<h2 id="准备-storageclass">准备 storageClass</h2>
+<li>
+<p>Kubernetes Version: <code>v1.17.9</code></p>
+</li>
+<li>
+<p>操作系统: <code>CentOS 7.8.2003 </code></p>
+</li>
+<li>
+<p>Helm Version: <code>v3.2.1</code></p>
+</li>
+<li>
+<p>Spinnaker Version: <code>1.26.3</code></p>
 <blockquote>
-<p>非 <code>必要</code> 操作，可以选择手动创建 pvc &amp; pv，如果想部署 <code>nfsStorageClass</code> 的话，请参考早期整理的 <a href="https://www.treesir.pub/post/k8s-nfs-strage-class/">文档</a>。此篇文档实战部署步骤中也是基于 <code>nfsStorageClass </code> 进行实现。如果是用于 <code>生产环境</code> 的话，还是建议使用 ssd 或 iops 较高的 <code>磁盘</code> 作为数据盘 <code>pv</code> 进行绑定。</p>
+<p><a href="https://spinnaker.io/community/releases/versions/">spinnaker 版本说明</a></p>
 </blockquote>
-<h2 id="使用-helm-进行安装">使用 <code>helm</code> 进行安装</h2>
-<h3 id="添加-helm-仓库">添加 helm 仓库</h3>
+</li>
+</ul>
+<h1 id="使用-helm-部署">使用 <code>helm</code> 部署</h1>
+<blockquote>
+<p><code>注意</code> 示例演示环境使用 <code>openwrt</code> 进行扶墙处理；在使用 helm 部署前，首先需要确认你的梯子够不够稳，如果不稳的话建议使用的是手动部署。</p>
+</blockquote>
+<p><strong>helm 添加仓库</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">helm repo add stable https //charts.helm.sh/stable
+<pre class="chroma"><code class="language-bash" data-lang="bash">helm repo add stable https://charts.helm.sh/stable
 
 helm repo update
+
+helm search repo spinnaker
+NAME                    CHART VERSION   APP VERSION     DESCRIPTION                                       
+stable/spinnaker        2.2.6           1.16.2          DEPRECATED - Open source, multi-cloud continuou...
 </code></pre></td></tr></table>
 </div>
-</div><h3 id="设置部署-valuesyaml-配置文件">设置部署 <code>values.yaml</code> 配置文件</h3>
+</div><p><strong>创建 <code>values.yaml</code> 部署文件</strong></p>
 <blockquote>
-<p>可以执行下面命令进行查看 <code>默认</code> 模板部署文件，或点击此 <a href="https://github.com/helm/charts/blob/master/stable/sonatype-nexus/values.yaml">链接</a> 查看。</p>
+<p>示例部署使用了 <code>Nfs storageClass</code> 作为 pvc &amp; pv 的管理。生产环境不太建议。</p>
+<p>原 helm <code>values.yaml</code> 部署文件可以使用此 <a href="https://github.com/helm/charts/blob/master/stable/spinnaker/values.yaml">链接</a> 查看，或 使用下面命令进行打印输出。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">helm show values stable/sonatype-nexus
+<pre class="chroma"><code class="language-bash" data-lang="bash"> helm show values stable/spinnaker
 </code></pre></td></tr></table>
 </div>
 </div></blockquote>
-<p><strong>修改后，完整 values.yaml 文件展示</strong></p>
+<p><code>修改完成后的 prod-values.yaml 文件查看</code></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -246,128 +252,55 @@ helm repo update
 </span><span class="lnt">29
 </span><span class="lnt">30
 </span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">cat &gt; prod-values.yaml <span class="s">&lt;&lt; EOF
-</span><span class="s">statefulset:  # 使用 statefulset 进行部署
+</span><span class="s">halyard:
+</span><span class="s">  spinnakerVersion: 1.26.3
+</span><span class="s">  image:
+</span><span class="s">    repository: gcr.io/spinnaker-marketplace/halyard
+</span><span class="s">    tag: 1.32.0
+</span><span class="s">  persistence:
+</span><span class="s">    enabled: true
+</span><span class="s">    storageClass: nfs-retain
+</span><span class="s">
+</span><span class="s">minio:
 </span><span class="s">  enabled: true
+</span><span class="s">  image:
+</span><span class="s">    tag: RELEASE.2020-01-03T19-12-21Z
+</span><span class="s">  service:
+</span><span class="s">    type: ClusterIP
+</span><span class="s">  accessKey: admin
+</span><span class="s">  secretKey: spinnaker
+</span><span class="s">  persistence:
+</span><span class="s">    enabled: true
+</span><span class="s">    storageClass: &#34;nfs-retain&#34;
 </span><span class="s">
-</span><span class="s">nexus:
-</span><span class="s">  imageName: sonatype/nexus3
-</span><span class="s">  imageTag: 3.29.0
-</span><span class="s">  imagePullPolicy: IfNotPresent
-</span><span class="s">  env:
-</span><span class="s">    - name: install4jAddVmParams
-</span><span class="s">      value: &#34;-Xms1200M -Xmx1200M -XX:MaxDirectMemorySize=2G -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap&#34;
-</span><span class="s">    - name: NEXUS_SECURITY_RANDOMPASSWORD
-</span><span class="s">      value: &#34;false&#34;
-</span><span class="s">    - name: TZ
-</span><span class="s">      value: &#34;Asia/Shanghai&#34;
-</span><span class="s">  resources: 
-</span><span class="s">    limits:
-</span><span class="s">     cpu: 4
-</span><span class="s">     memory: 8192Mi
-</span><span class="s">    requests:
-</span><span class="s">     cpu: 250m
-</span><span class="s">     memory: 4800Mi
-</span><span class="s">
-</span><span class="s">persistence:
+</span><span class="s">redis:
 </span><span class="s">  enabled: true
-</span><span class="s">  storageClass: &#34;nfs-retain&#34;
-</span><span class="s">  storageSize: &#34;100Gi&#34;
-</span><span class="s">
-</span><span class="s">service:
-</span><span class="s">  name: nexus-service
-</span><span class="s">  enabled: true
-</span><span class="s">  serviceType: NodePort
-</span><span class="s">  ports:
-</span><span class="s">  - name: manage   # 此处为 service 对应暴露的端口， 如需暴露其他端口时，向下进行添加即可。
-</span><span class="s">    targetPort: 8081
-</span><span class="s">    port: 8081
-</span><span class="s">#  - name: docker-dev   # docker 私服
-</span><span class="s">#    targetPort: 8082
-</span><span class="s">#    port: 8082
-</span><span class="s">
-</span><span class="s">nexusProxy:
-</span><span class="s">  enabled: false
+</span><span class="s">  password: spinnaker
+</span><span class="s">  master:
+</span><span class="s">    persistence:
+</span><span class="s">      storageClass: nfs-retain
+</span><span class="s">  cluster:
+</span><span class="s">    enabled: false
 </span><span class="s">EOF</span>
 </code></pre></td></tr></table>
 </div>
-</div><h3 id="创建部署应用">创建部署应用</h3>
-<div class="highlight"><div class="chroma">
+</div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl create ns nexus
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl create ns spinnaker
 
-helm upgrade --install nexus  -f ./prod-values.yaml  -n nexus stable/sonatype-nexus <span class="c1"># 部署安装</span>
+helm upgrade --install spinnaker -f ./prod-values.yaml -n spinnaker stable/spinnaker
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://cdn.treesir.pub/img/image-20210523162416847.png" alt="image-20210523162416847"></p>
-<h2 id="使用-traefik-将其暴露">使用 traefik 将其暴露</h2>
-<blockquote>
-<p>traefik 部署安装使用，请参考 <a href="https://www.treesir.pub/post/ingress-traefik/">此篇文档</a></p>
-</blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">cat nexus-ingressroute.yaml 
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: nexus-mirror
-  namespace: nexus
-spec:
-  entryPoints:
-    - web
-  routes:
-  - match: Host<span class="o">(</span><span class="sb">`</span>mirror.treesir.pub<span class="sb">`</span><span class="o">)</span> <span class="o">&amp;&amp;</span> PathPrefix<span class="o">(</span><span class="sb">`</span>/<span class="sb">`</span><span class="o">)</span>
-    kind: Rule
-    services:
-    - name: nexus-service
-      port: <span class="m">8081</span>
-
-kubectl apply -f ./nexus-ingressroute.yaml 
-</code></pre></td></tr></table>
-</div>
-</div><p><img src="https://cdn.treesir.pub/img/image-20210523162902742.png" alt="image-20210523162902742"></p>
-<h1 id="done">Done</h1>
-<blockquote>
-<p>nexus 其他高级使用说明，请参考 <a href="https://www.treesir.pub/post/docker-deploy-nexus3-upgrade/">此篇文档</a></p>
-</blockquote>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210524180800720.png" alt="image-20210524180800720"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210524180818188.png" alt="image-20210524180818188"></p>
 
     </div>
 
@@ -379,7 +312,7 @@ kubectl apply -f ./nexus-ingressroute.yaml
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
     <span class="item-content">
-        2021-05-23
+        2021-05-24
         
     </span>
   </p>
@@ -392,16 +325,13 @@ kubectl apply -f ./nexus-ingressroute.yaml
 <footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/helm/">helm</a>
-          <a href="/tags/nexus/">nexus</a>
+          <a href="/tags/spinnaker/">spinnaker</a>
+          <a href="/tags/ci-cd/">ci-cd</a>
           </div>
       <nav class="post-nav">
-        <a class="prev" href="/post/spinnaker-helm-installd/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">使用 Helm 部署 Spinnaker 持续部署(CD)平台</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        <a class="next" href="/post/rancher-monitor-config-third/">
-            <span class="next-text nav-default">Rancher 开启监控后的，阈值告警配置说明 (三)</span>
+        
+        <a class="next" href="/post/helm-k8s-deploy-nexus/">
+            <span class="next-text nav-default">使用 helm 在 Kubernetes 中部署 Nexus 私服</span>
             <span class="next-text nav-mobile">下一篇</span>
             <i class="iconfont icon-right"></i>
           </a>
