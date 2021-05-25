@@ -164,7 +164,12 @@
         <li><a href="#创建-localpv-pvc-资源对象">创建 localPv <code>pvc</code> 资源对象</a></li>
       </ul>
     </li>
-    <li><a href="#helm-部署对应资源">helm 部署对应资源</a></li>
+    <li><a href="#helm-部署对应资源">helm 部署对应资源</a>
+      <ul>
+        <li><a href="#创建-prod-valuesyaml-部署文件">创建 prod-values.yaml 部署文件</a></li>
+        <li><a href="#执行应用的部署">执行应用的部署</a></li>
+      </ul>
+    </li>
     <li><a href="#安装后的测试">安装后的测试</a>
       <ul>
         <li><a href="#测试主程复制">测试主程复制</a></li>
@@ -532,7 +537,7 @@ persistentvolumeclaim/mariadb-secondary-pvc-local created
 </div>
 </div><p><img src="https://cdn.treesir.pub/img/image-20210525142754841.png" alt="image-20210525142754841"></p>
 <h1 id="helm-部署对应资源">helm 部署对应资源</h1>
-<p><strong>创建 prod-values.yaml 部署文件</strong></p>
+<h2 id="创建-prod-valuesyaml-部署文件">创建 prod-values.yaml 部署文件</h2>
 <blockquote>
 <p>可以使用如下命令进行查看默认的 <code>values.yaml </code> 配置文件</p>
 <div class="highlight"><div class="chroma">
@@ -864,7 +869,7 @@ persistentvolumeclaim/mariadb-secondary-pvc-local created
 </span><span class="s">EOF</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><strong>执行应用的部署</strong></p>
+</div><h2 id="执行应用的部署">执行应用的部署</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
