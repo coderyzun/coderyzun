@@ -46,7 +46,7 @@
 <meta property="og:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cdryzun.github.io/" />
-<meta property="og:updated_time" content="2021-05-24T16:33:49+08:00" />
+<meta property="og:updated_time" content="2021-05-25T11:33:17+08:00" />
 <meta itemprop="name" content="「Yang&#39;zun」PlayGround">
 <meta itemprop="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历">
 <meta name="twitter:card" content="summary"/>
@@ -130,6 +130,29 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/helm-k8s-deploy-mariadb/">使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-05-25 </span>
+      <div class="post-category">
+          <a href="/categories/k8s/"> k8s </a>
+          </div>
+        <span class="more-meta"> 约 1829 字 </span>
+        <span class="more-meta"> 预计阅读 4 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      环境说明 helm version: v3.3.1 kubernetes: v1.17.9 使用 helm chart: bitnami/mariadb 操作系统: CentOS 7.8.2003 helm 部署 mariadb 前的准备 添加 helm 私服 1 2 3 4 5 6 helm repo add bitnami https://charts.bitnami.com/bitnami helm repo update # 更新仓库索引 helm search repo mariadb bitnami/mariadb 9.3.12 10.5.10 Fast, reliable, scalable, and easy to use open-...
+    </div>
+    <div class="read-more">
+      <a href="/post/helm-k8s-deploy-mariadb/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/spinnaker-helm-installd/">使用 Helm 部署 Spinnaker 持续部署(CD)平台</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-05-24 </span>
@@ -161,14 +184,14 @@
           <a href="/categories/k8s/"> k8s </a>
           <a href="/categories/devops/"> devops </a>
           </div>
-        <span class="more-meta"> 约 479 字 </span>
+        <span class="more-meta"> 约 478 字 </span>
         <span class="more-meta"> 预计阅读 1 分钟 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      环境说明 helm version: helm version kubernetes: v1.17.9 nexus: 3.29.0 部署 准备 storageClass 非 必要 操作，可以选择手动创建 pvc &amp; pv，如果想部署 nfsStorageClass 的话，请参考早期整理的 文档。此篇文档实战部署步骤中也是基
+      环境说明 helm version: v3.3.1 kubernetes: v1.17.9 nexus: 3.29.0 部署 准备 storageClass 非 必要 操作，可以选择手动创建 pvc &amp; pv，如果想部署 nfsStorageClass 的话，请参考早期整理的 文档。此篇文档实战部署步骤中也是基于
     </div>
     <div class="read-more">
       <a href="/post/helm-k8s-deploy-nexus/" class="read-more-link">阅读更多</a>
@@ -295,29 +318,6 @@
     </div>
     <div class="read-more">
       <a href="/post/ocserv-vpn-install/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/k8s-lxcfs-admissionhook/">K8s 部署 Lxcfs 准入控制器，实现容器中资源单独可见</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-04-30 </span>
-      <div class="post-category">
-          <a href="/categories/k8s/"> k8s </a>
-          </div>
-        <span class="more-meta"> 约 1715 字 </span>
-        <span class="more-meta"> 预计阅读 4 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      环境说明 kubernetes version: v1.17.9 (kubeadm) os: 7.8.2003 (Core) kubernetes dashboard: rancher v2.4.15 概述 docker 使用 linux 内核中的 cgroup 实现了对 容器使用资源的限制，默认容器启动后依旧挂载了宿主机的 /proc 目录，其中包涵了，memi
-    </div>
-    <div class="read-more">
-      <a href="/post/k8s-lxcfs-admissionhook/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>
