@@ -50,7 +50,7 @@
 <meta itemprop="description" content="使用 Helm 和 localPV 在 K8s 中部署 Mariadb 主程复制集群">
 <meta itemprop="datePublished" content="2021-05-25T11:33:17+08:00" />
 <meta itemprop="dateModified" content="2021-05-25T11:33:17+08:00" />
-<meta itemprop="wordCount" content="1829">
+<meta itemprop="wordCount" content="1941">
 
 
 
@@ -143,7 +143,7 @@
         <div class="post-category">
             <a href="/categories/k8s/"> k8s </a>
             </div>
-          <span class="more-meta"> 约 1829 字 </span>
+          <span class="more-meta"> 约 1941 字 </span>
           <span class="more-meta"> 预计阅读 4 分钟 </span>
         
       </div>
@@ -168,6 +168,7 @@
       <ul>
         <li><a href="#创建-prod-valuesyaml-部署文件">创建 prod-values.yaml 部署文件</a></li>
         <li><a href="#执行应用的部署">执行应用的部署</a></li>
+        <li><a href="#获取外部连接地址">获取外部连接地址</a></li>
       </ul>
     </li>
     <li><a href="#安装后的测试">安装后的测试</a>
@@ -889,6 +890,27 @@ helm upgrade --install mariadb -f ./prod-values.yaml -n mariadb ./mariadb/
 <p>这里部署后，需要注意一下，在从库中默认是只读的，<code>root 除外</code>。为了进行验证我们可以进入 <code>从库</code> 容器查看一下对应进程的 <code>args</code></p>
 <p><img src="https://cdn.treesir.pub/img/image-20210525153755252.png" alt="image-20210525153755252"></p>
 </blockquote>
+<h2 id="获取外部连接地址">获取外部连接地址</h2>
+<blockquote>
+<p>在 helm 部署文件中，我们把对应 service 资源类型设置为了 <code>NodePort</code>。外部连接的话，只需要获取到对应随机的端口号，组合集群中任意节点ip进行连接即可。</p>
+</blockquote>
+<p><strong>获取 NodePort 端口号</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"> kubectl get svc -n mariadb 
+NAME                TYPE       CLUSTER-IP      EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>          AGE
+mariadb-primary     NodePort   10.101.91.176   &lt;none&gt;        3306:31011/TCP   3h12m
+mariadb-secondary   NodePort   10.97.222.104   &lt;none&gt;        3306:31848/TCP   3h12m
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210525174403044.png" alt="image-20210525174403044"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210525174427113.png" alt="image-20210525174427113"></p>
 <h1 id="安装后的测试">安装后的测试</h1>
 <h2 id="测试主程复制">测试主程复制</h2>
 <blockquote>
