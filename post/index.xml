@@ -6,7 +6,16 @@
     <description>Recent content in Posts on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 25 May 2021 11:33:17 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 26 May 2021 11:29:34 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gocron 实践安装，实现统一定时任务管理平台</title>
+      <link>https://cdryzun.github.io/post/gocron-install/</link>
+      <pubDate>Wed, 26 May 2021 11:29:34 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/gocron-install/</guid>
+      <description>部署环境说明 操作系统: CentOS release 7.8.2003 Gocron Version: v1.5.3 Mysql Version: 5.5 Gocron 说明 gocron 是使用 go 语言开发的轻量级定时任务集中调度和管理系统, 可以用于替代 lnux-crontab。 项</description>
+    </item>
+    
     <item>
       <title>使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群</title>
       <link>https://cdryzun.github.io/post/helm-k8s-deploy-mariadb/</link>
