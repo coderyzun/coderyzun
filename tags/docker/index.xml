@@ -34,5 +34,14 @@
       <description>⚠️ 注意此些操作在Centos7中得到验证且可行，其他发行版本请自己尝试 OS 调优 内核优化 ⚠️ 请更具实践业务场景进行调整，此示例中较适合kube</description>
     </item>
     
+    <item>
+      <title>Docker 部署的 openWrt 软路由, 并解决无法与宿主机通信问题</title>
+      <link>https://cdryzun.github.io/post/n1-docker/</link>
+      <pubDate>Sun, 15 Nov 2020 16:09:10 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/n1-docker/</guid>
+      <description>环境说明 宿主机 IP：192.168.8.102 Docker 内 openWrt macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器网段为: 192.168.8.0/24 docker 使用容器: raymondwong/openwrt_r9:21.2.1-arm64 操作系统: ARMBIAN docker 部署 openWrt</description>
+    </item>
+    
   </channel>
 </rss>

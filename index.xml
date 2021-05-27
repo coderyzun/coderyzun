@@ -6,7 +6,16 @@
     <description>Recent content on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 26 May 2021 11:29:34 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 27 May 2021 08:59:56 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>快速删除 Rancher 中 失败的 pod资源 </title>
+      <link>https://cdryzun.github.io/post/quick-delete-rancher-failed-pod/</link>
+      <pubDate>Thu, 27 May 2021 08:59:56 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/quick-delete-rancher-failed-pod/</guid>
+      <description>在 Rancher 管理的集群中，有的时候会出现对应 副本集 出现 pod 部署失败的情况，比如像下面的图片所示，在多的时候可达上千，又不想手动的去一一点击删除，这里介</description>
+    </item>
+    
     <item>
       <title>Gocron 实践安装，实现统一定时任务管理平台</title>
       <link>https://cdryzun.github.io/post/gocron-install/</link>
@@ -341,7 +350,7 @@
     </item>
     
     <item>
-      <title>Docker 部署多网口软路由</title>
+      <title>Docker 部署多网口 openWrt 软路由</title>
       <link>https://cdryzun.github.io/post/openwrt-docker-multi-net/</link>
       <pubDate>Thu, 19 Nov 2020 17:56:52 +0800</pubDate>
       
@@ -350,12 +359,12 @@
     </item>
     
     <item>
-      <title>斐讯N1 docker部署 openwrt系统的使用记录</title>
+      <title>Docker 部署的 openWrt 软路由, 并解决无法与宿主机通信问题</title>
       <link>https://cdryzun.github.io/post/n1-docker/</link>
       <pubDate>Sun, 15 Nov 2020 16:09:10 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/n1-docker/</guid>
-      <description>openWRT 系统无法与宿主机通信问题解决 参考文档 环境说明 小钢炮宿主机 IP：192.168.8.102 Docker 内 openWRT macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器</description>
+      <description>环境说明 宿主机 IP：192.168.8.102 Docker 内 openWrt macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器网段为: 192.168.8.0/24 docker 使用容器: raymondwong/openwrt_r9:21.2.1-arm64 操作系统: ARMBIAN docker 部署 openWrt</description>
     </item>
     
     <item>

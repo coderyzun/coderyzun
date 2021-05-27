@@ -46,7 +46,7 @@
 <meta property="og:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cdryzun.github.io/" />
-<meta property="og:updated_time" content="2021-05-26T11:29:34+08:00" />
+<meta property="og:updated_time" content="2021-05-27T08:59:56+08:00" />
 <meta itemprop="name" content="「Yang&#39;zun」PlayGround">
 <meta itemprop="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历">
 <meta name="twitter:card" content="summary"/>
@@ -128,6 +128,29 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/gitlab-integration-jira/">Gitlab 和 jira 之间的集成</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-04-09 </span>
+      <div class="post-category">
+          <a href="/categories/devops/"> devops </a>
+          </div>
+        <span class="more-meta"> 约 250 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      环境说明 Gitlab-ce 版本： 13.10.2 Jira 版本：v8.13.4 Jira 获取 工作流结束 id 获取到工作流 结束 id 21 Gitlab 设置全局与 jira 集成 测试效果 找到需要关联 issue id 编辑 文件 commit
+    </div>
+    <div class="read-more">
+      <a href="/post/gitlab-integration-jira/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/gitlab-deploy/">使用 Docker 部署 Gitlab，及常用优化项的说明。</a></h1>
@@ -288,30 +311,6 @@
     </div>
     <div class="read-more">
       <a href="/post/n1-openwrt-k3s-deploy/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/k8s-nfs-strage-class/">在 Kubernetes 中部署 nfs storageClass</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-01-19 </span>
-      <div class="post-category">
-          <a href="/categories/devops/"> devops </a>
-          <a href="/categories/k8s/"> k8s </a>
-          </div>
-        <span class="more-meta"> 约 1098 字 </span>
-        <span class="more-meta"> 预计阅读 3 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      环境说明： helm version: v3.4.2 kubernetes version: v1.19.6 nfs server: 192.168.8.66 sub-net: 192.168.8.0/24 nfs 服务端配置 1 yum install rpcbind nfs-utils -y # 安装 nfs server 创建用户 &amp; 数据目录 1 2 3 4 5 6 7 8 9 groupadd -g 2233 nfs-user useradd nfs-user -M -s /sbin/nologin -u 2233 -g nfs-user id nfs-user mkdir -p /data/nfs.sharedir chown
-    </div>
-    <div class="read-more">
-      <a href="/post/k8s-nfs-strage-class/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>

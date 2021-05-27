@@ -17,7 +17,7 @@
     </item>
     
     <item>
-      <title>Docker 部署多网口软路由</title>
+      <title>Docker 部署多网口 openWrt 软路由</title>
       <link>https://cdryzun.github.io/post/openwrt-docker-multi-net/</link>
       <pubDate>Thu, 19 Nov 2020 17:56:52 +0800</pubDate>
       
@@ -26,12 +26,12 @@
     </item>
     
     <item>
-      <title>斐讯N1 docker部署 openwrt系统的使用记录</title>
+      <title>Docker 部署的 openWrt 软路由, 并解决无法与宿主机通信问题</title>
       <link>https://cdryzun.github.io/post/n1-docker/</link>
       <pubDate>Sun, 15 Nov 2020 16:09:10 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/n1-docker/</guid>
-      <description>openWRT 系统无法与宿主机通信问题解决 参考文档 环境说明 小钢炮宿主机 IP：192.168.8.102 Docker 内 openWRT macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器</description>
+      <description>环境说明 宿主机 IP：192.168.8.102 Docker 内 openWrt macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器网段为: 192.168.8.0/24 docker 使用容器: raymondwong/openwrt_r9:21.2.1-arm64 操作系统: ARMBIAN docker 部署 openWrt</description>
     </item>
     
   </channel>

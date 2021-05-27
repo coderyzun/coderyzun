@@ -16,5 +16,14 @@
       <description>环境说明 操作系统: Centos 7.9.2009 Docker Version: 18.09.9 模拟复现 rancher 安装 1 2 3 4 5 6 7 8 docker pull rancher/rancher:v2.3.5 docker run -d \ --restart=unless-stopped \ --name rancher \ -p 80:80 -p 443:443 \ --privileged \ rancher/rancher:v2.3.5 升级 rancher 示例将 v2.3.5 升级至 v2.5.0 创建备份 1 2 3 4 5 docker</description>
     </item>
     
+    <item>
+      <title>Docker 部署的 openWrt 软路由, 并解决无法与宿主机通信问题</title>
+      <link>https://cdryzun.github.io/post/n1-docker/</link>
+      <pubDate>Sun, 15 Nov 2020 16:09:10 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/n1-docker/</guid>
+      <description>环境说明 宿主机 IP：192.168.8.102 Docker 内 openWrt macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器网段为: 192.168.8.0/24 docker 使用容器: raymondwong/openwrt_r9:21.2.1-arm64 操作系统: ARMBIAN docker 部署 openWrt</description>
+    </item>
+    
   </channel>
 </rss>

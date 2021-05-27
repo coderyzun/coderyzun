@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>斐讯N1 docker部署 openwrt系统的使用记录 - 「Yang&#39;zun」PlayGround</title>
+  <title>Docker 部署的 openWrt 软路由, 并解决无法与宿主机通信问题 - 「Yang&#39;zun」PlayGround</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Yang&#39;zun" /><meta name="description" content="openWRT 系统无法与宿主机通信问题解决 参考文档 环境说明 小钢炮宿主机 IP：192.168.8.102 Docker 内 openWRT macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器" /><meta name="keywords" content="github action, pipeline, gitlab, nexus3, 技术分享, 前端技术, 计算机网络, devops, kubernetes, jenkins, centos, 技术积累, 个人文档, 个人总结, mysql, 运维, 自动化, python, hugo, k3s, kafka, go lang, helm, traefik, kubeadm, rancher, redis, rke, nginx, apache, 网络安全" />
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="Docker 部署的 openWrt 软路由, 并解决无法与宿主机通信问题" /><meta name="keywords" content="软路由, docker, openwrt, fix" />
 
 
 
@@ -40,24 +40,24 @@
 <link rel="stylesheet" href="/css/custom.css">
 
 
-<meta property="og:title" content="斐讯N1 docker部署 openwrt系统的使用记录" />
-<meta property="og:description" content="openWRT 系统无法与宿主机通信问题解决 参考文档 环境说明 小钢炮宿主机 IP：192.168.8.102 Docker 内 openWRT macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器" />
+<meta property="og:title" content="Docker 部署的 openWrt 软路由, 并解决无法与宿主机通信问题" />
+<meta property="og:description" content="Docker 部署的 openWrt 软路由, 并解决无法与宿主机通信问题" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cdryzun.github.io/post/n1-docker/" />
 <meta property="article:published_time" content="2020-11-15T16:09:10+08:00" />
 <meta property="article:modified_time" content="2020-11-15T16:09:10+08:00" />
-<meta itemprop="name" content="斐讯N1 docker部署 openwrt系统的使用记录">
-<meta itemprop="description" content="openWRT 系统无法与宿主机通信问题解决 参考文档 环境说明 小钢炮宿主机 IP：192.168.8.102 Docker 内 openWRT macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器">
+<meta itemprop="name" content="Docker 部署的 openWrt 软路由, 并解决无法与宿主机通信问题">
+<meta itemprop="description" content="Docker 部署的 openWrt 软路由, 并解决无法与宿主机通信问题">
 <meta itemprop="datePublished" content="2020-11-15T16:09:10+08:00" />
 <meta itemprop="dateModified" content="2020-11-15T16:09:10+08:00" />
-<meta itemprop="wordCount" content="638">
+<meta itemprop="wordCount" content="961">
 
 
 
-<meta itemprop="keywords" content="n1," />
+<meta itemprop="keywords" content="n1,docker-compose,docker,," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="斐讯N1 docker部署 openwrt系统的使用记录"/>
-<meta name="twitter:description" content="openWRT 系统无法与宿主机通信问题解决 参考文档 环境说明 小钢炮宿主机 IP：192.168.8.102 Docker 内 openWRT macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器"/>
+<meta name="twitter:title" content="Docker 部署的 openWrt 软路由, 并解决无法与宿主机通信问题"/>
+<meta name="twitter:description" content="Docker 部署的 openWrt 软路由, 并解决无法与宿主机通信问题"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -136,14 +136,15 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">斐讯N1 docker部署 openwrt系统的使用记录</h1>
+      <h1 class="post-title">Docker 部署的 openWrt 软路由, 并解决无法与宿主机通信问题</h1>
 
       <div class="post-meta">
         <span class="post-time"> 2020-11-15 </span>
         <div class="post-category">
+            <a href="/categories/fix/"> fix </a>
             <a href="/categories/openwrt/"> openwrt </a>
             </div>
-          <span class="more-meta"> 约 638 字 </span>
+          <span class="more-meta"> 约 961 字 </span>
           <span class="more-meta"> 预计阅读 2 分钟 </span>
         
       </div>
@@ -154,9 +155,21 @@
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#openwrt-系统无法与宿主机通信问题解决">openWRT 系统无法与宿主机通信问题解决</a>
+    <li>
       <ul>
         <li><a href="#环境说明">环境说明</a></li>
+      </ul>
+    </li>
+    <li><a href="#docker-部署-openwrt-软路由">docker 部署 openWrt 软路由</a>
+      <ul>
+        <li><a href="#安装-dokcer-compose">安装 dokcer-compose</a></li>
+        <li><a href="#创建-docker-compose-部署文件">创建 docker-compose 部署文件</a></li>
+        <li><a href="#docker-启动-openwrt-容器">docker 启动 openwrt 容器</a></li>
+        <li><a href="#更改-openwrt-容器-ip">更改 openWrt 容器 ip</a></li>
+      </ul>
+    </li>
+    <li><a href="#容器与宿主机的通讯修复">容器与宿主机的通讯修复</a>
+      <ul>
         <li><a href="#造成原因及解决方法说明">造成原因及解决方法说明</a></li>
         <li><a href="#具体步骤记录">具体步骤记录</a>
           <ul>
@@ -170,22 +183,156 @@
         </li>
       </ul>
     </li>
+    <li><a href="#参考文档">参考文档</a></li>
   </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      <h1 id="openwrt-系统无法与宿主机通信问题解决">openWRT 系统无法与宿主机通信问题解决</h1>
-<blockquote>
-<p><a href="https://blog.oddbit.com/post/2018-03-12-using-docker-macvlan-networks/">参考文档</a></p>
-</blockquote>
-<h2 id="环境说明">环境说明</h2>
+      <h2 id="环境说明">环境说明</h2>
 <ul>
-<li>小钢炮宿主机 IP：192.168.8.102</li>
-<li>Docker 内 openWRT macvlan ip: 192.168.8.111</li>
+<li>宿主机 IP：192.168.8.102</li>
+<li>Docker 内 openWrt macvlan ip: 192.168.8.111</li>
 <li>主路由网关：192.168.8.1</li>
-<li>机器网段为 192.168.8.0/24</li>
+<li>机器网段为: 192.168.8.0/24</li>
+<li>docker 使用容器: <code>raymondwong/openwrt_r9:21.2.1-arm64</code></li>
+<li>操作系统: <code>ARMBIAN</code></li>
 </ul>
+<h1 id="docker-部署-openwrt-软路由">docker 部署 openWrt 软路由</h1>
+<h2 id="安装-dokcer-compose">安装 dokcer-compose</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">apt install -y docker-compose <span class="c1"># centos 操作系统更改为 yum</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="创建-docker-compose-部署文件">创建 docker-compose 部署文件</h2>
+<blockquote>
+<p>使用 docker 进行对应 dockerhub <a href="https://hub.docker.com/r/raymondwong/openwrt_r9/tags?page=1&amp;ordering=last_updated"><code>地址</code></a></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mkdir -p /data/docker-compose/openwrt/
+
+<span class="nb">cd</span> /data/docker-compose/openwrt/
+
+
+
+ip a  <span class="c1"># 查询对应需要绑定的网卡</span>
+
+
+cat &gt; docker-compose.yaml  <span class="s">&lt;&lt; EOF
+</span><span class="s">version: &#39;2&#39;
+</span><span class="s">
+</span><span class="s">services:
+</span><span class="s">  openwrt:
+</span><span class="s">    image:  raymondwong/openwrt_r9:21.2.1-arm64  # 这里是使用的 arm 架构镜像，如是 x86架构这里需要做一下更改
+</span><span class="s">    container_name: openwrt_r9
+</span><span class="s">    privileged: true
+</span><span class="s">    restart: always
+</span><span class="s">    networks:
+</span><span class="s">      openwrt_macnet:
+</span><span class="s">        ipv4_address: 192.168.8.111
+</span><span class="s">
+</span><span class="s">networks:
+</span><span class="s">  openwrt_macnet:
+</span><span class="s">    driver: macvlan
+</span><span class="s">    driver_opts:
+</span><span class="s">      parent: eth0 # 对应桥接的网卡
+</span><span class="s">    ipam:
+</span><span class="s">      config:
+</span><span class="s">        - subnet: 192.168.8.0/24
+</span><span class="s">          ip_range: 192.168.8.220/25
+</span><span class="s">          gateway: 192.168.8.1
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="docker-启动-openwrt-容器">docker 启动 openwrt 容器</h2>
+<ul>
+<li>
+<p>开启桥接网卡的 混淆模式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">ip link <span class="nb">set</span> eth0 promisc on
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><code>docker-compose</code> 启动容器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker-compose up -d 
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h2 id="更改-openwrt-容器-ip">更改 openWrt 容器 ip</h2>
+<blockquote>
+<p>容器启动后，默认的 ip 地址使用的是 <code>192.168.1.254</code>，与我们局域网网段不在一个段，这里需要去更改一下 ip 地址 和 网关地址。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker <span class="nb">exec</span> -it openwrt_r9 bash -c <span class="s2">&#34;sed -i &#39;s#192.168.1.254#192.168.8.111#g;s#192.168.1.1#192.168.8.1#g&#39; /etc/config/network&#34;</span> <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> docker restart openwrt_r9
+
+docker <span class="nb">exec</span> -it openwrt_r9 bash -c <span class="s2">&#34;ping -c 3 baidu.com&#34;</span>  <span class="c1"># 更改后测试网络是否通畅</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210527102828331.png" alt="image-20210527102828331"></p>
+<blockquote>
+<p>默认 U/P: <code>root:password</code></p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210527103005072.png" alt="image-20210527103005072"></p>
+<h1 id="容器与宿主机的通讯修复">容器与宿主机的通讯修复</h1>
 <h2 id="造成原因及解决方法说明">造成原因及解决方法说明</h2>
 <blockquote>
 <p>    原因是部署 openWRT 系统时使用到了 <code>docker</code> 的 <code>macvlan</code> 模式，这个模式通俗一点讲就是在一张物理网卡上虚拟出两个虚拟网卡，具有不同的MAC地址，可以让宿主机和docker同时接入网络并且使用不同的ip，此时 docker 可以直接和同一网络下的其他设备直接通信，相当的方便，但是这种模式有一个问题，宿主机和容器是没办法直接进行网络通信的，如宿主机ping容器的ip，尽管他们属于同一网段，但是也是ping不通的，反过来也是。因为该模式在设计的时候，为了安全禁止了宿主机与容器的直接通信，不过解决的方法其实也很简单——宿主机虽然没办法直接和容器内的 <code>macvlan</code> 接口通信，但是只要在宿主机上再建立一个 <code>macvlan</code>，然后修改路由，使数据经由该 <code>macvlan</code> 传输到容器内的 <code>macvlan</code> 即可，<code>macvlan</code> 之间是可以互相通信的。</p>
@@ -255,7 +402,8 @@ PING 192.168.8.102 <span class="o">(</span>192.168.8.102<span class="o">)</span>
 </span><span class="s">EOF</span>
 </code></pre></td></tr></table>
 </div>
-</div><h3 id="确保开机自启脚本添加了-可执行--权限">确保开机自启脚本添加了 <code>可执行</code>  权限</h3>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210527103450010.png" alt="image-20210527103450010"></p>
+<h3 id="确保开机自启脚本添加了-可执行--权限">确保开机自启脚本添加了 <code>可执行</code>  权限</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -264,7 +412,9 @@ PING 192.168.8.102 <span class="o">(</span>192.168.8.102<span class="o">)</span>
 <pre class="chroma"><code class="language-shell" data-lang="shell">chmod a+x /etc/rc.local
 </code></pre></td></tr></table>
 </div>
-</div>
+</div><h1 id="参考文档">参考文档</h1>
+<p><a href="https://blog.oddbit.com/post/2018-03-12-using-docker-macvlan-networks/">https://blog.oddbit.com/post/2018-03-12-using-docker-macvlan-networks/</a></p>
+
     </div>
 
     <div class="post-copyright">
@@ -288,11 +438,14 @@ PING 192.168.8.102 <span class="o">(</span>192.168.8.102<span class="o">)</span>
 <footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/n1/">n1</a>
+          <a href="/tags/docker-compose/">docker-compose</a>
+          <a href="/tags/docker/">docker</a>
+          <a href="/tags//"></a>
           </div>
       <nav class="post-nav">
         <a class="prev" href="/post/openwrt-docker-multi-net/">
             <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">Docker 部署多网口软路由</span>
+            <span class="prev-text nav-default">Docker 部署多网口 openWrt 软路由</span>
             <span class="prev-text nav-mobile">上一篇</span>
           </a>
         <a class="next" href="/post/first-kind/">
