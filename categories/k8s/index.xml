@@ -6,7 +6,25 @@
     <description>Recent content in k8s on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 25 May 2021 11:33:17 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/k8s/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Jun 2021 08:45:22 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/k8s/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复</title>
+      <link>https://cdryzun.github.io/post/rancher-import-cluster-fix/</link>
+      <pubDate>Tue, 08 Jun 2021 08:45:22 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/rancher-import-cluster-fix/</guid>
+      <description>环境说明 Kubernetes Version: v1.20.4 (kubekey 部署) 操作系统: CentOS 7.9.2009 Rancher Version: v2.4.15 准备 k8s 模拟环境 此次将使用 kubekey 进行一键部署，kubekey 底层 集群部署 基于 kubeadm， 感兴趣的话，</description>
+    </item>
+    
+    <item>
+      <title>在 Kubernetes 中使用 localPv 部署 Gitlab</title>
+      <link>https://cdryzun.github.io/post/kubernetes-deploy-gitlab/</link>
+      <pubDate>Tue, 01 Jun 2021 10:13:29 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/kubernetes-deploy-gitlab/</guid>
+      <description>环境说明 Kubernetes Version: v1.20.4 Postgres Version: 12.7 Redis Version: 5.0.9 因在官方提供的 gitlab-ce 镜像中，内置了 Postgres &amp;amp; Redis 的安装，在实际生产使用过程中，想让其连接使用外部统一的服务进行使用，来合理统一</description>
+    </item>
+    
     <item>
       <title>使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群</title>
       <link>https://cdryzun.github.io/post/helm-k8s-deploy-mariadb/</link>
@@ -31,7 +49,7 @@
       <pubDate>Sun, 23 May 2021 15:50:31 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/helm-k8s-deploy-nexus/</guid>
-      <description>环境说明 helm version: v3.3.1 kubernetes: v1.17.9 nexus: 3.29.0 部署 准备 storageClass 非 必要 操作，可以选择手动创建 pvc &amp;amp; pv，如果想部署 nfsStorageClass 的话，请参考早期整理的 文档。此篇文档实战部署步骤中也是基于</description>
+      <description>环境说明 helm version: v3.3.1 kubernetes: v1.17.9 nexus: 3.29.0 部署 准备 storageClass 非 必要 操作，可以选择手动创建 pvc &amp;amp; pv，如果想部署 nfsStorageClass 的话，请参考早期整理的 文档。此篇文档实战部署步骤中基于 nfsStorageClass 进</description>
     </item>
     
     <item>

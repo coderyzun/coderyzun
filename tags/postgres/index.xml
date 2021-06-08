@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>postgres on 「Yang&#39;zun」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/postgres/</link>
+    <description>Recent content in postgres on 「Yang&#39;zun」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 01 Jun 2021 10:13:29 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/postgres/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在 Kubernetes 中使用 localPv 部署 Gitlab</title>
+      <link>https://cdryzun.github.io/post/kubernetes-deploy-gitlab/</link>
+      <pubDate>Tue, 01 Jun 2021 10:13:29 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/kubernetes-deploy-gitlab/</guid>
+      <description>环境说明 Kubernetes Version: v1.20.4 Postgres Version: 12.7 Redis Version: 5.0.9 因在官方提供的 gitlab-ce 镜像中，内置了 Postgres &amp;amp; Redis 的安装，在实际生产使用过程中，想让其连接使用外部统一的服务进行使用，来合理统一</description>
+    </item>
+    
+  </channel>
+</rss>

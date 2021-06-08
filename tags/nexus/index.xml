@@ -13,7 +13,7 @@
       <pubDate>Sun, 23 May 2021 15:50:31 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/helm-k8s-deploy-nexus/</guid>
-      <description>环境说明 helm version: v3.3.1 kubernetes: v1.17.9 nexus: 3.29.0 部署 准备 storageClass 非 必要 操作，可以选择手动创建 pvc &amp;amp; pv，如果想部署 nfsStorageClass 的话，请参考早期整理的 文档。此篇文档实战部署步骤中也是基于</description>
+      <description>环境说明 helm version: v3.3.1 kubernetes: v1.17.9 nexus: 3.29.0 部署 准备 storageClass 非 必要 操作，可以选择手动创建 pvc &amp;amp; pv，如果想部署 nfsStorageClass 的话，请参考早期整理的 文档。此篇文档实战部署步骤中基于 nfsStorageClass 进</description>
     </item>
     
   </channel>

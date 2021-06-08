@@ -6,7 +6,16 @@
     <description>Recent content in kubekey on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 19 May 2021 08:41:26 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/kubekey/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 08 Jun 2021 08:45:22 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/kubekey/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复</title>
+      <link>https://cdryzun.github.io/post/rancher-import-cluster-fix/</link>
+      <pubDate>Tue, 08 Jun 2021 08:45:22 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/rancher-import-cluster-fix/</guid>
+      <description>环境说明 Kubernetes Version: v1.20.4 (kubekey 部署) 操作系统: CentOS 7.9.2009 Rancher Version: v2.4.15 准备 k8s 模拟环境 此次将使用 kubekey 进行一键部署，kubekey 底层 集群部署 基于 kubeadm， 感兴趣的话，</description>
+    </item>
+    
     <item>
       <title>Rancher 开启监控后的，阈值告警配置说明 (三)</title>
       <link>https://cdryzun.github.io/post/rancher-monitor-config-third/</link>

@@ -50,7 +50,7 @@
 <meta itemprop="description" content="使用 helm 快速部署 Spinnaker 持续部署(CD)平台">
 <meta itemprop="datePublished" content="2021-05-24T16:33:49+08:00" />
 <meta itemprop="dateModified" content="2021-05-24T16:33:49+08:00" />
-<meta itemprop="wordCount" content="304">
+<meta itemprop="wordCount" content="2848">
 
 
 
@@ -144,8 +144,8 @@
             <a href="/categories/devops/"> devops </a>
             <a href="/categories/k8s/"> k8s </a>
             </div>
-          <span class="more-meta"> 约 304 字 </span>
-          <span class="more-meta"> 预计阅读 1 分钟 </span>
+          <span class="more-meta"> 约 2848 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
         
       </div>
     </header>
@@ -157,6 +157,33 @@
   <ul>
     <li><a href="#环境说明">环境说明</a></li>
     <li><a href="#使用-helm-部署">使用 <code>helm</code> 部署</a></li>
+    <li><a href="#使用-traefik-暴露前端页面">使用 <code>traefik</code> 暴露前端页面</a>
+      <ul>
+        <li><a href="#配置管理-openldap">配置管理 openLdap</a></li>
+        <li><a href="#备份">备份</a></li>
+      </ul>
+    </li>
+    <li><a href="#删除部署"><strong>删除部署</strong></a></li>
+    <li><a href="#授权管理">授权管理</a>
+      <ul>
+        <li><a href="#授权根据ldap组进行同步">授权(根据LDAP组进行同步)</a></li>
+        <li><a href="#使用-关联-openldap-命令方式">使用 关联 openLdap 命令方式</a></li>
+        <li><a href="#使用-yaml-方式">使用 yaml 方式</a></li>
+        <li><a href="#认证授权服务组件-fiat-使用-traefik-进行暴露">认证授权服务组件 <code>fiat</code> 使用 traefik 进行暴露</a></li>
+        <li><a href="#授权管理-1">授权管理</a></li>
+        <li><a href="#使用-yaml-定义角色和用户">使用 <code>yaml</code> 定义角色和用户</a></li>
+        <li><a href="#关联-jenkins">关联 jenkins</a></li>
+      </ul>
+    </li>
+    <li><a href="#消息通知之邮件通知">消息通知之邮件通知</a></li>
+    <li><a href="#更改时区">更改时区</a></li>
+    <li><a href="#开启制品空间">开启制品空间</a></li>
+    <li><a href="#开启特征功能">开启特征功能</a></li>
+    <li><a href="#开启对-pipeline-的权限管理">开启对 pipeline 的权限管理</a></li>
+    <li><a href="#添加-k8s-集群">添加 k8s 集群</a></li>
+    <li><a href="#添加-dokcer-镜像仓库">添加 dokcer 镜像仓库</a></li>
+    <li><a href="#helm-部署-spinnaker-添加-集群">helm 部署 spinnaker 添加 集群</a></li>
+    <li><a href="#手动启动-halyard">手动启动 halyard</a></li>
   </ul>
 </nav>
   </div>
@@ -301,7 +328,1192 @@ helm upgrade --install spinnaker -f ./prod-values.yaml -n spinnaker stable/spinn
 </div>
 </div><p><img src="https://cdn.treesir.pub/img/image-20210524180800720.png" alt="image-20210524180800720"></p>
 <p><img src="https://cdn.treesir.pub/img/image-20210524180818188.png" alt="image-20210524180818188"></p>
+<h1 id="使用-traefik-暴露前端页面">使用 <code>traefik</code> 暴露前端页面</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat <span class="s">&lt;&lt;EOF | kubectl apply -f -
+</span><span class="s">apiVersion: traefik.containo.us/v1alpha1
+</span><span class="s">kind: IngressRoute
+</span><span class="s">metadata:
+</span><span class="s">  name: spin-deck
+</span><span class="s">  namespace: spinnaker
+</span><span class="s">spec:
+</span><span class="s">  entryPoints:
+</span><span class="s">    - web
+</span><span class="s">  routes:
+</span><span class="s">  - match: Host(\`spinnaker.treesir.pub\`) &amp;&amp; PathPrefix(\`/\`)
+</span><span class="s">    kind: Rule
+</span><span class="s">    services:
+</span><span class="s">    - name: spin-deck 
+</span><span class="s">      port: 9000 
+</span><span class="s">EOF</span>
 
+
+
+cat <span class="s">&lt;&lt;EOF | kubectl apply -f -
+</span><span class="s">apiVersion: traefik.containo.us/v1alpha1
+</span><span class="s">kind: IngressRoute
+</span><span class="s">metadata:
+</span><span class="s">  name: spin-gate
+</span><span class="s">  namespace: spinnaker
+</span><span class="s">spec:
+</span><span class="s">  entryPoints:
+</span><span class="s">    - web
+</span><span class="s">  routes:
+</span><span class="s">  - match: Host(\`spin-gate.treesir.pub\`) &amp;&amp; PathPrefix(\`/\`)
+</span><span class="s">    kind: Rule
+</span><span class="s">    services:
+</span><span class="s">    - name: spin-gate
+</span><span class="s">      port: 8084
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>添加 host 记录</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sudo vi /etc/hosts
+192.168.8.30 spinnaker.treesir.pub <span class="c1"># 解析至对应 ip</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210527114020178.png" alt="image-20210527114020178"></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">## 设置deck与gate的域名</span>
+
+kubectl <span class="nb">exec</span> -it spinnaker-spinnaker-halyard-0 bash -n spinnaker 
+
+
+hal config security ui edit --override-base-url http://spinnaker.treesir.pub
+hal config security api edit --override-base-url http://spin-gate.treesir.pub
+
+hal deploy apply <span class="c1"># 应用应用生效</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="配置管理-openldap">配置管理 openLdap</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl <span class="nb">exec</span> -it spinnaker-spinnaker-halyard-0 bash -n spinnaker 
+
+
+
+hal config security authn ldap edit <span class="se">\
+</span><span class="se"></span>  --user-search-base <span class="s1">&#39;ou=users,dc=treesir,dc=pub&#39;</span> <span class="se">\
+</span><span class="se"></span>  --url <span class="s1">&#39;ldap://192.168.8.1:389&#39;</span> <span class="se">\
+</span><span class="se"></span>  --user-search-filter <span class="s1">&#39;cn={0}&#39;</span> <span class="se">\
+</span><span class="se"></span>  --manager-dn <span class="s1">&#39;cn=admin,dc=treesir,dc=pub&#39;</span> <span class="se">\
+</span><span class="se"></span>  --manager-password <span class="s1">&#39;123456&#39;</span>
+
+ 
+hal config security authn ldap <span class="nb">enable</span>
+
+
+
+hal deploy apply <span class="c1"># 执行生效</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210527142033759.png" alt="image-20210527142033759"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210527142050080.png" alt="image-20210527142050080"></p>
+<h2 id="备份">备份</h2>
+<ul>
+<li>
+<p>创建备份</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">hal backup create
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210527142308354.png" alt="image-20210527142308354"></p>
+</li>
+<li>
+<p>恢复备份</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">hal backup restore --backup-path /home/spinnaker/halyard-xxxx.tar
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h1 id="删除部署"><strong>删除部署</strong></h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">hal deploy clean
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>请注意，此命令将破坏目标部署环境中的所有 Spinnaker 组件。因此，请谨慎使用它并备份您的配置，以防您要还原它。</p>
+<p>删除 Spinnaker 后，通过运行下面命令删除 halyard，下面命令在 helm 部署的集群中 <code>不适应</code> ，在 <code>helm</code> 中 可以直接执行 <code>helm delete xx</code> 进行删除</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sudo ~/.hal/uninstall.sh  
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h1 id="授权管理">授权管理</h1>
+<blockquote>
+<p><code>Fiat</code> 组件是 Spinnaker 的授权（authz）微服务。它可以授予用户执行管道，查看基础结构等访问权限。默认情况下处于禁用状态。与身份验证非常相似，Spinnaker 允许使用各种可插入的授权机制。使用 Fiat 主要可以实现如下功能：</p>
+<ul>
+<li>
+<p>限制对特定的clouddriver account 访问。（读、写）</p>
+</li>
+<li>
+<p>限制对特定的APP 应用程序访问。（读、写、执行）</p>
+</li>
+<li>
+<p>使用触发器对访问控制的程序运行管道。</p>
+</li>
+<li>
+<p>支持角色提供者中定期更新用户角色。</p>
+</li>
+<li>
+<p>当资源没有 定义允许谁访问资源时，就被认为是不受限制的。</p>
+</li>
+<li>
+<p>如果集群账户不受限制，则任何用户都可以使用该帐户部署新应用程序。</p>
+</li>
+<li>
+<p>如果应用程序不受限制，则任何用户都可以将该应用程序部署到其他帐户中。还能看到服务器组内的基本信息，例如实例名称。</p>
+</li>
+<li>
+<p>Spinnaker中的每个权限可以赋予角色，而不能是哪一个用户。</p>
+</li>
+<li>
+<p>一个帐户下可以包含多个应用程序，而应用程序也可以跨越多个帐户。</p>
+</li>
+<li>
+<p>授予对帐户的访问权不会同时授予对应用程序的访问权，反之亦然。</p>
+</li>
+</ul>
+</blockquote>
+<p>Spinnaker支持： YamlFile、GitHubTeams、GoogleGroups、LDAPGroups、SAMLGroups。</p>
+<ul>
+<li>
+<p>YamlFile： 使用yaml文件描述用户与角色的绑定。</p>
+</li>
+<li>
+<p>LDAPGroups：将用户与其在LDAP中所属组绑定</p>
+</li>
+</ul>
+<h2 id="授权根据ldap组进行同步">授权(根据LDAP组进行同步)</h2>
+<p><img src="https://cdn.treesir.pub/img/image-20210527143430060.png" alt="image-20210527143430060"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210527150049089.png" alt="image-20210527150049089"></p>
+<h2 id="使用-关联-openldap-命令方式">使用 关联 openLdap 命令方式</h2>
+<blockquote>
+<p>与下面 <code>yaml</code> 方式部署 二选一</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">hal config security authz ldap edit <span class="se">\
+</span><span class="se"></span>	--url <span class="s1">&#39;ldap://192.168.8.1:389/dc=treesir,dc=pub&#39;</span> <span class="se">\
+</span><span class="se"></span>	--manager-dn <span class="s1">&#39;cn=admin,dc=treesir,dc=pub&#39;</span> <span class="se">\
+</span><span class="se"></span>	--manager-password <span class="s1">&#39;123456&#39;</span> <span class="se">\
+</span><span class="se"></span>	--user-dn-pattern <span class="s1">&#39;cn={0}&#39;</span> <span class="se">\
+</span><span class="se"></span>	--group-search-base <span class="s1">&#39;ou=groups&#39;</span> <span class="se">\
+</span><span class="se"></span>	--group-search-filter <span class="s1">&#39;uniqueMember={0}&#39;</span> <span class="se">\
+</span><span class="se"></span>	--group-role-attributes <span class="s1">&#39;cn&#39;</span> <span class="se">\
+</span><span class="se"></span>	--user-search-filter <span class="s1">&#39;cn={0}&#39;</span>
+         
+hal config security authz edit --type ldap
+hal config security authz <span class="nb">enable</span>
+
+cat ~/.hal/config  <span class="c1"># 检查对应配置文件</span>
+...
+    authz:
+      groupMembership:
+        service: LDAP
+        google:
+          roleProviderType: GOOGLE
+        github:
+          roleProviderType: GITHUB
+        file:
+          roleProviderType: FILE
+        ldap:
+          roleProviderType: LDAP
+          url: ldap://192.168.8.1:389/dc<span class="o">=</span>treesir,dc<span class="o">=</span>pub
+          managerDn: <span class="nv">cn</span><span class="o">=</span>admin,dc<span class="o">=</span>treesir,dc<span class="o">=</span>pub
+          managerPassword: <span class="s1">&#39;123456&#39;</span>
+          userDnPattern: <span class="nv">cn</span><span class="o">={</span>0<span class="o">}</span>
+          groupSearchBase: <span class="nv">ou</span><span class="o">=</span>groups
+          userSearchFilter: <span class="nv">cn</span><span class="o">={</span>0<span class="o">}</span>
+          groupSearchFilter: <span class="nv">uniqueMember</span><span class="o">={</span>0<span class="o">}</span>
+          groupRoleAttributes: cn
+      enabled: <span class="nb">true</span>
+...
+     
+hal deploy apply <span class="c1"># 执行生效</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>生效后，可以选择使用下面的 traefik 对 认证授权组件暴露出来，或者是使用内部ip进行访问</p>
+</blockquote>
+<p><strong>测试是否有生效</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">curl -X POST http://spin-fiat.treesir.pub/roles/sync
+
+curl http://spin-fiat.treesir.pub/authorize/userid 2&gt;<span class="p">&amp;</span>1<span class="p">|</span>grep -A <span class="m">10</span> roles
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><code>userid</code> 对应用户需要在 前端页面进行登录，不然会提示接口 <code>404</code></p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210527154236830.png" alt="image-20210527154236830"></p>
+<h2 id="使用-yaml-方式">使用 yaml 方式</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#使用Yaml文件</span>
+hal config security authz <span class="nb">enable</span> 
+hal config security authz file edit --file-path<span class="o">=</span><span class="nv">$HOME</span>/userrole.yaml 
+hal config security authz edit --type file
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="认证授权服务组件-fiat-使用-traefik-进行暴露">认证授权服务组件 <code>fiat</code> 使用 traefik 进行暴露</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat <span class="s">&lt;&lt;EOF | kubectl apply -f -
+</span><span class="s">apiVersion: traefik.containo.us/v1alpha1
+</span><span class="s">kind: IngressRoute
+</span><span class="s">metadata:
+</span><span class="s">  name: spin-fiat
+</span><span class="s">  namespace: spinnaker
+</span><span class="s">spec:
+</span><span class="s">  entryPoints:
+</span><span class="s">    - web
+</span><span class="s">  routes:
+</span><span class="s">  - match: Host(\`spin-fiat.treesir.pub\`) &amp;&amp; PathPrefix(\`/\`)
+</span><span class="s">    kind: Rule
+</span><span class="s">    services:
+</span><span class="s">    - name: spin-fiat
+</span><span class="s">      port: 7003
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="授权管理-1">授权管理</h2>
+<blockquote>
+<p>现在我们有两个组，设置 ops 组只读，devops 组可以读写</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210527154823275.png" alt="image-20210527154823275"></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl <span class="nb">exec</span> -it spinnaker-spinnaker-halyard-0 bash -n spinnaker
+
+hal config provider kubernetes account edit default <span class="se">\
+</span><span class="se"></span>--add-read-permission devops,ops <span class="se">\
+</span><span class="se"></span>--add-write-permission devops
+
+<span class="c1"># 下面这两个可以指定删除权限</span>
+--remove-read-permission
+--remove-write-permission
+
+
+cat ~/.hal/config  <span class="c1"># 检查配置文件</span>
+...
+    kubernetes:
+      enabled: <span class="nb">true</span>
+      accounts:
+      - name: default
+        requiredGroupMembership: <span class="o">[]</span>
+        providerVersion: V2
+        permissions:
+          READ:
+          - devops
+          WRITE:
+          - devops
+...
+
+hal deploy apply <span class="c1"># 执行生效</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="使用-yaml-定义角色和用户">使用 <code>yaml</code> 定义角色和用户</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">1.首先先关闭LDAP权限。 
+hal config security authz disable 
+
+
+vi <span class="nv">$HOME</span>/userrole.yml 
+users:
+ - username: yangzun
+   roles:
+   - devops
+   - bar
+   - foo
+ - username: <span class="nb">test</span>
+   roles:
+   - <span class="nb">test</span>
+   - bar
+ - username: anonymous
+   roles: <span class="o">[]</span>
+
+2.配置Yaml文件
+hal config security authz <span class="nb">enable</span> 
+hal config security authz file edit --file-path<span class="o">=</span><span class="nv">$HOME</span>/userrole.yml
+hal config security authz edit --type file
+
+
+cat ~/.hal/config
+...
+    authz:            
+      groupMembership:
+        service: FILE
+        google:   
+          roleProviderType: GOOGLE
+        github:    
+          roleProviderType: GITHUB
+        file:  
+          roleProviderType: FILE
+          path: /home/spinnaker/userrole.yml
+      enabled: <span class="nb">true</span> 
+...
+
+hal deploy apply <span class="c1"># 执行生效</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>创建管理员权限</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">vi ~/.hal/default/profiles/fiat-local.yml
+fiat:
+  admin:
+    roles:
+      - devops-admin <span class="c1"># 将此组 添加管理员权限</span>
+      
+vi <span class="nv">$HOME</span>/userrole.yml  <span class="c1"># 用户添加进组</span>
+users:
+ - username: yangzun
+   roles:
+   - devops
+   - bar
+   - foo
+   - devops-admin  <span class="c1"># 设置使用刚添加的权限</span>
+...
+      
+      
+hal deploy apply
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="关联-jenkins">关联 jenkins</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl <span class="nb">exec</span> -it spinnaker-spinnaker-halyard-0 bash -n spinnaker
+
+hal config ci jenkins <span class="nb">enable</span>
+
+hal config ci jenkins master add jenkins-master <span class="se">\
+</span><span class="se"></span>    --address http://ci.treesir.pub <span class="se">\
+</span><span class="se"></span>    --username yangzun <span class="se">\
+</span><span class="se"></span>    --password 117a723c9b729b2256e3ffc40c3d2b2156
+
+<span class="c1">## 启用csrf</span>
+hal config ci jenkins master edit jenkins-master --csrf <span class="nb">true</span>
+
+cat ~/.hal/config 
+...
+  ci:
+    jenkins:
+      enabled: <span class="nb">true</span>
+      masters:
+      - name: jenkins-master
+        permissions: <span class="o">{}</span>
+        address: http://ci.treesir.pub
+        username: yangzun
+        password: 117a723c9b729b2256e3ffc40c3d2b2156
+        csrf: <span class="nb">true</span>
+...
+
+hal deploy apply  <span class="c1"># 应用并生效</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>在 Jenkins 中安装Strict Crumb Issuer插件</strong></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210528101554481.png" alt="image-20210528101554481"></p>
+<p>全局安全设置中 开启对应参数</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210528105304316.png" alt="image-20210528105304316"></p>
+<p>测试；在 spinnaker 中 新建 jenkins 类型触发 ，查看是否可以看到对应 jenkins 中的 pipeline</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210528105846756.png" alt="image-20210528105846756"></p>
+<h1 id="消息通知之邮件通知">消息通知之邮件通知</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"> kubectl <span class="nb">exec</span> -it spinnaker-spinnaker-halyard-0 bash -n spinnaker
+ 
+<span class="nb">cd</span> /home/spinnaker/.hal/default/profiles
+
+cat &gt;&gt; settings-local.js <span class="s">&lt;&lt; EOF
+</span><span class="s">window.spinnakerSettings.notifications.email.enabled = true;
+</span><span class="s">EOF</span>
+
+cat &gt; echo-local.yml <span class="s">&lt;&lt; EOF
+</span><span class="s">mail:
+</span><span class="s">  enabled: true
+</span><span class="s">  from: amoaloas@163.com
+</span><span class="s">spring:
+</span><span class="s">  mail:
+</span><span class="s">    host: smtp.163.com
+</span><span class="s">    username: amoaloas@163.com
+</span><span class="s">    password: FZXIQXXOJHZBONGH
+</span><span class="s">    protocol: smtp
+</span><span class="s">    default-encoding: utf-8
+</span><span class="s">    properties:
+</span><span class="s">      mail:
+</span><span class="s">        display:
+</span><span class="s">          sendname: SpinnakerAdmin
+</span><span class="s">        smtp:
+</span><span class="s">          port: 465
+</span><span class="s">          auth: true
+</span><span class="s">          starttls:
+</span><span class="s">            enable: true
+</span><span class="s">            required: true
+</span><span class="s">          ssl:
+</span><span class="s">            enable: true
+</span><span class="s">        transport:
+</span><span class="s">          protocol: smtp
+</span><span class="s">        debug: true
+</span><span class="s">EOF</span>
+
+
+hal deploy apply <span class="c1"># 应用生效</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="更改时区">更改时区</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">hal config edit --timezone <span class="s1">&#39;Asia/Shanghai&#39;</span>
+
+hal deploy apply <span class="c1"># 应用生效</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="开启制品空间">开启制品空间</h1>
+<ul>
+<li>
+<p>开启http</p>
+<ul>
+<li><a href="https://spinnaker.io/setup/artifacts/http/">参考文档</a></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">hal config artifact http <span class="nb">enable</span>
+  
+<span class="nb">echo</span> <span class="si">${</span><span class="nv">USERNAME</span><span class="si">}</span>:<span class="si">${</span><span class="nv">PASSWORD</span><span class="si">}</span> &gt; <span class="nv">$USERNAME_PASSWORD_FILE</span>
+  
+hal config artifact http account add my-http-account <span class="se">\
+</span><span class="se"></span>    --username-password-file <span class="nv">$USERNAME_PASSWORD_FILE</span>  <span class="c1"># 添加对应账号密码</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h1 id="开启特征功能">开启特征功能</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">hal config features edit --pipeline-templates <span class="nb">true</span>
+hal config features edit --artifacts <span class="nb">true</span>
+
+hal config features edit --managed-pipeline-templates-v2-ui <span class="nb">true</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="开启对-pipeline-的权限管理">开启对 pipeline 的权限管理</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">~/.hal/default/profiles/orca-local.yml
+tasks:
+  useManagedServiceAccounts: <span class="nb">true</span>
+
+~/.hal/default/profiles/settings-local.js
+window.spinnakerSettings.feature.managedServiceAccounts <span class="o">=</span> true<span class="p">;</span>
+
+
+hal deploy apply <span class="c1"># 应用生效</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="添加-k8s-集群">添加 k8s 集群</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">hal config provider kubernetes <span class="nb">enable</span>
+
+hal config provider kubernetes account add k3s <span class="se">\
+</span><span class="se"></span>  --context <span class="k">$(</span>kubectl config current-context --kubeconfig ~/.kube/k3s<span class="k">)</span> <span class="se">\
+</span><span class="se"></span>  --service-account <span class="nb">true</span> <span class="se">\
+</span><span class="se"></span>  --omit-namespaces<span class="o">=</span>kube-system,kube-public <span class="se">\
+</span><span class="se"></span>  --kubeconfig-file ~/.kube/k3s <span class="se">\
+</span><span class="se"></span>  --provider-version v2
+  
+hal config deploy edit --type distributed --account-name  k3s
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">CONTEXT</span><span class="o">=</span><span class="k">$(</span>kubectl config current-context<span class="k">)</span>
+  
+hal config provider kubernetes account add default <span class="se">\
+</span><span class="se"></span>    --context <span class="nv">$CONTEXT</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h1 id="添加-dokcer-镜像仓库">添加 dokcer 镜像仓库</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">hal config provider docker-registry <span class="nb">enable</span> --no-validate
+hal config provider docker-registry account add my-harborregistry <span class="se">\
+</span><span class="se"></span>--address https://harbor.treesir.pub <span class="se">\
+</span><span class="se"></span>--username yangzun <span class="se">\
+</span><span class="se"></span>--password <span class="m">123456</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="helm-部署-spinnaker-添加-集群">helm 部署 spinnaker 添加 集群</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">
+kubectl get po --kubeconfig ~/.kube/k3s --all-namespaces <span class="c1"># 测试 对应 config 文件是否有效</span>
+
+
+kubectl create secret generic --from-file<span class="o">=</span><span class="nv">$HOME</span>/.kube/config kube-config -n spinnaker 
+
+kubeConfig:
+  enabled: <span class="nb">true</span>
+  secretName: kube-config
+  secretKey: config
+  contexts:
+<span class="o">==</span>
+  - my-context
+  <span class="c1"># This is the context from the list above that you would like</span>
+  <span class="c1"># to deploy Spinnaker itself to.</span>
+  deploymentContext: my-context
+
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="手动启动-halyard">手动启动 halyard</h1>
+<ul>
+<li>
+<p>部署 minio</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="l">kubectl create ns devops-minio</span><span class="w">
+</span><span class="w">  
+</span><span class="w"></span><span class="l">helm repo add minio https://helm.min.io/</span><span class="w">
+</span><span class="w">  
+</span><span class="w"></span><span class="l">helm repo update </span><span class="w">
+</span><span class="w">  
+</span><span class="w"></span><span class="l">cat &gt; prod-values.yaml &lt;&lt; EOF</span><span class="w">
+</span><span class="w"></span><span class="nt">image</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">tag</span><span class="p">:</span><span class="w"> </span><span class="l">RELEASE.2021-03-17T02-33-02Z</span><span class="w">
+</span><span class="w"></span><span class="nt">accessKey</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;admin&#34;</span><span class="w">
+</span><span class="w"></span><span class="nt">secretKey</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;ancun123&#34;</span><span class="w">
+</span><span class="w"></span><span class="nt">persistence</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">existingClaim</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;devops-minio-pvc&#34;</span><span class="w">
+</span><span class="w">  </span><span class="nt">accessMode</span><span class="p">:</span><span class="w"> </span><span class="l">ReadWriteOnce</span><span class="w">
+</span><span class="w">  </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l">100Gi</span><span class="w">
+</span><span class="w"></span><span class="nt">service</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">NodePort</span><span class="w">
+</span><span class="w"></span><span class="nt">buckets</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">spinnaker</span><span class="w">
+</span><span class="w">    </span><span class="nt">policy</span><span class="p">:</span><span class="w"> </span><span class="l">none</span><span class="w">
+</span><span class="w">    </span><span class="nt">purge</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w"></span><span class="l">EOF</span><span class="w">
+</span><span class="w">  
+</span><span class="w"></span><span class="l">cat &gt; devops-minio-pvPvc.yaml &lt;&lt; EOF</span><span class="w">
+</span><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolume</span><span class="w">
+</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">devops-minio-pv</span><span class="w">
+</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">local-storage </span><span class="w"> </span><span class="c"># Local PV</span><span class="w">
+</span><span class="w">  </span><span class="nt">capacity</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">100Gi</span><span class="w">
+</span><span class="w">  </span><span class="nt">volumeMode</span><span class="p">:</span><span class="w"> </span><span class="l">Filesystem</span><span class="w">
+</span><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- <span class="l">ReadWriteOnce</span><span class="w">
+</span><span class="w">  </span><span class="nt">local</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/data/devops/minio</span><span class="w">
+</span><span class="w">  </span><span class="nt">nodeAffinity</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">nodeSelectorTerms</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="nt">matchExpressions</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/hostname</span><span class="w">
+</span><span class="w">          </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l">In</span><span class="w">
+</span><span class="w">          </span><span class="nt">values</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span>- <span class="l">mn105</span><span class="w">
+</span><span class="w"></span><span class="nn">---</span><span class="w">
+</span><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolumeClaim</span><span class="w">
+</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">devops-minio-pvc</span><span class="w">
+</span><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">devops-minio</span><span class="w">
+</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">local-storage </span><span class="w">
+</span><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- <span class="l">ReadWriteOnce</span><span class="w">
+</span><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">100Gi</span><span class="w">
+</span><span class="w"></span><span class="l">EOF</span><span class="w">
+</span><span class="w">  
+</span><span class="w"></span><span class="l">mkdir -p /data/devops/minio</span><span class="w"> </span><span class="c"># 创建 localPv 目录</span><span class="w">
+</span><span class="w"></span><span class="l">kubectl apply -f ./devops-minio-pvPvc.yaml</span><span class="w">
+</span><span class="w">  
+</span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker pull gcr.io/spinnaker-marketplace/halyard:1.32.0
+
+mkdir ~/.hal
+chmod -R <span class="m">777</span> ~/.hal
+
+docker run -itd --name halyard <span class="se">\
+</span><span class="se"></span>-v /root/.hal:/home/spinnaker/.hal <span class="se">\
+</span><span class="se"></span>-v /root/.kube:/home/spinnaker/.kube <span class="se">\
+</span><span class="se"></span>--restart<span class="o">=</span>always <span class="se">\
+</span><span class="se"></span>--net<span class="o">=</span>host <span class="se">\
+</span><span class="se"></span>idocker.io/spinnaker-marketplace/halyard:1.32.0
+
+docker <span class="nb">exec</span> -it halyard bash
+hal config version edit --version 1.25.5
+hal config edit --timezone Asia/Shanghai
+
+
+hal config storage s3 edit <span class="se">\
+</span><span class="se"></span>--endpoint http://s3.treesir.pub <span class="se">\
+</span><span class="se"></span>--access-key-id admin <span class="se">\
+</span><span class="se"></span>--secret-access-key <span class="m">12345678</span> <span class="se">\
+</span><span class="se"></span>--bucket spinnaker <span class="se">\
+</span><span class="se"></span>--path-style-access <span class="nb">true</span>
+
+hal config storage edit --type s3
+
+
+
+hal config security ui edit --override-base-url http://spinnaker.treesir.pub
+hal config security api edit --override-base-url http://spin-gate.treesir.pub
+
+
+hal config provider docker-registry <span class="nb">enable</span>
+
+
+hal config provider kubernetes <span class="nb">enable</span>
+hal config provider kubernetes account add default <span class="se">\
+</span><span class="se"></span>--context <span class="k">$(</span>kubectl config current-context<span class="k">)</span> <span class="se">\
+</span><span class="se"></span>--service-account <span class="nb">true</span> <span class="se">\
+</span><span class="se"></span>--omit-namespaces<span class="o">=</span>kube-system,kube-public,cattle-system,cattle-prometheus <span class="se">\
+</span><span class="se"></span>--provider-version v2 <span class="se">\
+</span><span class="se"></span>--no-validate
+
+
+hal config deploy edit <span class="se">\
+</span><span class="se"></span>--account-name default <span class="se">\
+</span><span class="se"></span>--type distributed <span class="se">\
+</span><span class="se"></span>--location spinnaker  <span class="c1"># 部署集群</span>
+
+
+hal deploy apply  <span class="c1"># 执行生效</span>
+</code></pre></td></tr></table>
+</div>
+</div>
     </div>
 
     <div class="post-copyright">

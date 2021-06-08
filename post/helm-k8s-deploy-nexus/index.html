@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用 helm 在 Kubernetes 中部署 Nexus 私服" /><meta name="keywords" content="helm, devops, nexus, 私服, nexus, maven, docker, nfsStorageClass" />
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用 helm 在 Kubernetes 中部署 Nexus 私服" /><meta name="keywords" content="helm, devops, nexus, 私服, nexus, maven, docker" />
 
 
 
@@ -50,7 +50,7 @@
 <meta itemprop="description" content="使用 helm 在 Kubernetes 中部署 Nexus 私服">
 <meta itemprop="datePublished" content="2021-05-23T15:50:31+08:00" />
 <meta itemprop="dateModified" content="2021-05-23T15:50:31+08:00" />
-<meta itemprop="wordCount" content="478">
+<meta itemprop="wordCount" content="2356">
 
 
 
@@ -144,8 +144,8 @@
             <a href="/categories/k8s/"> k8s </a>
             <a href="/categories/devops/"> devops </a>
             </div>
-          <span class="more-meta"> 约 478 字 </span>
-          <span class="more-meta"> 预计阅读 1 分钟 </span>
+          <span class="more-meta"> 约 2356 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
         
       </div>
     </header>
@@ -169,7 +169,34 @@
         <li><a href="#使用-traefik-将其暴露">使用 traefik 将其暴露</a></li>
       </ul>
     </li>
-    <li><a href="#done">Done</a></li>
+    <li><a href="#docker-私服的配置与优化">Docker 私服的配置与优化</a>
+      <ul>
+        <li><a href="#仓库规划">仓库规划</a>
+          <ul>
+            <li><a href="#docker-私服端口-使用规划">docker 私服端口 使用规划</a></li>
+            <li><a href="#docker-代理仓库列表">docker 代理仓库列表</a></li>
+          </ul>
+        </li>
+        <li><a href="#私服创建">私服创建</a>
+          <ul>
+            <li><a href="#创建-hostd-类型私服">创建 hostd 类型私服</a></li>
+            <li><a href="#创建-proxy-类型代理私服">创建 proxy 类型代理私服</a></li>
+            <li><a href="#创建-group-类型私服">创建 group 类型私服</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#使用-ingress-对端口进行暴露">使用 ingress 对端口进行暴露</a>
+      <ul>
+        <li><a href="#创建-tls-证书生成脚本">创建 tls 证书生成脚本</a></li>
+        <li><a href="#执行脚本生成-tls-证书文件">执行脚本生成 tls 证书文件</a></li>
+        <li><a href="#将生成的证书使用-secret-资源对象进行存储">将生成的证书，使用 secret 资源对象进行存储</a></li>
+        <li><a href="#更新-traefik-ingress-资源对象">更新 traefik ingress 资源对象</a></li>
+        <li><a href="#私服的使用">私服的使用</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考文档">参考文档</a></li>
+    <li><a href="#todo">Todo</a></li>
   </ul>
 </nav>
   </div>
@@ -184,7 +211,7 @@
 <h1 id="部署">部署</h1>
 <h2 id="准备-storageclass">准备 storageClass</h2>
 <blockquote>
-<p>非 <code>必要</code> 操作，可以选择手动创建 pvc &amp; pv，如果想部署 <code>nfsStorageClass</code> 的话，请参考早期整理的 <a href="https://www.treesir.pub/post/k8s-nfs-strage-class/">文档</a>。此篇文档实战部署步骤中也是基于 <code>nfsStorageClass </code> 进行实现。如果是用于 <code>生产环境</code> 的话，还是建议使用 ssd 或 iops 较高的 <code>磁盘</code> 作为数据盘 <code>pv</code> 进行绑定。</p>
+<p>非 <code>必要</code> 操作，可以选择手动创建 pvc &amp; pv，如果想部署 <code>nfsStorageClass</code> 的话，请参考早期整理的 <a href="https://www.treesir.pub/post/k8s-nfs-strage-class/">文档</a>。此篇文档实战部署步骤中基于 <code>nfsStorageClass </code> 进行实现。如果是用于 <code>生产环境</code> 的话，还是建议使用 ssd 或 iops 较高的 <code>磁盘</code> 作为数据盘使用，数据盘管理方式可以使用 localPv or hostPath 绑定到对应节点进行运行。</p>
 </blockquote>
 <h2 id="使用-helm-进行安装">使用 <code>helm</code> 进行安装</h2>
 <h3 id="添加-helm-仓库">添加 helm 仓库</h3>
@@ -258,6 +285,17 @@ helm repo update
 </span><span class="lnt">41
 </span><span class="lnt">42
 </span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">cat &gt; prod-values.yaml <span class="s">&lt;&lt; EOF
@@ -266,7 +304,7 @@ helm repo update
 </span><span class="s">
 </span><span class="s">nexus:
 </span><span class="s">  imageName: sonatype/nexus3
-</span><span class="s">  imageTag: 3.29.0
+</span><span class="s">  imageTag: 3.30.1 
 </span><span class="s">  imagePullPolicy: IfNotPresent
 </span><span class="s">  env:
 </span><span class="s">    - name: install4jAddVmParams
@@ -291,15 +329,26 @@ helm repo update
 </span><span class="s">service:
 </span><span class="s">  name: nexus-service
 </span><span class="s">  enabled: true
-</span><span class="s">  serviceType: NodePort
+</span><span class="s">  serviceType: ClusterIP
 </span><span class="s">  ports:
 </span><span class="s">  - name: manage   # 此处为 service 对应暴露的端口， 如需暴露其他端口时，向下进行添加即可。
 </span><span class="s">    targetPort: 8081
 </span><span class="s">    port: 8081
-</span><span class="s">#  - name: docker-dev   # docker 私服
-</span><span class="s">#    targetPort: 8082
-</span><span class="s">#    port: 8082
-</span><span class="s">
+</span><span class="s">  - name: docker-proxy
+</span><span class="s">    targetPort: 8082
+</span><span class="s">    port: 8082
+</span><span class="s">  - name: docker-dev
+</span><span class="s">    targetPort: 8083
+</span><span class="s">    port: 8083
+</span><span class="s">  - name: docker-qa  
+</span><span class="s">    targetPort: 8084
+</span><span class="s">    port: 8084
+</span><span class="s">  - name: docker-prod
+</span><span class="s">    targetPort: 8085
+</span><span class="s">    port: 8085
+</span><span class="s">  - name: docker-custom
+</span><span class="s">    targetPort: 8086
+</span><span class="s">    port: 8086
 </span><span class="s">nexusProxy:
 </span><span class="s">  enabled: false
 </span><span class="s">EOF</span>
@@ -364,10 +413,688 @@ kubectl apply -f ./nexus-ingressroute.yaml
 </code></pre></td></tr></table>
 </div>
 </div><p><img src="https://cdn.treesir.pub/img/image-20210523162902742.png" alt="image-20210523162902742"></p>
-<h1 id="done">Done</h1>
+<p><strong>初始化U/P:  <code>admin: admin123</code></strong></p>
+<h1 id="docker-私服的配置与优化">Docker 私服的配置与优化</h1>
+<blockquote>
+<p>此步骤文档，记录创建 <code>custom</code>、<code>dev</code>、<code>qa</code> 、<code>prod</code> 环境的 docker 私服，并配置常见 docker proxy 类型私服，进行中间镜像的缓存进行使用。</p>
+</blockquote>
+<h2 id="仓库规划">仓库规划</h2>
+<h3 id="docker-私服端口-使用规划">docker 私服端口 使用规划</h3>
+<table>
+<thead>
+<tr>
+<th>私服名称</th>
+<th>私服作用</th>
+<th>私服类型</th>
+<th>私服端口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker-custom</td>
+<td>存放，自定义 push的 镜像，与项目环境无关</td>
+<td>hostd</td>
+<td>8086</td>
+</tr>
+<tr>
+<td>idocker.io</td>
+<td>代理仓库 &amp; <code>custom</code> 仓库的集合</td>
+<td>proxy</td>
+<td>8082</td>
+</tr>
+<tr>
+<td>docker-dev</td>
+<td>存放与项目dev环境镜像</td>
+<td>hostd</td>
+<td>8083</td>
+</tr>
+<tr>
+<td>docker-qa</td>
+<td>存放与项目qa环境镜像</td>
+<td>hostd</td>
+<td>8084</td>
+</tr>
+<tr>
+<td>docker-prod</td>
+<td>存放与项目prod环境镜像</td>
+<td>hostd</td>
+<td>8085</td>
+</tr>
+</tbody>
+</table>
+<h3 id="docker-代理仓库列表">docker 代理仓库列表</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+<th>地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker-google</td>
+<td>google 公开镜像 （需扶墙）</td>
+<td><a href="https://gcr.io">https://gcr.io</a></td>
+</tr>
+<tr>
+<td>docker-k8s</td>
+<td>kubernetes 的官方 google 镜像源（需扶墙）</td>
+<td><a href="https://k8s.gcr.io">https://k8s.gcr.io</a></td>
+</tr>
+<tr>
+<td>docker-aliyun</td>
+<td>aliyun 同步 docker 官方源 （存在部分镜像未同步问题）</td>
+<td><a href="https://7bezldxe.mirror.aliyuncs.com">https://7bezldxe.mirror.aliyuncs.com</a></td>
+</tr>
+<tr>
+<td>docker-official</td>
+<td>dockerhub 官方镜像地址（限制带宽，触发条件：匿名用户<code>100</code>次，认证用户<code>200</code>次）</td>
+<td><a href="https://registry-1.docker.io">https://registry-1.docker.io</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="私服创建">私服创建</h2>
+<h3 id="创建-hostd-类型私服">创建 hostd 类型私服</h3>
+<blockquote>
+<p>且示例创建 <code>docker-custom</code> , 其他仓库创建步骤是一样的，且需更具实际使用情况 更改 <code>Deployment policy</code> 策略 &amp; 是否开启 <code>匿名拉取镜像</code> 即可，如在 <code>prod</code> 环境下，设置策略为 <code>Disable redeploy</code> ，即不允许对已存在的镜像做覆盖操作，push 时将提示错误。</p>
+</blockquote>
+<ul>
+<li>
+<p>创建 docker 使用的 blob 存储</p>
+<blockquote>
+<p>建议对不同仓库类型的 私服做一下，blob存储的隔离 (可选)</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210608120921089.png" alt="image-20210608120921089"></p>
+</li>
+<li>
+<p>选择创建 <code>hostd</code> 类型 docker 私服</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608120857805.png" alt="image-20210608120857805"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608121148991.png" alt="image-20210608121148991"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608121249427.png" alt="image-20210608121249427"></p>
+</li>
+</ul>
+<h3 id="创建-proxy-类型代理私服">创建 proxy 类型代理私服</h3>
+<blockquote>
+<p>且示例创建 <code>docker-official</code> 私服，因官方对匿名用户做了拉取到100次后，将降低带宽的使用，我们可以在配置的过程中，为其添加用户认证来增加拉取限制。</p>
+</blockquote>
+<ul>
+<li>
+<p>选择创建 <code>proxy</code> 类型 docker 私服</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608121818153.png" alt="image-20210608121818153"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608122129261.png" alt="image-20210608122129261"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608122321922.png" alt="image-20210608122321922"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608122431537.png" alt="image-20210608122431537"></p>
+</li>
+</ul>
+<h3 id="创建-group-类型私服">创建 group 类型私服</h3>
+<blockquote>
+<p>创建完成 对应 的 proxy 类型的私服后，就可以进行 group 类型私服， 一组仓库的集合的创建了。</p>
+</blockquote>
+<ul>
+<li>
+<p>组集合列表，如下所示</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608122810520.png" alt="image-20210608122810520"></p>
+</li>
+<li>
+<p>创建 group 组 <code>idocker.io</code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608122923180.png" alt="image-20210608122923180"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608123030930.png" alt="image-20210608123030930"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608123121924.png" alt="image-20210608123121924"></p>
+</li>
+</ul>
+<h1 id="使用-ingress-对端口进行暴露">使用 ingress 对端口进行暴露</h1>
+<blockquote>
+<p>在使用 traefik 暴露的docker私服中，因默认开启了 443 端口的监听，此时 docker 私服将默认使用 <code>websecure</code> 入口上的 ingressroute 路由规则，如不添加对应证书的话，将导致 <code>match</code> 上的规则不被匹配</p>
+</blockquote>
+<h2 id="创建-tls-证书生成脚本">创建 tls 证书生成脚本</h2>
+<p><code>gen-cert.sh</code> 证书签发脚本，如下所示:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash
+</span><span class="cp"></span><span class="c1"># scripts from https://www.jianshu.com/p/52fedb82ef53</span>
+
+usage<span class="o">()</span>  
+<span class="o">{</span>  
+    <span class="nb">echo</span> <span class="s2">&#34;Usage: </span><span class="nv">$0</span><span class="s2"> [-a [rsa|ecc]] [-d &lt;domain&gt;] [-n &lt;name&gt;] [-h]&#34;</span>  
+    <span class="nb">echo</span> <span class="s2">&#34;  Options:&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;    -a  algorithm.[rsa|ecc]&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;    -d  domain.example: xxx.com,abc.org,*.abc.org&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;    -n  server key name&#34;</span>   
+    <span class="nb">echo</span> <span class="s2">&#34;    -h  help&#34;</span>  
+    <span class="nb">exit</span> <span class="m">1</span>  
+<span class="o">}</span> 
+
+<span class="nv">srv_key_name</span><span class="o">=</span><span class="s2">&#34;server&#34;</span>
+
+<span class="k">while</span> <span class="nb">getopts</span> <span class="s2">&#34;a:d:n:h&#34;</span> arg <span class="c1">#选项后面的冒号表示该选项需要参数</span>
+<span class="k">do</span>
+    <span class="k">case</span> <span class="nv">$arg</span> in
+        a<span class="o">)</span>
+            <span class="nv">alg</span><span class="o">=</span><span class="nv">$OPTARG</span> <span class="c1">#算法</span>
+            <span class="p">;;</span>
+        d<span class="o">)</span>
+            <span class="nv">all_domain</span><span class="o">=</span><span class="nv">$OPTARG</span> <span class="c1">#域名,逗号分隔</span>
+            <span class="p">;;</span>
+        n<span class="o">)</span>
+            <span class="nv">srv_key_name</span><span class="o">=</span><span class="nv">$OPTARG</span> <span class="c1">#服务器证书名称</span>
+            <span class="p">;;</span>
+        h<span class="o">)</span>
+            usage
+            <span class="nb">exit</span> <span class="m">0</span>
+            <span class="p">;;</span>
+        ?<span class="o">)</span>  <span class="c1">#当有不认识的选项的时候arg为?</span>
+            usage
+            <span class="nb">exit</span> <span class="m">1</span>
+            <span class="p">;;</span>
+    <span class="k">esac</span>
+<span class="k">done</span>
+
+<span class="nv">domain</span><span class="o">=</span><span class="s2">&#34;domain.com&#34;</span>
+<span class="nv">san</span><span class="o">=</span><span class="s2">&#34;DNS:*.</span><span class="si">${</span><span class="nv">domain</span><span class="si">}</span><span class="s2">,DNS:</span><span class="si">${</span><span class="nv">domain</span><span class="si">}</span><span class="s2">&#34;</span>
+<span class="k">if</span> <span class="o">[</span> -n <span class="s2">&#34;</span><span class="si">${</span><span class="nv">all_domain</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="c1">#分割域名</span>
+    <span class="nv">OLD_IFS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$IFS</span><span class="s2">&#34;</span>  
+    <span class="nv">IFS</span><span class="o">=</span><span class="s2">&#34;,&#34;</span> 
+    <span class="nv">domain_array</span><span class="o">=(</span><span class="nv">$all_domain</span><span class="o">)</span>
+    <span class="nv">IFS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$OLD_IFS</span><span class="s2">&#34;</span>  
+
+    <span class="nv">domain_len</span><span class="o">=</span><span class="si">${#</span><span class="nv">domain_array</span><span class="p">[@]</span><span class="si">}</span> 
+      
+    <span class="nv">domain</span><span class="o">=</span><span class="si">${</span><span class="nv">domain_array</span><span class="p">[0]</span><span class="si">}</span>
+    <span class="nv">san</span><span class="o">=</span><span class="s2">&#34;&#34;</span>
+    <span class="k">for</span> <span class="o">((</span><span class="nv">i</span><span class="o">=</span>0<span class="p">;</span>i&lt;domain_len<span class="p">;</span>i++<span class="o">))</span>
+   <span class="o">{</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nv">$i</span> <span class="o">=</span> <span class="m">0</span> <span class="o">]</span><span class="p">;</span><span class="k">then</span>
+        <span class="nv">san</span><span class="o">=</span><span class="s2">&#34;DNS:</span><span class="si">${</span><span class="nv">domain_array</span><span class="p">[i]</span><span class="si">}</span><span class="s2">&#34;</span>
+    <span class="k">else</span>
+        <span class="nv">san</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">san</span><span class="si">}</span><span class="s2">,DNS:</span><span class="si">${</span><span class="nv">domain_array</span><span class="p">[i]</span><span class="si">}</span><span class="s2">&#34;</span>
+    <span class="k">fi</span>
+   <span class="o">}</span>
+<span class="k">fi</span>
+
+<span class="nv">ca_subj</span><span class="o">=</span><span class="s2">&#34;/C=CN/ST=Hubei/L=Wuhan/O=MY/CN=MY CA&#34;</span>
+<span class="nv">server_subj</span><span class="o">=</span><span class="s2">&#34;/C=CN/ST=Hubei/L=Wuhan/O=MY/CN=</span><span class="si">${</span><span class="nv">domain</span><span class="si">}</span><span class="s2">&#34;</span>
+<span class="c1">#其中C是Country，ST是state，L是local，O是Organization，OU是Organization Unit，CN是common name</span>
+<span class="nv">days</span><span class="o">=</span><span class="m">14610</span> <span class="c1"># 有效期40年</span>
+<span class="nb">echo</span> <span class="s2">&#34;san:</span><span class="si">${</span><span class="nv">san</span><span class="si">}</span><span class="s2">&#34;</span>
+
+<span class="nv">sdir</span><span class="o">=</span><span class="s2">&#34;certs&#34;</span>
+<span class="nv">ca_key_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/ca.key&#34;</span>
+<span class="nv">ca_crt_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/ca.crt&#34;</span>
+<span class="nv">srv_key_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">srv_key_name</span><span class="si">}</span><span class="s2">.key&#34;</span>
+<span class="nv">srv_csr_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">srv_key_name</span><span class="si">}</span><span class="s2">.csr&#34;</span>
+<span class="nv">srv_crt_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">srv_key_name</span><span class="si">}</span><span class="s2">.crt&#34;</span>
+<span class="nv">srv_p12_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">srv_key_name</span><span class="si">}</span><span class="s2">.p12&#34;</span>
+<span class="nv">srv_fullchain_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">srv_key_name</span><span class="si">}</span><span class="s2">-fullchain.crt&#34;</span>
+<span class="nv">cfg_san_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/san.cnf&#34;</span>
+
+
+<span class="c1">#algorithm config</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">&#34;rsa&#34;</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
+    <span class="nv">rsa_len</span><span class="o">=</span><span class="m">2048</span>
+<span class="k">elif</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">&#34;ecc&#34;</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
+    <span class="nv">ecc_name</span><span class="o">=</span>prime256v1
+<span class="k">else</span> 
+    usage 
+    <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>     <span class="c1">#ifend</span>
+
+<span class="nb">echo</span> <span class="s2">&#34;algorithm:</span><span class="si">${</span><span class="nv">alg</span><span class="si">}</span><span class="s2">&#34;</span>
+
+mkdir -p <span class="si">${</span><span class="nv">sdir</span><span class="si">}</span>
+
+<span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="si">${</span><span class="nv">ca_key_file</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span>  <span class="s2">&#34;------------- gen ca key-----------------------&#34;</span>
+    <span class="k">if</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">&#34;rsa&#34;</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
+        openssl genrsa -out <span class="si">${</span><span class="nv">ca_key_file</span><span class="si">}</span> <span class="si">${</span><span class="nv">rsa_len</span><span class="si">}</span>
+    <span class="k">elif</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">&#34;ecc&#34;</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
+        openssl ecparam -out <span class="si">${</span><span class="nv">ca_key_file</span><span class="si">}</span> -name <span class="si">${</span><span class="nv">ecc_name</span><span class="si">}</span> -genkey
+    <span class="k">fi</span>     <span class="c1">#ifend</span>
+
+    openssl req -new -x509 -days <span class="si">${</span><span class="nv">days</span><span class="si">}</span> -key <span class="si">${</span><span class="nv">ca_key_file</span><span class="si">}</span> -out <span class="si">${</span><span class="nv">ca_crt_file</span><span class="si">}</span> -subj <span class="s2">&#34;</span><span class="si">${</span><span class="nv">ca_subj</span><span class="si">}</span><span class="s2">&#34;</span>
+<span class="k">fi</span>
+
+
+<span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="si">${</span><span class="nv">srv_key_file</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span>  <span class="s2">&#34;------------- gen server key-----------------------&#34;</span>
+    <span class="k">if</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">&#34;rsa&#34;</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
+        openssl genrsa -out <span class="si">${</span><span class="nv">srv_key_file</span><span class="si">}</span> <span class="si">${</span><span class="nv">rsa_len</span><span class="si">}</span>
+    <span class="k">elif</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">&#34;ecc&#34;</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
+        openssl ecparam -genkey -name <span class="si">${</span><span class="nv">ecc_name</span><span class="si">}</span> -out <span class="si">${</span><span class="nv">srv_key_file</span><span class="si">}</span>
+    <span class="k">fi</span>     <span class="c1">#ifend</span>
+
+    openssl req -new  -sha256 -key <span class="si">${</span><span class="nv">srv_key_file</span><span class="si">}</span> -out <span class="si">${</span><span class="nv">srv_csr_file</span><span class="si">}</span> -subj <span class="s2">&#34;</span><span class="si">${</span><span class="nv">server_subj</span><span class="si">}</span><span class="s2">&#34;</span>
+
+    <span class="nb">printf</span> <span class="s2">&#34;[ SAN ]\nauthorityKeyIdentifier=keyid,issuer\nbasicConstraints=CA:FALSE\nkeyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment\nsubjectAltName=</span><span class="si">${</span><span class="nv">san</span><span class="si">}</span><span class="s2">&#34;</span> &gt; <span class="si">${</span><span class="nv">cfg_san_file</span><span class="si">}</span>
+    openssl x509 -req  -days <span class="si">${</span><span class="nv">days</span><span class="si">}</span> -sha256 -CA <span class="si">${</span><span class="nv">ca_crt_file</span><span class="si">}</span> -CAkey <span class="si">${</span><span class="nv">ca_key_file</span><span class="si">}</span> -CAcreateserial -in <span class="si">${</span><span class="nv">srv_csr_file</span><span class="si">}</span>  -out <span class="si">${</span><span class="nv">srv_crt_file</span><span class="si">}</span> -extfile <span class="si">${</span><span class="nv">cfg_san_file</span><span class="si">}</span> -extensions SAN
+    cat <span class="si">${</span><span class="nv">srv_crt_file</span><span class="si">}</span> <span class="si">${</span><span class="nv">ca_crt_file</span><span class="si">}</span> &gt; <span class="si">${</span><span class="nv">srv_fullchain_file</span><span class="si">}</span>
+
+    openssl pkcs12 -export -inkey <span class="si">${</span><span class="nv">srv_key_file</span><span class="si">}</span> -in <span class="si">${</span><span class="nv">srv_crt_file</span><span class="si">}</span> -CAfile <span class="si">${</span><span class="nv">ca_crt_file</span><span class="si">}</span> -chain -out <span class="si">${</span><span class="nv">srv_p12_file</span><span class="si">}</span>
+<span class="k">fi</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>脚本使用用法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">./gen-cert.sh -a 算法 -d 域名 -n 证书文件名
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h2 id="执行脚本生成-tls-证书文件">执行脚本生成 tls 证书文件</h2>
+<blockquote>
+<p>由于 traefik 在使用 secret 资源对象引用证书文件时，名称必须是 <code>tls.crt</code> 和 <code>tls.key</code>，这里我们在创建的时候就将名称设置为 <code>tls</code></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">chmod a+x gen-cert.sh
+
+./gen-cert.sh -a ecc -d idocker.io,*.idocker.io -n tls
+
+ls certs/  <span class="c1"># 在对应目录下，有如下文件即可</span>
+ca.crt  ca.key  ca.srl  san.cnf  tls.crt  tls.csr  tls-fullchain.crt  tls.key  tls.p12
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="将生成的证书使用-secret-资源对象进行存储">将生成的证书，使用 secret 资源对象进行存储</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl create secret tls idocker-tls --cert<span class="o">=</span>certs/tls.crt --key<span class="o">=</span>certs/tls.key -n nexus
+
+kubectl get secret idocker-tls -n nexus -o yaml 
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210608145341615.png" alt="image-20210608145341615"></p>
+<h2 id="更新-traefik-ingress-资源对象">更新 traefik ingress 资源对象</h2>
+<blockquote>
+<p>最终，完整 <code>nexus-ingressroute.yaml</code> 配置文件如下所示:</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">traefik.containo.us/v1alpha1</span><span class="w">
+</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">IngressRoute</span><span class="w">
+</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nexus-mirror</span><span class="w">
+</span><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">nexus</span><span class="w">
+</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">entryPoints</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="l">web</span><span class="w">
+</span><span class="w">  </span><span class="nt">routes</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="l">Host(`mirror.treesir.pub`) &amp;&amp; PathPrefix(`/`)</span><span class="w">
+</span><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Rule</span><span class="w">
+</span><span class="w">    </span><span class="nt">services</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nexus-service</span><span class="w">
+</span><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">8081</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="nn">---</span><span class="w">
+</span><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">traefik.containo.us/v1alpha1</span><span class="w">
+</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">IngressRoute</span><span class="w">
+</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nexus-idocker-http</span><span class="w">
+</span><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">nexus</span><span class="w">
+</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">entryPoints</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="l">websecure</span><span class="w">
+</span><span class="w">  </span><span class="nt">routes</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="l">Host(`idocker.io`) || (Host(`idocker.io`) &amp;&amp; Method(`GET`)) </span><span class="w">
+</span><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Rule</span><span class="w">
+</span><span class="w">    </span><span class="nt">services</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nexus-service</span><span class="w">
+</span><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">8082</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="l">(Host(`idocker.io`) &amp;&amp; Path(`/v1/search`)) || (Host(`idocker.io`) &amp;&amp; Method(`PUT`,`HEAD`,`POST`,`PATCH`))</span><span class="w">
+</span><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Rule</span><span class="w">
+</span><span class="w">    </span><span class="nt">priority</span><span class="p">:</span><span class="w"> </span><span class="m">100</span><span class="w">  </span><span class="c"># 权重值提高，在执行 curl https://idocker.io/v1/search?q=nginx 时，确认路由至 dokcer-custom 私服中</span><span class="w">
+</span><span class="w">    </span><span class="nt">services</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nexus-service</span><span class="w">
+</span><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">8086</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="l">Host(`dev.idocker.io`) &amp;&amp; PathPrefix(`/`)</span><span class="w">
+</span><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Rule</span><span class="w">
+</span><span class="w">    </span><span class="nt">services</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nexus-service</span><span class="w">
+</span><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">8083</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="l">Host(`qa.idocker.io`) &amp;&amp; PathPrefix(`/`)</span><span class="w">
+</span><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Rule</span><span class="w">
+</span><span class="w">    </span><span class="nt">services</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nexus-service</span><span class="w">
+</span><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">8084</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="l">Host(`prod.idocker.io`) &amp;&amp; PathPrefix(`/`)</span><span class="w">
+</span><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Rule</span><span class="w">
+</span><span class="w">    </span><span class="nt">services</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nexus-service</span><span class="w">
+</span><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">8085</span><span class="w">
+</span><span class="w">  </span><span class="nt">tls</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l">idocker-tls</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="nn">---</span><span class="w">
+</span><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">traefik.containo.us/v1alpha1</span><span class="w">
+</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Middleware</span><span class="w">
+</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">redirect-https</span><span class="w">
+</span><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">nexus</span><span class="w">
+</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">redirectScheme</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="l">https</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="nn">---</span><span class="w">
+</span><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">traefik.containo.us/v1alpha1</span><span class="w">
+</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">IngressRoute</span><span class="w">
+</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w">  </span><span class="l">nexus-idocker-https</span><span class="w">
+</span><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">nexus</span><span class="w">
+</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">entryPoints</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="l">web</span><span class="w">
+</span><span class="w">  </span><span class="nt">routes</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="l">HostRegexp(`idocker.io`, `{subdomain:[a-z]+}.idocker.io`)</span><span class="w">
+</span><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Rule</span><span class="w">
+</span><span class="w">    </span><span class="nt">services</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nexus-service</span><span class="w">
+</span><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">8082</span><span class="w">
+</span><span class="w">    </span><span class="nt">middlewares</span><span class="p">:</span><span class="w"> 
+</span><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">redirect-https</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h2 id="私服的使用">私服的使用</h2>
+<p><strong>ingressroute 创建完成后，就是测试对应私服的使用了，直接拿来使用还不行，会提示证书报错，解决方法列表如下:</strong></p>
+<ul>
+<li>
+<p>将对应 CA 证书文件，复制到 <code>/etc/docker/certs.d/idocker.io</code> 目录即可，没有此目录则选择创建它</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mkdir -p /etc/docker/certs.d/idocker.io
+scp node1:/data/helm/nexus/certs/ca.crt /etc/docker/certs.d/idocker.io/
+  
+mkdir -p /etc/docker/certs.d/qa.idocker.io
+cp /etc/docker/certs.d/idocker.io/ca.crt  /etc/docker/certs.d/qa.idocker.io/
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210608160819915.png" alt="image-20210608160819915"></p>
+</li>
+</ul>
+<blockquote>
+<p>由于，不支持对泛域名的一次认证，如多个子域名时，还需进行一个多次的 copy 操作。</p>
+</blockquote>
+<ul>
+<li>
+<p>在对应 docker 配置中添加 <code>--insecure-registry</code> 参数，来忽略证书的校验，常见做法是:</p>
+<ul>
+<li>
+<p>将配置项更改添加至 <code>/etc/docker/daemon.json</code> 配置文件中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat /etc/docker/daemon.json 
+<span class="o">{</span>
+    <span class="s2">&#34;insecure-registries&#34;</span>: <span class="o">[</span>
+        <span class="s2">&#34;idocker.io&#34;</span>,
+        <span class="s2">&#34;dev.idocker.io&#34;</span>,
+        <span class="s2">&#34;qa.idocker.io&#34;</span>,
+        <span class="s2">&#34;prod.idocker.io&#34;</span>
+    <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>或者是在 <code>/usr/lib/systemd/system/docker.service</code> 启动文件中的， ExecStart 配置项中添加启动参数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/dockerd --insecure-registry idocker.io,dev.idocker.io...
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h1 id="参考文档">参考文档</h1>
 <blockquote>
 <p>nexus 其他高级使用说明，请参考 <a href="https://www.treesir.pub/post/docker-deploy-nexus3-upgrade/">此篇文档</a></p>
 </blockquote>
+<p><a href="https://doc.traefik.io/traefik/routing/routers/">https://doc.traefik.io/traefik/routing/routers/</a></p>
+<p><a href="https://www.jianshu.com/p/52fedb82ef53">https://www.jianshu.com/p/52fedb82ef53</a></p>
+<h1 id="todo">Todo</h1>
 
     </div>
 
