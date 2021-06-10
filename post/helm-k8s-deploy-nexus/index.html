@@ -50,11 +50,11 @@
 <meta itemprop="description" content="使用 helm 在 Kubernetes 中部署 Nexus 私服">
 <meta itemprop="datePublished" content="2021-05-23T15:50:31+08:00" />
 <meta itemprop="dateModified" content="2021-05-23T15:50:31+08:00" />
-<meta itemprop="wordCount" content="2364">
+<meta itemprop="wordCount" content="2434">
 
 
 
-<meta itemprop="keywords" content="helm,nexus," />
+<meta itemprop="keywords" content="helm,nexus3," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="使用 helm 在 Kubernetes 中部署 Nexus 私服"/>
 <meta name="twitter:description" content="使用 helm 在 Kubernetes 中部署 Nexus 私服"/>
@@ -144,7 +144,7 @@
             <a href="/categories/k8s/"> k8s </a>
             <a href="/categories/devops/"> devops </a>
             </div>
-          <span class="more-meta"> 约 2364 字 </span>
+          <span class="more-meta"> 约 2434 字 </span>
           <span class="more-meta"> 预计阅读 5 分钟 </span>
         
       </div>
@@ -182,6 +182,7 @@
             <li><a href="#创建-hostd-类型私服">创建 hostd 类型私服</a></li>
             <li><a href="#创建-proxy-类型代理私服">创建 proxy 类型代理私服</a></li>
             <li><a href="#创建-group-类型私服">创建 group 类型私服</a></li>
+            <li><a href="#配置-neuxs3-开启-使用-docker的认证管理">配置 neuxs3 开启 使用 docker的认证管理</a></li>
           </ul>
         </li>
       </ul>
@@ -548,6 +549,13 @@ kubectl apply -f ./nexus-ingressroute.yaml
 <p><img src="https://cdn.treesir.pub/img/image-20210608123121924.png" alt="image-20210608123121924"></p>
 </li>
 </ul>
+<h3 id="配置-neuxs3-开启-使用-docker的认证管理">配置 neuxs3 开启 使用 docker的认证管理</h3>
+<blockquote>
+<p>默认情况下，docker 认证在 neuxs3 中是没有被打开的，这里需要配置开启一下才行，不然会导致 执行 <code>docker login</code> 不成功。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210610112948251.png" alt="image-20210610112948251"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210610113029463.png" alt="image-20210610113029463"></p>
+<p>​	<img src="https://cdn.treesir.pub/img/image-20210610113048664.png" alt="image-20210610113048664"></p>
 <h1 id="使用-ingress-对端口进行暴露">使用 ingress 对端口进行暴露</h1>
 <blockquote>
 <p>在使用 traefik 暴露的docker私服中，因默认开启了 443 端口的监听，此时 docker 私服将默认使用 <code>websecure</code> 入口上的 ingressroute 路由规则，如不添加对应证书的话，将导致 <code>match</code> 上的规则不被匹配</p>
@@ -1124,7 +1132,7 @@ cp /etc/docker/certs.d/idocker.io/ca.crt  /etc/docker/certs.d/qa.idocker.io/
 <footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/helm/">helm</a>
-          <a href="/tags/nexus/">nexus</a>
+          <a href="/tags/nexus3/">nexus3</a>
           </div>
       <nav class="post-nav">
         <a class="prev" href="/post/spinnaker-helm-installd/">

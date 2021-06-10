@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理 - 「Yang&#39;zun」PlayGround</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用 Docker-Compose 一键部署 Nexus3 私服，并配置使用 Traefik 进行对应代理配置的管理" /><meta name="keywords" content="neuxs3, traefik, https, tls, devops, docker-compose, proxy, nginx, 私服" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/nexus-use-traefik-proxy/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<meta property="og:title" content="Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理" />
+<meta property="og:description" content="使用 Docker-Compose 一键部署 Nexus3 私服，并配置使用 Traefik 进行对应代理配置的管理" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/nexus-use-traefik-proxy/" />
+<meta property="article:published_time" content="2021-06-10T09:51:36+08:00" />
+<meta property="article:modified_time" content="2021-06-10T09:51:36+08:00" />
+<meta itemprop="name" content="Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理">
+<meta itemprop="description" content="使用 Docker-Compose 一键部署 Nexus3 私服，并配置使用 Traefik 进行对应代理配置的管理">
+<meta itemprop="datePublished" content="2021-06-10T09:51:36+08:00" />
+<meta itemprop="dateModified" content="2021-06-10T09:51:36+08:00" />
+<meta itemprop="wordCount" content="1319">
+
+
+
+<meta itemprop="keywords" content="neuxs3,traefik,mkcert,https," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理"/>
+<meta name="twitter:description" content="使用 Docker-Compose 一键部署 Nexus3 私服，并配置使用 Traefik 进行对应代理配置的管理"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
+</head>
+<body>
+  <header id="header" class="header">
+      <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+  </header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-06-10 </span>
+        <div class="post-category">
+            <a href="/categories/devops/"> devops </a>
+            <a href="/categories/docker-compose/"> docker-compose </a>
+            <a href="/categories/proxy/"> proxy </a>
+            </div>
+          <span class="more-meta"> 约 1319 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明</a>
+      <ul>
+        <li><a href="#软件版本说明">软件版本说明</a></li>
+        <li><a href="#端口使用规划">端口使用规划</a>
+          <ul>
+            <li><a href="#nexus-私服端口-使用规划">nexus 私服端口 使用规划</a></li>
+            <li><a href="#docker-代理仓库列表">docker 代理仓库列表</a></li>
+            <li><a href="#traefik-ingress-端口-使用规划">traefik ingress 端口 使用规划</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#私服--traefik-使用-dokcerc-compsoe-一键部署安装">私服 &amp; traefik 使用 dokcerc-compsoe 一键部署安装</a>
+      <ul>
+        <li><a href="#docker-compose-的安装和准备工作">docker-compose 的安装和准备工作</a></li>
+        <li><a href="#git-clone-代码">git clone 代码</a></li>
+        <li><a href="#生成证书">生成证书</a></li>
+        <li><a href="#检查确认-docker-compose-部署文件">检查确认 docker-compose 部署文件</a></li>
+        <li><a href="#执行启动--导入-ca-证书的验证">执行启动 &amp; 导入 ca 证书的验证</a>
+          <ul>
+            <li><a href="#docker-compsoe-执行启动">docker-compsoe 执行启动</a></li>
+            <li><a href="#添加-hosts-记录">添加 hosts 记录</a></li>
+            <li><a href="#导入-ca-证书添加信任">导入 ca 证书，添加信任</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#docker-私服-测试使用">docker 私服 测试使用</a></li>
+    <li><a href="#参考文档">参考文档</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="环境说明">环境说明</h1>
+<h2 id="软件版本说明">软件版本说明</h2>
+<ul>
+<li>操作系统:  <code>CentOS 7.9.2009</code></li>
+<li>Docker version: <code>20.10.7</code></li>
+<li>Docker-compsoe version: <code>1.18.0</code></li>
+<li>Mkcert version: <code>v1.4.3</code></li>
+</ul>
+<h2 id="端口使用规划">端口使用规划</h2>
+<h3 id="nexus-私服端口-使用规划">nexus 私服端口 使用规划</h3>
+<table>
+<thead>
+<tr>
+<th>私服名称</th>
+<th>私服作用</th>
+<th>私服类型</th>
+<th>私服端口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker-custom</td>
+<td>存放，自定义 push的 镜像，与项目环境无关</td>
+<td>hostd</td>
+<td>8086</td>
+</tr>
+<tr>
+<td>idocker.io</td>
+<td>代理仓库 &amp; <code>custom</code> 仓库的集合</td>
+<td>group</td>
+<td>8082</td>
+</tr>
+<tr>
+<td>docker-dev</td>
+<td>存放与项目dev环境镜像</td>
+<td>hostd</td>
+<td>8083</td>
+</tr>
+<tr>
+<td>docker-qa</td>
+<td>存放与项目qa环境镜像</td>
+<td>hostd</td>
+<td>8084</td>
+</tr>
+<tr>
+<td>docker-prod</td>
+<td>存放与项目prod环境镜像</td>
+<td>hostd</td>
+<td>8085</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>除了上面 docker 私服使用端口外，还有 neuxs3  manage dashboard <code>8081</code> 端口</p>
+</blockquote>
+<h3 id="docker-代理仓库列表">docker 代理仓库列表</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>私服类型</th>
+<th>说明</th>
+<th>地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker-google</td>
+<td>proxy</td>
+<td>google 公开镜像 （需扶墙）</td>
+<td><a href="https://gcr.io">https://gcr.io</a></td>
+</tr>
+<tr>
+<td>docker-k8s</td>
+<td>proxy</td>
+<td>kubernetes 的官方 google 镜像源（需扶墙）</td>
+<td><a href="https://k8s.gcr.io">https://k8s.gcr.io</a></td>
+</tr>
+<tr>
+<td>docker-aliyun</td>
+<td>proxy</td>
+<td>aliyun 同步 docker 官方源 （存在部分镜像未同步问题）</td>
+<td><a href="https://7bezldxe.mirror.aliyuncs.com">https://7bezldxe.mirror.aliyuncs.com</a></td>
+</tr>
+<tr>
+<td>docker-official</td>
+<td>proxy</td>
+<td>dockerhub 官方镜像地址（限制带宽，触发条件：匿名用户<code>100</code>次，认证用户<code>200</code>次）</td>
+<td><a href="https://registry-1.docker.io">https://registry-1.docker.io</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="traefik-ingress-端口-使用规划">traefik ingress 端口 使用规划</h3>
+<table>
+<thead>
+<tr>
+<th>ingress 名称</th>
+<th>ingress 作用</th>
+<th>ingress 端口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>http</td>
+<td>http 站点入口</td>
+<td>80</td>
+</tr>
+<tr>
+<td>https</td>
+<td>https tls 证书 站点入口</td>
+<td>443</td>
+</tr>
+</tbody>
+</table>
+<h1 id="私服--traefik-使用-dokcerc-compsoe-一键部署安装">私服 &amp; traefik 使用 dokcerc-compsoe 一键部署安装</h1>
+<blockquote>
+<p>此次，部署文档所依赖工具和对应配置文件已整理至此 <a href="https://github.com/cdryzun/traefik-nexus.git"><code>Github仓库</code></a> 中，文档中所示步骤均已在 <code>Centos7</code> 系统中做了 <code>验证且通过</code>。其他平台及架构只需替换为相应软件包的版即可解决，验证待 自行确定。</p>
+</blockquote>
+<h2 id="docker-compose-的安装和准备工作">docker-compose 的安装和准备工作</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install -y docker-compose <span class="c1"># centos 下直接使用 yum</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="git-clone-代码">git clone 代码</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">git clone https://github.com/cdryzun/traefik-nexus.git
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="生成证书">生成证书</h2>
+<blockquote>
+<p>在使用 mkcert 生成证书时，这里有一个问题需要注意一下。生成指定的 <code>cert-file</code> &amp; <code>key-file</code> 文件名称是有讲究的，如为域名: <code>example.io</code> 生成证书文件，其文件前缀的取名应该为 <code>example-io</code>，否者将导致 traefik 在引用证书时匹配不上，故而将其使用到了默认证书。</p>
+</blockquote>
+<p><strong>mkcert 版本列表 <a href="https://github.com/FiloSottile/mkcert/releases">查看</a>。</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> traefik-nexus
+
+chmod a+x ./mkcert <span class="c1"># linux amd64 架构，确认与操作系统架构相同</span>
+
+./mkcert --version
+v1.4.3
+
+mkdir -p certs <span class="c1"># 创建存放证书文件夹</span>
+
+./mkcert -cert-file certs/treesir-pub.crt -key-file certs/treesir-pub.key <span class="s2">&#34;treesir.pub&#34;</span> <span class="s2">&#34;*.treesir.pub&#34;</span> <span class="s2">&#34;treesir.lan&#34;</span> <span class="s2">&#34;*.treesir.lan&#34;</span> <span class="c1"># 生成域名证书</span>
+ 
+./mkcert -cert-file certs/idocker-io.crt -key-file certs/idocker-io.key <span class="s2">&#34;idocker.io&#34;</span> <span class="s2">&#34;*.idocker.io&#34;</span> <span class="s2">&#34;idocker.lan&#34;</span> <span class="s2">&#34;*.idocker.lan&#34;</span> <span class="c1"># 生成 docker 私服使用证书</span>
+ 
+ls certs/  <span class="c1"># 确认证书是否存在</span>
+idocker-io.crt  idocker-io.key  treesir-pub.crt  treesir-pub.key
+</code></pre></td></tr></table>
+</div>
+</div><p>生成完证书后，注意检查确认一下 <code>traefik/traefik.yml </code> 中配置文件的配置是否对应</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat traefik/traefik.yml
+...
+tls:
+  certificates: <span class="c1"># 将生成的证书 加到 traefik tls 证书池，自动匹配</span>
+    - certFile: /certs/treesir-pub.crt
+      keyFile: /certs/treesir-pub.key
+  certificates:
+    - certFile: /certs/idocker-io.crt
+      keyFile: /certs/idocker-io.key
+  options:
+    default:
+      minVersion: VersionTLS12
+      cipherSuites:
+        - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        - TLS_RSA_WITH_AES_256_GCM_SHA384
+  stores: <span class="c1"># 配置默认证书</span>
+    default: 
+      defaultCertificate:
+        certFile: /certs/treesir-pub.crt
+        keyFile: /certs/treesir-pub.key
+...
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="检查确认-docker-compose-部署文件">检查确认 docker-compose 部署文件</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat docker-compose.yml 
+version: <span class="s2">&#34;3&#34;</span>
+services:
+  traefik:
+    restart: always
+    image: traefik:v2.4.8
+    container_name: traefik
+    ports:
+      - <span class="s2">&#34;80:80&#34;</span>
+      - <span class="s2">&#34;443:443&#34;</span>
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./certs:/certs:ro
+      - ./traefik/traefik.yml:/traefik.yml:ro
+    labels:
+      - traefik.enable<span class="o">=</span><span class="nb">true</span>
+      - traefik.http.routers.traefik.entrypoints<span class="o">=</span>http,https
+      - traefik.http.routers.traefik.rule<span class="o">=</span>Host<span class="o">(</span><span class="sb">`</span>traefik.treesir.pub<span class="sb">`</span><span class="o">)</span>  <span class="c1"># traefik dashboard 关联域名</span>
+      - traefik.http.routers.traefik.tls<span class="o">=</span><span class="nb">true</span>
+      - traefik.http.routers.traefik.service<span class="o">=</span>api@internal
+  nexus:
+    restart: always
+    image: sonatype/nexus3:3.30.1
+    container_name: nexus3
+    privileged: <span class="nb">true</span>
+    environment:
+      - <span class="nv">INSTALL4J_ADD_VM_PARAMS</span><span class="o">=</span>-Xms4g -Xmx4g -XX:MaxDirectMemorySize<span class="o">=</span>6g <span class="c1"># jvm 参数 对标 8g 内存机器，按比例 &amp; 实际需求调整</span>
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./nexus-data:/nexus-data 
+    labels:
+      - traefik.enable<span class="o">=</span><span class="nb">true</span>
+      - traefik.http.routers.1.entrypoints<span class="o">=</span>http,https
+      - traefik.http.routers.1.rule<span class="o">=</span>Host<span class="o">(</span><span class="sb">`</span>mirror.treesir.pub<span class="sb">`</span><span class="o">)</span> <span class="o">&amp;&amp;</span> PathPrefix<span class="o">(</span><span class="sb">`</span>/<span class="sb">`</span><span class="o">)</span>
+      - traefik.http.routers.1.tls<span class="o">=</span><span class="nb">true</span>
+      - traefik.http.routers.1.service<span class="o">=</span>one
+      - traefik.http.services.one.loadbalancer.server.port<span class="o">=</span><span class="m">8081</span>
+      - traefik.http.routers.2.entrypoints<span class="o">=</span>http,https
+      - traefik.http.routers.2.rule<span class="o">=</span>Host<span class="o">(</span><span class="sb">`</span>idocker.io<span class="sb">`</span><span class="o">)</span> <span class="o">||</span> <span class="o">(</span>Host<span class="o">(</span><span class="sb">`</span>idocker.io<span class="sb">`</span><span class="o">)</span> <span class="o">&amp;&amp;</span> Method<span class="o">(</span><span class="sb">`</span>GET<span class="sb">`</span><span class="o">))</span> 
+      - traefik.http.routers.2.tls<span class="o">=</span><span class="nb">true</span>
+      - traefik.http.routers.2.service<span class="o">=</span>two
+      - traefik.http.services.two.loadbalancer.server.port<span class="o">=</span><span class="m">8082</span>
+      - traefik.http.routers.3.entrypoints<span class="o">=</span>http,https
+      - traefik.http.routers.3.rule<span class="o">=(</span>Host<span class="o">(</span><span class="sb">`</span>idocker.io<span class="sb">`</span><span class="o">)</span> <span class="o">&amp;&amp;</span> Path<span class="o">(</span><span class="sb">`</span>/v1/search<span class="sb">`</span><span class="o">))</span> <span class="o">||</span> <span class="o">(</span>Host<span class="o">(</span><span class="sb">`</span>idocker.io<span class="sb">`</span><span class="o">)</span> <span class="o">&amp;&amp;</span> Method<span class="o">(</span><span class="sb">`</span>PUT<span class="sb">`</span>,<span class="sb">`</span>HEAD<span class="sb">`</span>,<span class="sb">`</span>POST<span class="sb">`</span>,<span class="sb">`</span>PATCH<span class="sb">`</span><span class="o">))</span>
+      - traefik.http.routers.3.priority<span class="o">=</span><span class="m">100</span>
+      - traefik.http.routers.3.tls<span class="o">=</span><span class="nb">true</span>
+      - traefik.http.routers.3.service<span class="o">=</span>three
+      - traefik.http.services.three.loadbalancer.server.port<span class="o">=</span><span class="m">8086</span>
+      - traefik.http.routers.4.rule<span class="o">=</span>Host<span class="o">(</span><span class="sb">`</span>dev.idocker.io<span class="sb">`</span><span class="o">)</span> <span class="o">&amp;&amp;</span> PathPrefix<span class="o">(</span><span class="sb">`</span>/<span class="sb">`</span><span class="o">)</span>
+      - traefik.http.routers.4.tls<span class="o">=</span><span class="nb">true</span>
+      - traefik.http.routers.4.service<span class="o">=</span>four
+      - traefik.http.services.four.loadbalancer.server.port<span class="o">=</span><span class="m">8083</span>
+      - traefik.http.routers.5.rule<span class="o">=</span>Host<span class="o">(</span><span class="sb">`</span>dev.idocker.io<span class="sb">`</span><span class="o">)</span> <span class="o">&amp;&amp;</span> PathPrefix<span class="o">(</span><span class="sb">`</span>/<span class="sb">`</span><span class="o">)</span>
+      - traefik.http.routers.5.tls<span class="o">=</span><span class="nb">true</span>
+      - traefik.http.routers.5.service<span class="o">=</span>five
+      - traefik.http.services.five.loadbalancer.server.port<span class="o">=</span><span class="m">8084</span>
+      - traefik.http.routers.6.rule<span class="o">=</span>Host<span class="o">(</span><span class="sb">`</span>prod.idocker.io<span class="sb">`</span><span class="o">)</span> <span class="o">&amp;&amp;</span> PathPrefix<span class="o">(</span><span class="sb">`</span>/<span class="sb">`</span><span class="o">)</span>
+      - traefik.http.routers.6.tls<span class="o">=</span><span class="nb">true</span>
+      - traefik.http.routers.6.service<span class="o">=</span>six
+      - traefik.http.services.six.loadbalancer.server.port<span class="o">=</span><span class="m">8085</span>
+networks:
+  default:
+    external:
+      name: docker
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="执行启动--导入-ca-证书的验证">执行启动 &amp; 导入 ca 证书的验证</h2>
+<h3 id="docker-compsoe-执行启动">docker-compsoe 执行启动</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mkdir -p ./nexus-data <span class="c1"># 创建 nexus 数据存储目录，开放权限，防止报错</span>
+chmod <span class="m">777</span> -R ./nexus-data
+
+docker-compose up -d  <span class="c1"># 启动</span>
+
+docker-compose logs -f  <span class="c1"># 检查日志，确认有无错误</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="添加-hosts-记录">添加 hosts 记录</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sudo -- sh -c <span class="s2">&#34;echo &#39;192.168.8.88 idocker.io dev.idocker.io qa.idocker.io prod.idocker.io mirror.treesir.pub traefik.treesir.pub&#39; &gt;&gt; /etc/hosts&#34;</span> <span class="c1"># macos</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="导入-ca-证书添加信任">导入 ca 证书，添加信任</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install -y lrzsz 
+
+sz -y <span class="k">$(</span>mkcert -CAROOT<span class="k">)</span>/rootCA.pem
+</code></pre></td></tr></table>
+</div>
+</div><p>双击此证书，添加到系统中</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210610110703249.png" alt="image-20210610110703249"></p>
+<p>双击打开，设置永远信任</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210610110824559.png" alt="image-20210610110824559"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210610110900639.png" alt="image-20210610110900639"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210610110926368.png" alt="image-20210610110926368"></p>
+<p>测试访问一下 nexus dashboard manage</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210610111116798.png" alt="image-20210610111116798"></p>
+<p>nexus dashboard manage 初始化 admin 密码查看</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker <span class="nb">exec</span>  nexus3 bash -c <span class="s2">&#34;cat /nexus-data/admin.password&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="docker-私服-测试使用">docker 私服 测试使用</h1>
+<blockquote>
+<p>在测试之前，请检查一下是否创建了对应的 docker 私服仓库，且对应的端口已正常在监听。由于此部分之前有过相关的整理，故作省略，参考步骤 <a href="https://www.treesir.pub/post/helm-k8s-deploy-nexus/#%E7%A7%81%E6%9C%8D%E5%88%9B%E5%BB%BA">文档</a>。</p>
+</blockquote>
+<p>由于我这里是测试，且创建了 <code>idocker.io</code> 可供测试使用的私服列表做测试试验</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210610113856665.png" alt="image-20210610113856665"></p>
+<p>traefik 中配置检查</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210610114024241.png" alt="image-20210610114024241"></p>
+<p>信任 docker 私服</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">
+cat /etc/docker/daemon.json 
+<span class="o">{</span>
+...
+    <span class="s2">&#34;insecure-registries&#34;</span>: <span class="o">[</span><span class="s2">&#34;idocker.io&#34;</span><span class="o">]</span>
+...
+<span class="o">}</span>
+
+docker login idocker.io
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210610122651706.png" alt="image-20210610122651706"></p>
+<p><code>idocker.io</code> group 私服</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210610122756789.png" alt="image-20210610122756789"></p>
+<p><code>docker-custom</code> hostd 私服</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210610122836249.png" alt="image-20210610122836249"></p>
+<h1 id="参考文档">参考文档</h1>
+<p><a href="https://doc.traefik.io/traefik/migration/v1-to-v2/">https://doc.traefik.io/traefik/migration/v1-to-v2/</a></p>
+<p><a href="https://shanyue.tech/op/traefik.html#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B">https://shanyue.tech/op/traefik.html#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B</a></p>
+<p><a href="https://doc.traefik.io/traefik/user-guides/docker-compose/acme-tls/">https://doc.traefik.io/traefik/user-guides/docker-compose/acme-tls/</a></p>
+<p><a href="https://github.com/SushiFu/traefik-local">https://github.com/SushiFu/traefik-local</a></p>
+<p><a href="https://traefik.io/blog/traefik-2-tls-101-23b4fbee81f1/">https://traefik.io/blog/traefik-2-tls-101-23b4fbee81f1/</a></p>
+<p><a href="https://github.com/SushiFu/traefik-local">https://github.com/SushiFu/traefik-local</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-06-10
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/neuxs3/">neuxs3</a>
+          <a href="/tags/traefik/">traefik</a>
+          <a href="/tags/mkcert/">mkcert</a>
+          <a href="/tags/https/">https</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/rancher-import-cluster-fix/">
+            <span class="next-text nav-default">Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  
+
+  <span class="copyright-year">
+    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
+    </span>
+
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

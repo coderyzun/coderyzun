@@ -6,7 +6,16 @@
     <description>Recent content in nexus3 on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Dec 2020 09:24:55 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/nexus3/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 May 2021 15:50:31 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/nexus3/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 helm 在 Kubernetes 中部署 Nexus 私服</title>
+      <link>https://cdryzun.github.io/post/helm-k8s-deploy-nexus/</link>
+      <pubDate>Sun, 23 May 2021 15:50:31 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/helm-k8s-deploy-nexus/</guid>
+      <description>环境说明 helm version: v3.3.1 kubernetes: v1.17.9 nexus: 3.29.0 部署 准备 storageClass 非 必要 操作，可以选择手动创建 pvc &amp;amp; pv，如果想部署 nfsStorageClass 的话，请参考早期整理的 文档。此篇文档实战部署步骤中基于 nfsStorageClass 进</description>
+    </item>
+    
     <item>
       <title>使用 Docker 部署 Nexus3 私服的详细记录总结</title>
       <link>https://cdryzun.github.io/post/docker-deploy-nexus3-upgrade/</link>

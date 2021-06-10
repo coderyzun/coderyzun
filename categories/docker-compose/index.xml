@@ -6,7 +6,16 @@
     <description>Recent content in docker-compose on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 04 Mar 2021 16:31:06 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/docker-compose/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 10 Jun 2021 09:51:36 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/docker-compose/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理</title>
+      <link>https://cdryzun.github.io/post/nexus-use-traefik-proxy/</link>
+      <pubDate>Thu, 10 Jun 2021 09:51:36 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/nexus-use-traefik-proxy/</guid>
+      <description>环境说明 软件版本说明 操作系统: CentOS 7.9.2009 Docker version: 20.10.7 Docker-compsoe version: 1.18.0 Mkcert version: v1.4.3 端口使用规划 nexus 私服端口 使用规划 私服名称 私服作用 私服类型 私服端口 docker-custom 存放，自定义 push的 镜</description>
+    </item>
+    
     <item>
       <title>使用 Docker 部署 Gitlab，及常用优化项的说明</title>
       <link>https://cdryzun.github.io/post/gitlab-deploy/</link>

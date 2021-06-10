@@ -3,7 +3,84 @@
   
   <url>
     <loc>https://cdryzun.github.io/categories/</loc>
-    <lastmod>2021-06-08T08:45:22+08:00</lastmod>
+    <lastmod>2021-06-10T09:51:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/devops/</loc>
+    <lastmod>2021-06-10T09:51:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/docker-compose/</loc>
+    <lastmod>2021-06-10T09:51:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/nexus-use-traefik-proxy/</loc>
+    <lastmod>2021-06-10T09:51:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/https/</loc>
+    <lastmod>2021-06-10T09:51:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/mkcert/</loc>
+    <lastmod>2021-06-10T09:51:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/neuxs3/</loc>
+    <lastmod>2021-06-10T09:51:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/</loc>
+    <lastmod>2021-06-10T09:51:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/proxy/</loc>
+    <lastmod>2021-06-10T09:51:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/</loc>
+    <lastmod>2021-06-10T09:51:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/traefik/</loc>
+    <lastmod>2021-06-10T09:51:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/</loc>
+    <lastmod>2021-06-10T09:51:36+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -17,13 +94,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/tags/kubekey/</loc>
-    <lastmod>2021-06-08T08:45:22+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/post/</loc>
     <lastmod>2021-06-08T08:45:22+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -44,28 +114,7 @@
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/tags/</loc>
-    <lastmod>2021-06-08T08:45:22+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/</loc>
-    <lastmod>2021-06-08T08:45:22+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://cdryzun.github.io/tags/ci-cd/</loc>
-    <lastmod>2021-06-01T10:13:29+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/categories/devops/</loc>
     <lastmod>2021-06-01T10:13:29+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -191,7 +240,7 @@
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/tags/nexus/</loc>
+    <loc>https://cdryzun.github.io/tags/nexus3/</loc>
     <lastmod>2021-05-23T15:50:31+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -443,13 +492,6 @@
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/categories/docker-compose/</loc>
-    <lastmod>2021-03-04T16:31:06+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://cdryzun.github.io/post/gitlab-deploy/</loc>
     <lastmod>2021-03-04T16:31:06+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -625,13 +667,6 @@
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/tags/traefik/</loc>
-    <lastmod>2021-01-17T16:15:32+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://cdryzun.github.io/post/ingress-traefik/</loc>
     <lastmod>2021-01-17T16:15:32+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -696,13 +731,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/tags/dashboard/</loc>
-    <lastmod>2020-12-22T09:24:55+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/nexus3/</loc>
     <lastmod>2020-12-22T09:24:55+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
