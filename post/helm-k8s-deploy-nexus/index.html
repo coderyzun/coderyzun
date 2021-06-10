@@ -50,7 +50,7 @@
 <meta itemprop="description" content="使用 helm 在 Kubernetes 中部署 Nexus 私服">
 <meta itemprop="datePublished" content="2021-05-23T15:50:31+08:00" />
 <meta itemprop="dateModified" content="2021-05-23T15:50:31+08:00" />
-<meta itemprop="wordCount" content="2356">
+<meta itemprop="wordCount" content="2364">
 
 
 
@@ -144,7 +144,7 @@
             <a href="/categories/k8s/"> k8s </a>
             <a href="/categories/devops/"> devops </a>
             </div>
-          <span class="more-meta"> 约 2356 字 </span>
+          <span class="more-meta"> 约 2364 字 </span>
           <span class="more-meta"> 预计阅读 5 分钟 </span>
         
       </div>
@@ -439,7 +439,7 @@ kubectl apply -f ./nexus-ingressroute.yaml
 <tr>
 <td>idocker.io</td>
 <td>代理仓库 &amp; <code>custom</code> 仓库的集合</td>
-<td>proxy</td>
+<td>group</td>
 <td>8082</td>
 </tr>
 <tr>
@@ -467,6 +467,7 @@ kubectl apply -f ./nexus-ingressroute.yaml
 <thead>
 <tr>
 <th>名称</th>
+<th>私服类型</th>
 <th>说明</th>
 <th>地址</th>
 </tr>
@@ -474,21 +475,25 @@ kubectl apply -f ./nexus-ingressroute.yaml
 <tbody>
 <tr>
 <td>docker-google</td>
+<td>proxy</td>
 <td>google 公开镜像 （需扶墙）</td>
 <td><a href="https://gcr.io">https://gcr.io</a></td>
 </tr>
 <tr>
 <td>docker-k8s</td>
+<td>proxy</td>
 <td>kubernetes 的官方 google 镜像源（需扶墙）</td>
 <td><a href="https://k8s.gcr.io">https://k8s.gcr.io</a></td>
 </tr>
 <tr>
 <td>docker-aliyun</td>
+<td>proxy</td>
 <td>aliyun 同步 docker 官方源 （存在部分镜像未同步问题）</td>
 <td><a href="https://7bezldxe.mirror.aliyuncs.com">https://7bezldxe.mirror.aliyuncs.com</a></td>
 </tr>
 <tr>
 <td>docker-official</td>
+<td>proxy</td>
 <td>dockerhub 官方镜像地址（限制带宽，触发条件：匿名用户<code>100</code>次，认证用户<code>200</code>次）</td>
 <td><a href="https://registry-1.docker.io">https://registry-1.docker.io</a></td>
 </tr>
