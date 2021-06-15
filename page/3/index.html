@@ -46,7 +46,7 @@
 <meta property="og:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cdryzun.github.io/" />
-<meta property="og:updated_time" content="2021-06-10T09:51:36+08:00" />
+<meta property="og:updated_time" content="2021-06-15T10:02:48+08:00" />
 <meta itemprop="name" content="「Yang&#39;zun」PlayGround">
 <meta itemprop="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历">
 <meta name="twitter:card" content="summary"/>
@@ -128,6 +128,30 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/git-use-issue/">Git 使用问题的记录</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-04-25 </span>
+      <div class="post-category">
+          <a href="/categories/devops/"> devops </a>
+          <a href="/categories/linux/"> linux </a>
+          </div>
+        <span class="more-meta"> 约 338 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      指定特定仓库拉取代码 1 2 3 4 5 git remote add origin https://github.com/demo/example.git git pull https://repo.csheidou.com/forestry_afterend/prevention_fire_test.git master git branch --set-upstream-to=origin/master git status git pull 更改远程仓库地址 1 2 3 4 5 git remote -v git remote set-url origin https://github.com/demo/example.git git pull origin master --allow-unrelated-histories git push git branch --set-upstream-to=origin/master 清理本地错误的用
+    </div>
+    <div class="read-more">
+      <a href="/post/git-use-issue/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/openvpn-install/">OpenVpn 的安装，并配置关联 openLdap 认证</a></h1>
@@ -288,29 +312,6 @@
     </div>
     <div class="read-more">
       <a href="/post/qume-libvirt-install/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/raid-megacli/">Raid 阵列卡 Megacli 管理工具的使用记录</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-02-24 </span>
-      <div class="post-category">
-          <a href="/categories/linux/"> linux </a>
-          </div>
-        <span class="more-meta"> 约 217 字 </span>
-        <span class="more-meta"> 预计阅读 1 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      安装 参考文档 示例为： Centos7 中的安装步骤 1 2 3 4 5 6 7 wget https://docs.broadcom.com/docs-and-downloads/raid-controllers/raid-controllers-common-files/8-07-14_MegaCLI.zip unzip 8-07-14_MegaCLI.zip rpm -ivhU Linux/MegaCli-8.07.14-1.noarch.rpm cp -a /opt/MegaRAID/MegaCli/MegaCli64 /usr/local/bin/MegaCli 命令使用记录 将某块物理盘下线/上线 1 2 3 4 5 6 7 8 9 MegaCli -PDOffline -PhysDrv[31:8] -a0 MegaCli -PDRbld -ShowProg -PhysDrv[31:8] `#[E:S]`
-    </div>
-    <div class="read-more">
-      <a href="/post/raid-megacli/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>

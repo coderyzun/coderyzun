@@ -50,7 +50,7 @@
 <meta itemprop="description" content="使用 Docker-Compose 一键部署 Nexus3 私服，并配置使用 Traefik 进行对应代理配置的管理">
 <meta itemprop="datePublished" content="2021-06-10T09:51:36+08:00" />
 <meta itemprop="dateModified" content="2021-06-10T09:51:36+08:00" />
-<meta itemprop="wordCount" content="1319">
+<meta itemprop="wordCount" content="1333">
 
 
 
@@ -145,7 +145,7 @@
             <a href="/categories/docker-compose/"> docker-compose </a>
             <a href="/categories/proxy/"> proxy </a>
             </div>
-          <span class="more-meta"> 约 1319 字 </span>
+          <span class="more-meta"> 约 1333 字 </span>
           <span class="more-meta"> 预计阅读 3 分钟 </span>
         
       </div>
@@ -365,9 +365,9 @@ v1.4.3
 
 mkdir -p certs <span class="c1"># 创建存放证书文件夹</span>
 
-./mkcert -cert-file certs/treesir-pub.crt -key-file certs/treesir-pub.key <span class="s2">&#34;treesir.pub&#34;</span> <span class="s2">&#34;*.treesir.pub&#34;</span> <span class="s2">&#34;treesir.lan&#34;</span> <span class="s2">&#34;*.treesir.lan&#34;</span> <span class="c1"># 生成域名证书</span>
+./mkcert -ecdsa -cert-file certs/treesir-pub.crt -key-file certs/treesir-pub.key <span class="s2">&#34;treesir.pub&#34;</span> <span class="s2">&#34;*.treesir.pub&#34;</span> <span class="s2">&#34;treesir.lan&#34;</span> <span class="s2">&#34;*.treesir.lan&#34;</span> <span class="c1"># 生成域名证书</span>
  
-./mkcert -cert-file certs/idocker-io.crt -key-file certs/idocker-io.key <span class="s2">&#34;idocker.io&#34;</span> <span class="s2">&#34;*.idocker.io&#34;</span> <span class="s2">&#34;idocker.lan&#34;</span> <span class="s2">&#34;*.idocker.lan&#34;</span> <span class="c1"># 生成 docker 私服使用证书</span>
+./mkcert -ecdsa -cert-file certs/idocker-io.crt -key-file certs/idocker-io.key <span class="s2">&#34;idocker.io&#34;</span> <span class="s2">&#34;*.idocker.io&#34;</span> <span class="s2">&#34;idocker.lan&#34;</span> <span class="s2">&#34;*.idocker.lan&#34;</span> <span class="c1"># 生成 docker 私服使用证书</span>
  
 ls certs/  <span class="c1"># 确认证书是否存在</span>
 idocker-io.crt  idocker-io.key  treesir-pub.crt  treesir-pub.key
@@ -543,7 +543,7 @@ services:
       - traefik.http.routers.4.tls<span class="o">=</span><span class="nb">true</span>
       - traefik.http.routers.4.service<span class="o">=</span>four
       - traefik.http.services.four.loadbalancer.server.port<span class="o">=</span><span class="m">8083</span>
-      - traefik.http.routers.5.rule<span class="o">=</span>Host<span class="o">(</span><span class="sb">`</span>dev.idocker.io<span class="sb">`</span><span class="o">)</span> <span class="o">&amp;&amp;</span> PathPrefix<span class="o">(</span><span class="sb">`</span>/<span class="sb">`</span><span class="o">)</span>
+      - traefik.http.routers.5.rule<span class="o">=</span>Host<span class="o">(</span><span class="sb">`</span>qa.idocker.io<span class="sb">`</span><span class="o">)</span> <span class="o">&amp;&amp;</span> PathPrefix<span class="o">(</span><span class="sb">`</span>/<span class="sb">`</span><span class="o">)</span>
       - traefik.http.routers.5.tls<span class="o">=</span><span class="nb">true</span>
       - traefik.http.routers.5.service<span class="o">=</span>five
       - traefik.http.services.five.loadbalancer.server.port<span class="o">=</span><span class="m">8084</span>
@@ -567,10 +567,16 @@ networks:
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">mkdir -p ./nexus-data <span class="c1"># 创建 nexus 数据存储目录，开放权限，防止报错</span>
 chmod <span class="m">777</span> -R ./nexus-data
+
+docker network create docker  <span class="c1"># 创建网络</span>
+
 
 docker-compose up -d  <span class="c1"># 启动</span>
 
@@ -694,7 +700,11 @@ docker login idocker.io
           <a href="/tags/https/">https</a>
           </div>
       <nav class="post-nav">
-        
+        <a class="prev" href="/post/kaniko-image-build/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Kaniko Docker 镜像构建 初体验</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
         <a class="next" href="/post/rancher-import-cluster-fix/">
             <span class="next-text nav-default">Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复</span>
             <span class="next-text nav-mobile">下一篇</span>

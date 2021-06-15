@@ -6,7 +6,16 @@
     <description>Recent content on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 10 Jun 2021 09:51:36 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 15 Jun 2021 10:02:48 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kaniko Docker 镜像构建 初体验</title>
+      <link>https://cdryzun.github.io/post/kaniko-image-build/</link>
+      <pubDate>Tue, 15 Jun 2021 10:02:48 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/kaniko-image-build/</guid>
+      <description>使用 docker 命令直接进行构建 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 echo -n yangzun:123456 | base64 eWFuZ3p1bjoxMjM0NTY= cat &amp;gt;&amp;gt; config.json &amp;lt;&amp;lt; EOF { &amp;#34;auths&amp;#34;: { &amp;#34;https://idocker.io/v2/&amp;#34;: { &amp;#34;auth&amp;#34;: &amp;#34;eWFuZ3p1bjoxMjM0NTY=&amp;#34; } } } EOF [root@node1 kaniko]# ls -lh 总用量 4.0K -rw-r--r-- 1 root root</description>
+    </item>
+    
     <item>
       <title>Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理</title>
       <link>https://cdryzun.github.io/post/nexus-use-traefik-proxy/</link>
