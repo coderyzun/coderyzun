@@ -6,7 +6,16 @@
     <description>Recent content in Posts on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 15 Jun 2021 10:02:48 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 24 Jun 2021 11:01:10 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 Kube-Vip 部署 高可用的 Kubernetes 集群</title>
+      <link>https://cdryzun.github.io/post/kube-vip-deploy-ha-k8s-cluster/</link>
+      <pubDate>Thu, 24 Jun 2021 11:01:10 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/kube-vip-deploy-ha-k8s-cluster/</guid>
+      <description>前言 在以前我们在私有环境下创建 Kubernetes 集群时，我们需要准备一个硬件/软件的 负载均衡器 来创建多控制面集群，更多的情况下我们会选择使用 HAProxy + Keepalived 来实现这个</description>
+    </item>
+    
     <item>
       <title>Kaniko Docker 镜像构建 初体验</title>
       <link>https://cdryzun.github.io/post/kaniko-image-build/</link>
