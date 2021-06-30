@@ -50,7 +50,7 @@
 <meta itemprop="description" content="使用 Kube-Vip 部署 高可用的 Kubernetes 集群">
 <meta itemprop="datePublished" content="2021-06-24T11:01:10+08:00" />
 <meta itemprop="dateModified" content="2021-06-24T11:01:10+08:00" />
-<meta itemprop="wordCount" content="1693">
+<meta itemprop="wordCount" content="1694">
 
 
 
@@ -143,7 +143,7 @@
         <div class="post-category">
             <a href="/categories/k8s/"> k8s </a>
             </div>
-          <span class="more-meta"> 约 1693 字 </span>
+          <span class="more-meta"> 约 1694 字 </span>
           <span class="more-meta"> 预计阅读 4 分钟 </span>
         
       </div>
@@ -183,7 +183,7 @@
 </div>
     <div class="post-content">
       <h1 id="前言">前言</h1>
-<p>在以前我们在私有环境下创建 Kubernetes 集群时，我们需要准备一个硬件/软件的 <code>负载均衡器</code> 来创建多控制面集群，更多的情况下我们会选择使用 HAProxy + Keepalived 来实现这个功能。一般情况下我们创建2个负载均衡器的虚拟机，然后分配一个 VIP，然后使用 VIP 为负载均衡器提供服务，通过 VIP 将流量重定向到后端的某个 Kubernetes 控制器平面节点上。如下图所示:</p>
+<p>在以前我们在私有环境下创建 Kubernetes 集群时，我们需要准备一个硬件/软件的 <code>负载均衡器</code> 来创建多控制平面集群，更多的情况下我们会选择使用 HAProxy + Keepalived 来实现这个功能。一般情况下我们创建2个负载均衡器的虚拟机，然后分配一个 VIP，然后使用 VIP 为负载均衡器提供服务，通过 VIP 将流量重定向到后端的某个 Kubernetes 控制器平面节点上。如下图所示:</p>
 <p><img src="https://cdn.treesir.pub/img/20210616142006.png" alt="20210616142006"></p>
 <p>接下来我们再来看看如果使用 kube-vip 的话会怎样呢？</p>
 <p><img src="https://cdn.treesir.pub/img/20210616142207.png" alt="20210616142207"></p>

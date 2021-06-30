@@ -13,7 +13,7 @@
       <pubDate>Thu, 24 Jun 2021 11:01:10 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/kube-vip-deploy-ha-k8s-cluster/</guid>
-      <description>前言 在以前我们在私有环境下创建 Kubernetes 集群时，我们需要准备一个硬件/软件的 负载均衡器 来创建多控制面集群，更多的情况下我们会选择使用 HAProxy + Keepalived 来实现这个</description>
+      <description>前言 在以前我们在私有环境下创建 Kubernetes 集群时，我们需要准备一个硬件/软件的 负载均衡器 来创建多控制平面集群，更多的情况下我们会选择使用 HAProxy + Keepalived 来实现这</description>
     </item>
     
   </channel>
