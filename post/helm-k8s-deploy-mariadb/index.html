@@ -967,7 +967,7 @@ ERROR <span class="m">1290</span> <span class="o">(</span>HY000<span class="o">)
 <p><a href="https://github.com/bitnami/bitnami-docker-mariadb/issues/174">https://github.com/bitnami/bitnami-docker-mariadb/issues/174</a></p>
 <h1 id="总结">总结</h1>
 <blockquote>
-<p>主从集群部署完毕后，这里还有两个问题需要提及和记录一下，<code>第一个</code>: 由于使用的是 localPv 并做了节点亲和，pod 使用对应 localpv 的 <code>pvc</code> 进行数据卷挂载时，将会 <code>继承</code> 其亲和调度策略。如果这时对应 <code>primary(master)</code> 节点主机出现 down 机，主从集群将会被破坏且无法使用 kubernetes 调度策略实现 pod <code>自恢复</code>，在生产环境中 <code>有条件</code> 的话，这里建议是进行使用分布式存储，可满足 pod 调度在 <code>任意</code> 节点 那种。<code>第二个</code>: 由于 localPv 使用的是对应主机中的 <code>磁盘目录</code>进行挂载，如果此时磁盘出现损坏，同样会导致集群被破坏，且 <code>数据可能丢失问题</code> ，建议做好定期的数据备份，并对 对应磁盘使用 <code>raid</code> 去提高磁盘文档和可靠性。</p>
+<p>主从集群部署完毕后，这里还有两个问题需要提及和记录一下，<code>第一个</code>: 由于使用的是 localPv 并做了节点亲和，pod 使用对应 localpv 的 <code>pvc</code> 进行数据卷挂载时，将会 <code>继承</code> 其亲和调度策略。如果这时对应 <code>primary(master)</code> 节点主机出现 down 机，主从集群将会被破坏且无法使用 kubernetes 调度策略实现 pod <code>自恢复</code>，在生产环境中 <code>有条件</code> 的话，这里建议是进行使用分布式存储，可满足 pod 调度在 <code>任意</code> 节点 那种。<code>第二个</code>: 由于 localPv 使用的是对应主机中的 <code>磁盘目录</code>进行挂载，如果此时磁盘出现损坏，同样会导致集群被破坏，且 <code>数据可能丢失问题</code> ，建议做好定期的数据备份，并对 对应磁盘使用 <code>raid</code> 去提高磁盘稳定和可靠性。</p>
 </blockquote>
 
     </div>

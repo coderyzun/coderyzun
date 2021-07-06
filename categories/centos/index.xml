@@ -13,7 +13,7 @@
       <pubDate>Wed, 26 May 2021 11:29:34 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/gocron-install/</guid>
-      <description>部署环境说明 操作系统: CentOS release 7.8.2003 Gocron Version: v1.5.3 Mysql Version: 5.5 Gocron 说明 gocron 是使用 go 语言开发的轻量级定时任务集中调度和管理系统, 可以用于替代 lnux-crontab。 项</description>
+      <description>部署环境说明 操作系统: CentOS release 7.8.2003 Gocron Version: v1.5.3 Mysql Version: 5.5 Gocron 说明 gocron 是使用 go 语言开发的轻量级定时任务集中调度和管理系统, 可以用于替代 linux-crontab。</description>
     </item>
     
     <item>
