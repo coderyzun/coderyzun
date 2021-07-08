@@ -50,7 +50,7 @@
 <meta itemprop="description" content="maven release plugin 的使用记录">
 <meta itemprop="datePublished" content="2021-05-16T17:52:05+08:00" />
 <meta itemprop="dateModified" content="2021-05-16T17:52:05+08:00" />
-<meta itemprop="wordCount" content="327">
+<meta itemprop="wordCount" content="396">
 
 
 
@@ -143,7 +143,7 @@
         <div class="post-category">
             <a href="/categories/devops/"> devops </a>
             </div>
-          <span class="more-meta"> 约 327 字 </span>
+          <span class="more-meta"> 约 396 字 </span>
           <span class="more-meta"> 预计阅读 1 分钟 </span>
         
       </div>
@@ -338,6 +338,9 @@
 </code></pre></td></tr></table>
 </div>
 </div><h1 id="插件打包的使用记录说明">插件打包的使用记录说明</h1>
+<blockquote>
+<p>maven plugin 在打包过程中，是会基于当前分支，创建一个分支进行打包，并会将创建的分支 push 至远端。与 项目的 分支管理模式有所冲突，并不想push 至远端的话</p>
+</blockquote>
 <ul>
 <li>
 <p>指定构建版本为 <code>1.0.4</code> 的 release 制品</p>

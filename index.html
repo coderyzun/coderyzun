@@ -46,7 +46,7 @@
 <meta property="og:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cdryzun.github.io/" />
-<meta property="og:updated_time" content="2021-06-24T11:01:10+08:00" />
+<meta property="og:updated_time" content="2021-07-08T14:41:34+08:00" />
 <meta itemprop="name" content="「Yang&#39;zun」PlayGround">
 <meta itemprop="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历">
 <meta name="twitter:card" content="summary"/>
@@ -128,6 +128,29 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/k8s-vpa/">初探 K8s VPA 垂直更改 Pod 资源请求</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-07-08 </span>
+      <div class="post-category">
+          <a href="/categories/k8s/"> k8s&#34; </a>
+          </div>
+        <span class="more-meta"> 约 695 字 </span>
+        <span class="more-meta"> 预计阅读 2 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      背景 Vertical Pod Autoscaler（VPA）使用户无需设置 pod 最新的资源限制。 配置后它将根据资源实际使用情况自动设置 request ，从而允许在节点上进行适当的调
+    </div>
+    <div class="read-more">
+      <a href="/post/k8s-vpa/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/kube-vip-deploy-ha-k8s-cluster/">使用 Kube-Vip 部署 高可用的 Kubernetes 集群</a></h1>
@@ -288,29 +311,6 @@
     </div>
     <div class="read-more">
       <a href="/post/gocron-install/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/helm-k8s-deploy-mariadb/">使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-05-25 </span>
-      <div class="post-category">
-          <a href="/categories/k8s/"> k8s </a>
-          </div>
-        <span class="more-meta"> 约 1941 字 </span>
-        <span class="more-meta"> 预计阅读 4 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      环境说明 helm version: v3.3.1 kubernetes: v1.17.9 使用 helm chart: bitnami/mariadb 操作系统: CentOS 7.8.2003 helm 部署 mariadb 前的准备 添加 helm 私服 1 2 3 4 5 6 helm repo add bitnami https://charts.bitnami.com/bitnami helm repo update # 更新仓库索引 helm search repo mariadb bitnami/mariadb 9.3.12 10.5.10 Fast, reliable, scalable, and easy to use open-...
-    </div>
-    <div class="read-more">
-      <a href="/post/helm-k8s-deploy-mariadb/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>

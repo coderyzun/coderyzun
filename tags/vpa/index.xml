@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vpa on 「Yang&#39;zun」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/vpa/</link>
+    <description>Recent content in vpa on 「Yang&#39;zun」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 08 Jul 2021 14:41:34 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/vpa/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>初探 K8s VPA 垂直更改 Pod 资源请求</title>
+      <link>https://cdryzun.github.io/post/k8s-vpa/</link>
+      <pubDate>Thu, 08 Jul 2021 14:41:34 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/k8s-vpa/</guid>
+      <description>背景 Vertical Pod Autoscaler（VPA）使用户无需设置 pod 最新的资源限制。 配置后它将根据资源实际使用情况自动设置 request ，从而允许在节点上进行适当的调</description>
+    </item>
+    
+  </channel>
+</rss>
