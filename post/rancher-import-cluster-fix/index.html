@@ -50,7 +50,7 @@
 <meta itemprop="description" content="Rancher 导入集群后，提示 Scheduler &amp; Controller Manager 不健康问题的记录，与修复。">
 <meta itemprop="datePublished" content="2021-06-08T08:45:22+08:00" />
 <meta itemprop="dateModified" content="2021-06-08T08:45:22+08:00" />
-<meta itemprop="wordCount" content="975">
+<meta itemprop="wordCount" content="994">
 
 
 
@@ -143,7 +143,7 @@
         <div class="post-category">
             <a href="/categories/k8s/"> k8s </a>
             </div>
-          <span class="more-meta"> 约 975 字 </span>
+          <span class="more-meta"> 约 994 字 </span>
           <span class="more-meta"> 预计阅读 2 分钟 </span>
         
       </div>
@@ -447,7 +447,20 @@ spec:
 ...
 </code></pre></td></tr></table>
 </div>
-</div><p>再次前往对应 dashboard 界面进行查看，可以看到已无之前的错误提示</p>
+</div><blockquote>
+<p>一键使用 sed 替换方式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sed -i <span class="s1">&#39;s/.*--port=0.*/#&amp;/&#39;</span> /etc/kubernetes/manifests/kube-controller-manager.yaml
+sed -i <span class="s1">&#39;s/.*--port=0.*/#&amp;/&#39;</span> /etc/kubernetes/manifests/kube-scheduler.yaml
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<p>再次前往对应 dashboard 界面进行查看，可以看到已无之前的错误提示</p>
 <p><img src="https://cdn.treesir.pub/img/image-20210608104356009.png" alt="image-20210608104356009"></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
