@@ -46,7 +46,7 @@
 <meta property="og:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cdryzun.github.io/" />
-<meta property="og:updated_time" content="2021-07-08T14:41:34+08:00" />
+<meta property="og:updated_time" content="2021-07-12T20:21:48+08:00" />
 <meta itemprop="name" content="「Yang&#39;zun」PlayGround">
 <meta itemprop="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历">
 <meta name="twitter:card" content="summary"/>
@@ -128,6 +128,29 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/macos-html-to-pdf/">Macos 一键 使用 wkhtmltopdf 将 html 转换为 pdf</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-07-12 </span>
+      <div class="post-category">
+          <a href="/categories/unix/"> unix </a>
+          </div>
+        <span class="more-meta"> 约 51 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      安装 wkhtmltopdf 使用 brew 进行安装 1 brew install --cask wkhtmltopdf 目录下所有 html 文件一键转换为 pdf 文件 1 for f in *.html; do wkhtmltopdf --load-error-handling ignore -n --enable-local-file-access $f &#34;$f.pdf&#34;; done 参考文档 https://segmentfault.com/a/1190000018988358 https://github.com/wkhtmltopdf/wkhtmltopdf
+    </div>
+    <div class="read-more">
+      <a href="/post/macos-html-to-pdf/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/k8s-vpa/">初探 K8s VPA 垂直更改 Pod 资源请求</a></h1>
@@ -287,30 +310,6 @@
     </div>
     <div class="read-more">
       <a href="/post/quick-delete-rancher-failed-pod/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/gocron-install/">Gocron 实践安装，实现统一定时任务管理平台</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-05-26 </span>
-      <div class="post-category">
-          <a href="/categories/centos/"> centos </a>
-          <a href="/categories/linux/"> linux </a>
-          </div>
-        <span class="more-meta"> 约 652 字 </span>
-        <span class="more-meta"> 预计阅读 2 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      部署环境说明 操作系统: CentOS release 7.8.2003 Gocron Version: v1.5.3 Mysql Version: 5.5 Gocron 说明 gocron 是使用 go 语言开发的轻量级定时任务集中调度和管理系统, 可以用于替代 linux-crontab。
-    </div>
-    <div class="read-more">
-      <a href="/post/gocron-install/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>

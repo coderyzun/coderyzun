@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>分类 - 「Yang&#39;zun」PlayGround</title>
+  <title>Macos 一键 使用 wkhtmltopdf 将 html 转换为 pdf - 「Yang&#39;zun」PlayGround</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Yang&#39;zun" /><meta name="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" /><meta name="keywords" content="github action, pipeline, gitlab, nexus3, 技术分享, 前端技术, 计算机网络, devops, kubernetes, jenkins, centos, 技术积累, 个人文档, 个人总结, mysql, 运维, 自动化, python, hugo, k3s, kafka, go lang, helm, traefik, kubeadm, rancher, redis, rke, nginx, apache, 网络安全" />
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="一键 使用 wkhtmltopdf 将 html 转换为 pdf" /><meta name="keywords" content="unix, wkhtmltopdf, html, pdf, 转换, 一键" />
 
 
 
@@ -26,7 +26,7 @@
 <meta name="generator" content="Hugo 0.78.2 with theme even" />
 
 
-<link rel="canonical" href="https://cdryzun.github.io/categories/" />
+<link rel="canonical" href="https://cdryzun.github.io/post/macos-html-to-pdf/" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -40,16 +40,24 @@
 <link rel="stylesheet" href="/css/custom.css">
 
 
-<meta property="og:title" content="Categories" />
-<meta property="og:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://cdryzun.github.io/categories/" />
-<meta property="og:updated_time" content="2021-07-12T20:21:48+08:00" />
-<meta itemprop="name" content="Categories">
-<meta itemprop="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历">
+<meta property="og:title" content="Macos 一键 使用 wkhtmltopdf 将 html 转换为 pdf" />
+<meta property="og:description" content="一键 使用 wkhtmltopdf 将 html 转换为 pdf" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/macos-html-to-pdf/" />
+<meta property="article:published_time" content="2021-07-12T20:21:48+08:00" />
+<meta property="article:modified_time" content="2021-07-12T20:21:48+08:00" />
+<meta itemprop="name" content="Macos 一键 使用 wkhtmltopdf 将 html 转换为 pdf">
+<meta itemprop="description" content="一键 使用 wkhtmltopdf 将 html 转换为 pdf">
+<meta itemprop="datePublished" content="2021-07-12T20:21:48+08:00" />
+<meta itemprop="dateModified" content="2021-07-12T20:21:48+08:00" />
+<meta itemprop="wordCount" content="51">
+
+
+
+<meta itemprop="keywords" content="wkhtmltopdf," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Categories"/>
-<meta name="twitter:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历"/>
+<meta name="twitter:title" content="Macos 一键 使用 wkhtmltopdf 将 html 转换为 pdf"/>
+<meta name="twitter:description" content="一键 使用 wkhtmltopdf 将 html 转换为 pdf"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -125,79 +133,123 @@
     <main id="main" class="main">
       <div class="content-wrapper">
         <div id="content" class="content">
-          <div class="terms">
-      <div class="terms-title">
-        共计 16 个分类
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Macos 一键 使用 wkhtmltopdf 将 html 转换为 pdf</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-07-12 </span>
+        <div class="post-category">
+            <a href="/categories/unix/"> unix </a>
+            </div>
+          <span class="more-meta"> 约 51 字 </span>
+          <span class="more-meta"> 预计阅读 1 分钟 </span>
+        
       </div>
-      <div class="terms-tags">
-        <a class="terms-link" href="/categories/k8s/">
-            k8s
-            <span class="terms-count">22</span>
-          </a>
-        <a class="terms-link" href="/categories/devops/">
-            devops
-            <span class="terms-count">19</span>
-          </a>
-        <a class="terms-link" href="/categories/linux/">
-            linux
-            <span class="terms-count">7</span>
-          </a>
-        <a class="terms-link" href="/categories/docker/">
-            docker
-            <span class="terms-count">6</span>
-          </a>
-        <a class="terms-link" href="/categories/openwrt/">
-            openwrt
-            <span class="terms-count">3</span>
-          </a>
-        <a class="terms-link" href="/categories/prometheus/">
-            prometheus
-            <span class="terms-count">3</span>
-          </a>
-        <a class="terms-link" href="/categories/centos/">
-            centos
-            <span class="terms-count">2</span>
-          </a>
-        <a class="terms-link" href="/categories/docker-compose/">
-            docker-compose
-            <span class="terms-count">2</span>
-          </a>
-        <a class="terms-link" href="/categories/fix/">
-            fix
-            <span class="terms-count">2</span>
-          </a>
-        <a class="terms-link" href="/categories/ingress/">
-            ingress
-            <span class="terms-count">2</span>
-          </a>
-        <a class="terms-link" href="/categories/network/">
-            network
-            <span class="terms-count">2</span>
-          </a>
-        <a class="terms-link" href="/categories/vm/">
-            vm
-            <span class="terms-count">2</span>
-          </a>
-        <a class="terms-link" href="/categories/alertmanage/">
-            alertmanage
-            <span class="terms-count">1</span>
-          </a>
-        <a class="terms-link" href="/categories/k3s/">
-            k3s
-            <span class="terms-count">1</span>
-          </a>
-        <a class="terms-link" href="/categories/proxy/">
-            proxy
-            <span class="terms-count">1</span>
-          </a>
-        <a class="terms-link" href="/categories/unix/">
-            unix
-            <span class="terms-count">1</span>
-          </a>
-        </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装-wkhtmltopdf">安装 wkhtmltopdf</a></li>
+    <li><a href="#目录下所有-html-文件一键转换为-pdf-文件">目录下所有 html 文件一键转换为 pdf 文件</a></li>
+    <li><a href="#参考文档">参考文档</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="安装-wkhtmltopdf">安装 wkhtmltopdf</h1>
+<ul>
+<li>
+<p><strong>使用 brew 进行安装</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">brew install --cask wkhtmltopdf
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h1 id="目录下所有-html-文件一键转换为-pdf-文件">目录下所有 html 文件一键转换为 pdf 文件</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="k">for</span> f in *.html<span class="p">;</span> <span class="k">do</span> wkhtmltopdf --load-error-handling ignore -n --enable-local-file-access  <span class="nv">$f</span> <span class="s2">&#34;</span><span class="nv">$f</span><span class="s2">.pdf&#34;</span><span class="p">;</span> <span class="k">done</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="参考文档">参考文档</h1>
+<ul>
+<li>
+<p><a href="https://segmentfault.com/a/1190000018988358">https://segmentfault.com/a/1190000018988358</a></p>
+</li>
+<li>
+<p><a href="https://github.com/wkhtmltopdf/wkhtmltopdf">https://github.com/wkhtmltopdf/wkhtmltopdf</a></p>
+</li>
+</ul>
+
     </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-07-12
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/wkhtmltopdf/">wkhtmltopdf</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/k8s-vpa/">
+            <span class="next-text nav-default">初探 K8s VPA 垂直更改 Pod 资源请求</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
         
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
 
       </div>
     </main>
