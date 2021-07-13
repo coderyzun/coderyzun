@@ -6,7 +6,16 @@
     <description>Recent content in shell on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 14 Apr 2021 10:48:42 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/shell/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 13 Jul 2021 11:45:00 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/shell/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 Cronjob 定时清理 ElasticSearch 中的日志索引</title>
+      <link>https://cdryzun.github.io/post/cronjob-clean-es-index/</link>
+      <pubDate>Tue, 13 Jul 2021 11:45:00 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/cronjob-clean-es-index/</guid>
+      <description>背景 在日常使用 efk 日志系统的过程中，每天造成的日志索引量是巨大的，需要进行对相关的索引进行定期清理，来缓解后端储存的占用。如何实现在 kubernetes 中进行优</description>
+    </item>
+    
     <item>
       <title>Centos7 执行 shutdown 无法正常关机的解决</title>
       <link>https://cdryzun.github.io/post/centos-shutdown-notpoweroff/</link>

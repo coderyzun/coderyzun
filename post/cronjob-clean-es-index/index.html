@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Yang&#39;zun" /><meta name="description" content="背景 在日常使用 efk 日志系统的过程中，每天造成的日志索引量是巨大的，需要进行对相关的索引进行定期清理，来缓解后端储存的占用。如何实现在 kubernetes 中进行优" /><meta name="keywords" content="github action, pipeline, gitlab, nexus3, 技术分享, 前端技术, 计算机网络, devops, kubernetes, jenkins, centos, 技术积累, 个人文档, 个人总结, mysql, 运维, 自动化, python, hugo, k3s, kafka, go lang, helm, traefik, kubeadm, rancher, redis, rke, nginx, apache, 网络安全" />
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="如何实现在 kubernetes 中使用 cronjob 进行优雅的定期清理 ElasticSearch 中的日志索引" /><meta name="keywords" content="shell, cronjob, 定时清理, 实现, efk, k8s, 优化" />
 
 
 
@@ -41,23 +41,23 @@
 
 
 <meta property="og:title" content="使用 Cronjob 定时清理 ElasticSearch 中的日志索引" />
-<meta property="og:description" content="背景 在日常使用 efk 日志系统的过程中，每天造成的日志索引量是巨大的，需要进行对相关的索引进行定期清理，来缓解后端储存的占用。如何实现在 kubernetes 中进行优" />
+<meta property="og:description" content="如何实现在 kubernetes 中使用 cronjob 进行优雅的定期清理 ElasticSearch 中的日志索引" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cdryzun.github.io/post/cronjob-clean-es-index/" />
 <meta property="article:published_time" content="2021-07-13T11:45:00+08:00" />
 <meta property="article:modified_time" content="2021-07-13T11:45:00+08:00" />
 <meta itemprop="name" content="使用 Cronjob 定时清理 ElasticSearch 中的日志索引">
-<meta itemprop="description" content="背景 在日常使用 efk 日志系统的过程中，每天造成的日志索引量是巨大的，需要进行对相关的索引进行定期清理，来缓解后端储存的占用。如何实现在 kubernetes 中进行优">
+<meta itemprop="description" content="如何实现在 kubernetes 中使用 cronjob 进行优雅的定期清理 ElasticSearch 中的日志索引">
 <meta itemprop="datePublished" content="2021-07-13T11:45:00+08:00" />
 <meta itemprop="dateModified" content="2021-07-13T11:45:00+08:00" />
 <meta itemprop="wordCount" content="480">
 
 
 
-<meta itemprop="keywords" content="" />
+<meta itemprop="keywords" content="shell,cronjob," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="使用 Cronjob 定时清理 ElasticSearch 中的日志索引"/>
-<meta name="twitter:description" content="背景 在日常使用 efk 日志系统的过程中，每天造成的日志索引量是巨大的，需要进行对相关的索引进行定期清理，来缓解后端储存的占用。如何实现在 kubernetes 中进行优"/>
+<meta name="twitter:description" content="如何实现在 kubernetes 中使用 cronjob 进行优雅的定期清理 ElasticSearch 中的日志索引"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -140,7 +140,10 @@
 
       <div class="post-meta">
         <span class="post-time"> 2021-07-13 </span>
-        
+        <div class="post-category">
+            <a href="/categories/efk/"> efk </a>
+            <a href="/categories/k8s/"> k8s </a>
+            </div>
           <span class="more-meta"> 约 480 字 </span>
           <span class="more-meta"> 预计阅读 1 分钟 </span>
         
@@ -358,7 +361,10 @@
   </p>
 </div>
 <footer class="post-footer">
-      
+      <div class="post-tags">
+          <a href="/tags/shell/">shell</a>
+          <a href="/tags/cronjob/">cronjob</a>
+          </div>
       <nav class="post-nav">
         
         <a class="next" href="/post/macos-html-to-pdf/">
