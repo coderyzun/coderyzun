@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://cdryzun.github.io/post/</loc>
+    <lastmod>2021-07-13T11:45:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/</loc>
+    <lastmod>2021-07-13T11:45:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/cronjob-clean-es-index/</loc>
+    <lastmod>2021-07-13T11:45:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://cdryzun.github.io/categories/</loc>
     <lastmod>2021-07-12T20:21:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -10,13 +31,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/post/macos-html-to-pdf/</loc>
-    <lastmod>2021-07-12T20:21:48+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/post/</loc>
     <lastmod>2021-07-12T20:21:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -38,13 +52,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/tags/wkhtmltopdf/</loc>
-    <lastmod>2021-07-12T20:21:48+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/</loc>
     <lastmod>2021-07-12T20:21:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
