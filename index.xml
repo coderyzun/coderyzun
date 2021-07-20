@@ -6,7 +6,16 @@
     <description>Recent content on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 13 Jul 2021 11:45:00 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 20 Jul 2021 17:04:26 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>记录一次 JupyterLab 插件打包问题的修复</title>
+      <link>https://cdryzun.github.io/post/pipeline-jupyter-labextension-build-fix/</link>
+      <pubDate>Tue, 20 Jul 2021 17:04:26 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/pipeline-jupyter-labextension-build-fix/</guid>
+      <description>背景 在所关联项目 的 jenkins pipeline ci 流水线中，开发告诉我 生成的 pip 包中未有生成相关的 labextension 依赖文件夹，导致 pip 包虽然是安装成功了，但仍是一个不可用的状态。开发人</description>
+    </item>
+    
     <item>
       <title>使用 Cronjob 定时清理 ElasticSearch 中的日志索引</title>
       <link>https://cdryzun.github.io/post/cronjob-clean-es-index/</link>

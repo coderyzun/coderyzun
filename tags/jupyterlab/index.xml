@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>jupyterlab on 「Yang&#39;zun」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/jupyterlab/</link>
+    <description>Recent content in jupyterlab on 「Yang&#39;zun」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 20 Jul 2021 17:04:26 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/jupyterlab/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>记录一次 JupyterLab 插件打包问题的修复</title>
+      <link>https://cdryzun.github.io/post/pipeline-jupyter-labextension-build-fix/</link>
+      <pubDate>Tue, 20 Jul 2021 17:04:26 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/pipeline-jupyter-labextension-build-fix/</guid>
+      <description>背景 在所关联项目 的 jenkins pipeline ci 流水线中，开发告诉我 生成的 pip 包中未有生成相关的 labextension 依赖文件夹，导致 pip 包虽然是安装成功了，但仍是一个不可用的状态。开发人</description>
+    </item>
+    
+  </channel>
+</rss>
