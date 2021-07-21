@@ -50,7 +50,7 @@
 <meta itemprop="description" content="JupyterLab 插件使用 jenkins pipeline 打包错误问题修复记录。">
 <meta itemprop="datePublished" content="2021-07-20T17:04:26+08:00" />
 <meta itemprop="dateModified" content="2021-07-20T17:04:26+08:00" />
-<meta itemprop="wordCount" content="1658">
+<meta itemprop="wordCount" content="1697">
 
 
 
@@ -144,7 +144,7 @@
             <a href="/categories/k8s/"> k8s </a>
             <a href="/categories/devops/"> devops </a>
             </div>
-          <span class="more-meta"> 约 1658 字 </span>
+          <span class="more-meta"> 约 1697 字 </span>
           <span class="more-meta"> 预计阅读 4 分钟 </span>
         
       </div>
@@ -177,7 +177,7 @@
     <div class="post-content">
       <h1 id="背景">背景</h1>
 <blockquote>
-<p>在所关联项目 的 jenkins pipeline ci 流水线中，开发告诉我 生成的 pip 包中未有生成相关的 <code>labextension</code> 依赖文件夹，导致 pip 包虽然是安装成功了，但仍是一个不可用的状态。开发人员告诉我在 <code>linux</code> &amp; <code>windows</code> 环境下 均是可以正常生成相关依赖文件夹的，开发问我是不是哪里配置有点问题，我想了一下 是不是 jenkins slave 使用的 是 容器的原因？给他一个命令，启动一个 容器在容器里面生成一下包看看，命令如下所示:</p>
+<p>在所关联项目 的 jenkins pipeline ci 流水线中，开发告诉我 生成的 pip 包中未有生成相关的 <code>labextension</code> 依赖文件夹，导致 pip 包虽然是安装成功了，但仍是一个不可用的状态。开发人员告诉我在 <code>linux</code> &amp; <code>windows</code> 环境下 均是可以正常生成相关依赖文件夹的，问我是不是哪里配置有点问题，思索了一下 和他说会不会是 jenkins slave 使用的 是 <code>容器</code> 的原因？给了他一个启动命令，测试在容器里面生成一下包看看，启动命令如下所示:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -186,7 +186,7 @@
 <pre class="chroma"><code class="language-bash" data-lang="bash">docker run -it --rm --name <span class="nb">test</span> --entrypoint /bin/bash idocker.io/base/jenkins/inbound-agent:4.3-8-jdk11
 </code></pre></td></tr></table>
 </div>
-</div><p>开发经过一番测试后，仍然是可以生成正常的依赖包，这就感觉有点奇怪了，于是就有了我对此问题进行的逐一定位的记录。</p>
+</div><p>后续经过开发一番操作后，仍然是可以生成正常依赖包，这就让我感觉有点奇怪了，于是就有了此篇文档，关于我对此问题的逐一定位。</p>
 </blockquote>
 <p><img src="https://cdn.treesir.pub/img/image-20210720165315715.png" alt="image-20210720165315715"></p>
 <h1 id="逐一排查定位">逐一排查定位</h1>
@@ -198,11 +198,11 @@
 <p>使用 jenkins pipeline 后的 日志输出</p>
 <p><img src="https://cdn.treesir.pub/img/image-20210720160740289.png" alt="image-20210720160740289"></p>
 <blockquote>
-<p>观察对应的日志输出，在执行 <code>python3 setup.py bdist_wheel </code> 后有出现 <code>jlpm install</code> 对应的命令才能生成出正常可使用的依赖包。</p>
+<p>观察对应的日志输出，在执行 <code>python3 setup.py bdist_wheel </code> 后有出现 <code>jlpm install</code> 对应的命令才能生成出正常可使用的 pip 依赖包。</p>
 </blockquote>
 <h2 id="测试-pipeline-一">测试 pipeline (一)</h2>
 <blockquote>
-<p>此 pipeline 目的是检查，相关的版本是不是一致的。</p>
+<p>此 pipeline 目的是检查，相关的 <code>版本是不是一致</code>。</p>
 </blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -425,11 +425,11 @@ pipeline<span class="o">{</span>
 </div>
 </div><p><img src="https://cdn.treesir.pub/img/image-20210720161700281.png" alt="image-20210720161700281"></p>
 <blockquote>
-<p>日志输出可以看到，一样的效果没有执行 <code>jlpm</code> 相关子命令，确认了 镜像 和 软件版本不是问题的因素。</p>
+<p>日志输出可以看到，一样的效果没有执行 <code>jlpm</code>  相关子命令，确认了 镜像 和 软件版本不是问题因素。</p>
 </blockquote>
 <h2 id="测试-pipeline-三">测试 pipeline (三)</h2>
 <blockquote>
-<p>尝试 使用 <code>nohup</code> 进行后台运行，看看是不是 那个终端参数设置错误问题导致。</p>
+<p>尝试 使用 <code>nohup</code> 进行后台运行，看看是不是 那个 <code>终端参数设置错误</code> 问题导致。</p>
 </blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -704,12 +704,12 @@ pipeline<span class="o">{</span>
 </div>
 </div><p><img src="https://cdn.treesir.pub/img/image-20210720163705281.png" alt="image-20210720163705281"></p>
 <blockquote>
-<p>此时再次查看 对应流水线的日志输出时，惊喜的分析 已有 <code>jlpm </code> 命令执行记录的输出。为验证 包的完整性，我将对应的 <code>whl</code> 包进行了下载并使用工具解压进行查看，看到已正常生成对应的 <code>labextension</code> 依赖文件夹。后续修改了 线上 pipeline 逻辑后，rebuild 后，让开发进行检查后，是正常的了。</p>
+<p>此时再次查看 对应流水线的日志输出时，惊喜的分析 已有 <code>jlpm </code> 命令执行记录的输出。为验证 包的完整性，我将对应的 <code>whl</code> 包进行了下载并使用工具进行解压查看，看到已正常生成对应的 <code>labextension</code> 依赖文件夹。后续修改了 线上 pipeline 逻辑后，rebuild 后，让开发进行检查后，是正常的了，此致问题解决。</p>
 <p><img src="https://cdn.treesir.pub/img/image-20210720165145369.png" alt="image-20210720165145369"></p>
 </blockquote>
 <h1 id="总结">总结</h1>
 <blockquote>
-<p>在处理问题的过程中，第一个是需要多多观察相关的日志输出，很多问题的解决其实多已在对应的日志中有表现，第二个是要了解其相关技术的 <code>实现原理</code>。做技术的光知道怎么用是不够的，实现原理也需要进行了解才行，这样碰到问题后，能够洞察问题的本质，精准定位并解决。</p>
+<p>在处理技术问题的过程中，个人感觉，第一个是需要多多观察相关程序的日志输出，其实很多解决问题的方法多在日志中有表现，很多人就是不会去检查日志。第二个是要了解其相关技术的 <code>实现原理</code>。做技术的光知道怎么用是不够的，实现原理也需要进行了解才行，这样碰到稀奇古怪的问题后，能够洞察问题的本质，精准定位并解决。</p>
 </blockquote>
 <h2 id="todo">toDo</h2>
 
