@@ -492,6 +492,34 @@
   </url>
   
   <url>
+    <loc>https://cdryzun.github.io/tags/backup/</loc>
+    <lastmod>2021-05-16T18:00:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/docker-compose/</loc>
+    <lastmod>2021-05-16T18:00:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/velero/</loc>
+    <lastmod>2021-05-16T18:00:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/velero-install/</loc>
+    <lastmod>2021-05-16T18:00:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://cdryzun.github.io/tags/maven/</loc>
     <lastmod>2021-05-16T17:52:05+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -501,13 +529,6 @@
   <url>
     <loc>https://cdryzun.github.io/post/maven-release-plugin/</loc>
     <lastmod>2021-05-16T17:52:05+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/docker-compose/</loc>
-    <lastmod>2021-05-15T16:20:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
