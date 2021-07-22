@@ -3,21 +3,77 @@
   
   <url>
     <loc>https://cdryzun.github.io/categories/</loc>
-    <lastmod>2021-07-20T17:04:26+08:00</lastmod>
+    <lastmod>2021-07-22T15:38:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/categories/devops/</loc>
-    <lastmod>2021-07-20T17:04:26+08:00</lastmod>
+    <lastmod>2021-07-22T15:38:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/fix/</loc>
+    <lastmod>2021-07-22T15:38:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/tags/jenkins/</loc>
-    <lastmod>2021-07-20T17:04:26+08:00</lastmod>
+    <lastmod>2021-07-22T15:38:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/neuxs3/</loc>
+    <lastmod>2021-07-22T15:38:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/pipeline/</loc>
+    <lastmod>2021-07-22T15:38:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/</loc>
+    <lastmod>2021-07-22T15:38:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/pypi/</loc>
+    <lastmod>2021-07-22T15:38:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/</loc>
+    <lastmod>2021-07-22T15:38:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/</loc>
+    <lastmod>2021-07-22T15:38:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/nexus3-pypi-blob-storage-fix/</loc>
+    <lastmod>2021-07-22T15:38:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -31,27 +87,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/categories/k8s/</loc>
-    <lastmod>2021-07-20T17:04:26+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/post/</loc>
-    <lastmod>2021-07-20T17:04:26+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/</loc>
-    <lastmod>2021-07-20T17:04:26+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/</loc>
     <lastmod>2021-07-20T17:04:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -213,13 +248,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/tags/mkcert/</loc>
-    <lastmod>2021-06-10T09:51:36+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/neuxs3/</loc>
     <lastmod>2021-06-10T09:51:36+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -808,13 +836,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/tags/centos/</loc>
-    <lastmod>2021-01-14T20:09:58+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/fix/</loc>
     <lastmod>2021-01-14T20:09:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

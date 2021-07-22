@@ -6,7 +6,16 @@
     <description>Recent content in Posts on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 20 Jul 2021 17:04:26 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 22 Jul 2021 15:38:00 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>记录一次 Nexus3 Pypi 私服 Blob Storage 异常的修复</title>
+      <link>https://cdryzun.github.io/post/nexus3-pypi-blob-storage-fix/</link>
+      <pubDate>Thu, 22 Jul 2021 15:38:00 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/nexus3-pypi-blob-storage-fix/</guid>
+      <description>说明 在 devops 集成环境中的 测试环境 中，今天发现有几条 pipeline 一直是在构建超时状态。初步查看了一下，以为是哪个 依赖版本的兼容性有些问题, 导致 pip 一直是找不到</description>
+    </item>
+    
     <item>
       <title>记录一次 JupyterLab 插件打包问题的修复</title>
       <link>https://cdryzun.github.io/post/pipeline-jupyter-labextension-build-fix/</link>
