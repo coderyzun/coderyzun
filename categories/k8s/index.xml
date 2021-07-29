@@ -85,7 +85,7 @@
       <pubDate>Mon, 24 May 2021 16:33:49 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/spinnaker-helm-installd/</guid>
-      <description>环境说明 Kubernetes Version: v1.17.9 操作系统: CentOS 7.8.2003 Helm Version: v3.2.1 Spinnaker Version: 1.26.3 spinnaker 版本说明 使用 helm 部署 注意 示例演示环境使用 openwrt 进行扶墙处理；在使用 helm 部署前，首先需要确认你的梯子够不够稳</description>
+      <description>环境说明 Kubernetes Version: v1.17.9 操作系统: CentOS 7.8.2003 Helm Version: v3.2.1 Spinnaker Version: 1.26.3 spinnaker 版本说明 spinnaker 组件说明 Deck：前端web页面 端口9000 Gate：API网关，所有程序通过gate与</description>
     </item>
     
     <item>

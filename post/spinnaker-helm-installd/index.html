@@ -50,7 +50,7 @@
 <meta itemprop="description" content="使用 helm 快速部署 Spinnaker 持续部署(CD)平台">
 <meta itemprop="datePublished" content="2021-05-24T16:33:49+08:00" />
 <meta itemprop="dateModified" content="2021-05-24T16:33:49+08:00" />
-<meta itemprop="wordCount" content="2849">
+<meta itemprop="wordCount" content="3175">
 
 
 
@@ -144,8 +144,8 @@
             <a href="/categories/devops/"> devops </a>
             <a href="/categories/k8s/"> k8s </a>
             </div>
-          <span class="more-meta"> 约 2849 字 </span>
-          <span class="more-meta"> 预计阅读 6 分钟 </span>
+          <span class="more-meta"> 约 3175 字 </span>
+          <span class="more-meta"> 预计阅读 7 分钟 </span>
         
       </div>
     </header>
@@ -155,8 +155,12 @@
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#环境说明">环境说明</a></li>
-    <li><a href="#使用-helm-部署">使用 <code>helm</code> 部署</a></li>
+    <li><a href="#环境说明">环境说明</a>
+      <ul>
+        <li><a href="#spinnaker-组件说明">spinnaker 组件说明</a></li>
+      </ul>
+    </li>
+    <li><a href="#使用-helm-安装部署">使用 <code>helm</code> 安装部署</a></li>
     <li><a href="#使用-traefik-暴露前端页面">使用 <code>traefik</code> 暴露前端页面</a>
       <ul>
         <li><a href="#配置管理-openldap">配置管理 openLdap</a></li>
@@ -208,7 +212,45 @@
 </blockquote>
 </li>
 </ul>
-<h1 id="使用-helm-部署">使用 <code>helm</code> 部署</h1>
+<h2 id="spinnaker-组件说明">spinnaker 组件说明</h2>
+<ul>
+<li>
+<p>Deck：前端web页面  端口9000</p>
+</li>
+<li>
+<p>Gate：API网关，所有程序通过gate与spinnaker通信。 端口8084</p>
+</li>
+<li>
+<p>Orca：编排引擎，定义管道或任务，并管理阶段和任务，协调其他Spinnaker服务。 端口8083</p>
+</li>
+<li>
+<p>Clouddriver： 云厂商适配器，负责对云厂商的变更资源调用。 端口7002</p>
+</li>
+<li>
+<p>Front50：用于保存应用程序、管道、项目和通知的元数据。 端口8080</p>
+</li>
+<li>
+<p>Rosco：为各种运供应商生成不可变的VM镜像。 端口 8087</p>
+</li>
+<li>
+<p>Igor: 持续集成系统集成，触发管道。端口 8088</p>
+</li>
+<li>
+<p>Echo：消息通知，负责发送通知。端口 8089</p>
+</li>
+<li>
+<p>Fiat: 认证授权服务。端口 7003</p>
+</li>
+<li>
+<p>Kayenta：自动化的金丝雀分析。端口 8090</p>
+</li>
+<li>
+<p>Halyard： Spinnaker生命周期配置管理工具。端口 8064</p>
+</li>
+</ul>
+<p><strong>组件关联图 如下所示</strong></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210527113202591.png" alt="image-20210527113202591"></p>
+<h1 id="使用-helm-安装部署">使用 <code>helm</code> 安装部署</h1>
 <blockquote>
 <p><code>注意</code> 示例演示环境使用 <code>openwrt</code> 进行扶墙处理；在使用 helm 部署前，首先需要确认你的梯子够不够稳，如果不稳的话建议使用的是手动部署。</p>
 </blockquote>

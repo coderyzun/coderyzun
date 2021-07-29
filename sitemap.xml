@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</loc>
+    <lastmod>2021-07-29T11:38:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/</loc>
+    <lastmod>2021-07-29T11:38:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/</loc>
+    <lastmod>2021-07-29T11:38:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://cdryzun.github.io/categories/</loc>
     <lastmod>2021-07-29T08:56:04+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -58,21 +79,7 @@
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/post/</loc>
-    <lastmod>2021-07-29T08:56:04+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://cdryzun.github.io/tags/</loc>
-    <lastmod>2021-07-29T08:56:04+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/</loc>
     <lastmod>2021-07-29T08:56:04+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -998,12 +1005,6 @@
   <url>
     <loc>https://cdryzun.github.io/post/first-kind/</loc>
     <lastmod>2020-11-15T14:24:42+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/post/spinnaker-%E7%BB%84%E4%BB%B6%E8%AF%B4%E6%98%8E/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

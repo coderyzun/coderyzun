@@ -6,7 +6,16 @@
     <description>Recent content on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 29 Jul 2021 08:56:04 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 29 Jul 2021 11:38:41 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2021下半年总结面试题与分析</title>
+      <link>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</link>
+      <pubDate>Thu, 29 Jul 2021 11:38:41 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</guid>
+      <description>背景 个人目前在长沙，面试均已远超形式进行面试，面向城市为 深圳，此篇博文 记录自己的在面试过程中，遇到的面试题。 相关约定: （ 题目后带: * 表示为本</description>
+    </item>
+    
     <item>
       <title>K3s 集群修改 Flannel CNI 插件网络模式</title>
       <link>https://cdryzun.github.io/post/k3s-change-flannel-cni-model/</link>
@@ -139,7 +148,7 @@
       <pubDate>Mon, 24 May 2021 16:33:49 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/spinnaker-helm-installd/</guid>
-      <description>环境说明 Kubernetes Version: v1.17.9 操作系统: CentOS 7.8.2003 Helm Version: v3.2.1 Spinnaker Version: 1.26.3 spinnaker 版本说明 使用 helm 部署 注意 示例演示环境使用 openwrt 进行扶墙处理；在使用 helm 部署前，首先需要确认你的梯子够不够稳</description>
+      <description>环境说明 Kubernetes Version: v1.17.9 操作系统: CentOS 7.8.2003 Helm Version: v3.2.1 Spinnaker Version: 1.26.3 spinnaker 版本说明 spinnaker 组件说明 Deck：前端web页面 端口9000 Gate：API网关，所有程序通过gate与</description>
     </item>
     
     <item>
@@ -482,15 +491,6 @@
       
       <guid>https://cdryzun.github.io/post/first-kind/</guid>
       <description>参考资料 Github 地址 参考博客 安装 1 2 3 curl -Lo ./kind &amp;#34;https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64&amp;#34; chmod +x ./kind mv ./kind /some-dir-in-your-PATH/kind 启动集群 注意启动集群前 请确认 docker 服务是否启动 1 2 3 4 5 6 7 8 9 10 11 12 docker info|grep -A 2 Server # 确认 是否启</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://cdryzun.github.io/post/spinnaker-%E7%BB%84%E4%BB%B6%E8%AF%B4%E6%98%8E/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://cdryzun.github.io/post/spinnaker-%E7%BB%84%E4%BB%B6%E8%AF%B4%E6%98%8E/</guid>
-      <description>spinnaker 组件说明 Deck：前端web页面 端口9000 Gate：API网关，所有程序通过gate与spinnaker通信。 端口8084 Orca：编排</description>
     </item>
     
   </channel>
