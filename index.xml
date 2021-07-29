@@ -6,16 +6,7 @@
     <description>Recent content on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 29 Jul 2021 11:38:41 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>2021下半年总结面试题与分析</title>
-      <link>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</link>
-      <pubDate>Thu, 29 Jul 2021 11:38:41 +0800</pubDate>
-      
-      <guid>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</guid>
-      <description>背景 个人目前在长沙，面试均已远超形式进行面试，面向城市为 深圳，此篇博文 记录自己的在面试过程中，遇到的面试题。 相关约定: （ 题目后带: * 表示为本</description>
-    </item>
-    
+    <lastBuildDate>Thu, 29 Jul 2021 08:56:04 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>K3s 集群修改 Flannel CNI 插件网络模式</title>
       <link>https://cdryzun.github.io/post/k3s-change-flannel-cni-model/</link>
