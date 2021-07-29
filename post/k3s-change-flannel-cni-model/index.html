@@ -50,7 +50,7 @@
 <meta itemprop="description" content="k3s 集群修改 flannel 默认 vxlan 模式，更改为 host-gw 模式的记录">
 <meta itemprop="datePublished" content="2021-07-29T08:56:04+08:00" />
 <meta itemprop="dateModified" content="2021-07-29T08:56:04+08:00" />
-<meta itemprop="wordCount" content="1232">
+<meta itemprop="wordCount" content="1240">
 
 
 
@@ -145,7 +145,7 @@
             <a href="/categories/openwrt/"> openwrt </a>
             <a href="/categories/network/"> network </a>
             </div>
-          <span class="more-meta"> 约 1232 字 </span>
+          <span class="more-meta"> 约 1240 字 </span>
           <span class="more-meta"> 预计阅读 3 分钟 </span>
         
       </div>
@@ -188,7 +188,7 @@
     <div class="post-content">
       <h1 id="背景说明">背景说明</h1>
 <blockquote>
-<p>在 <a href="https://www.treesir.pub/post/n1-openwrt-k3s-deploy/">之前搭建</a> 的 k3s 集群中因为某些原因我将 openwrt 节点，进行了系统重装，更改固件为了 <code>esir</code> 高大全的 op 固件，由于其 固件中没有将 <code>vxlan</code> 模块编译进内核当中，而 k3s <code>默认</code> 使用的 cni 为 <code>flannel 的 vxlan</code> 模式，导致在初始化节点的时候会出现错误，导致节点添加不成功，我们知道原生 flannel 支持的模式不只单单只有 vxlan，还支持 <strong>host-gw</strong>、<strong>udp</strong> 模式。于是进行查阅 k3s 相关资料，决定将 flannel 使用模式更改为 <code>host-gw</code> 查看是否可行。</p>
+<p>在 <a href="https://www.treesir.pub/post/n1-openwrt-k3s-deploy/">之前搭建</a> 的 k3s 集群中因为某些原因我将 openwrt 节点，进行了系统重装，更改固件为了 <code>esir</code> 高大全的 op 固件，由于其 固件中没有将 <code>vxlan</code> 模块编译进内核当中，而 k3s <code>默认</code> 使用的 cni 为 <code>flannel 的 vxlan</code> 模式，导致在初始化节点的时候会出现错误，导致节点添加不成功，我们知道原生 flannel 支持的模式不只单单只有 vxlan，还支持 <strong>host-gw</strong>、<strong>udp</strong> 模式。进行查阅 k3s 相关资料，看到 k3s 是支持切换多种网络模式的，于是决定将 flannel 模式更改为 <code>host-gw</code> 。</p>
 </blockquote>
 <h2 id="节点说明">节点说明</h2>
 <table>
