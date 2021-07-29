@@ -50,7 +50,7 @@
 <meta itemprop="description" content="使用 Gitlab 时，git commit 和 jira issue id 的集成">
 <meta itemprop="datePublished" content="2021-04-12T17:25:58+08:00" />
 <meta itemprop="dateModified" content="2021-04-12T17:25:58+08:00" />
-<meta itemprop="wordCount" content="2435">
+<meta itemprop="wordCount" content="2434">
 
 
 
@@ -143,7 +143,7 @@
         <div class="post-category">
             <a href="/categories/devops/"> devops </a>
             </div>
-          <span class="more-meta"> 约 2435 字 </span>
+          <span class="more-meta"> 约 2434 字 </span>
           <span class="more-meta"> 预计阅读 5 分钟 </span>
         
       </div>
@@ -441,7 +441,7 @@ error: failed to push some refs to <span class="s1">&#39;http://gitlab.treesir.p
 </div>
 </div><h1 id="基于针对单个项目的-hook">基于针对单个项目的 hook</h1>
 <blockquote>
-<p>有些时候我们的限制不想针对于全局，只想针对于某个项目组，或者组中的某些项目。下面示例，创建一个新的仓库，并对这个仓库添加独立的 hook 限制。<code>全局钩子</code> 和 <code>局部钩子</code> 的脚本方式是一样的，只是放置的路径不同，全局即我们上面配置的容器中 <code>/etc/gitlab/hooks</code> 而 局部的 是在 <code>项目绝对路径/custom_hooks/</code> 下，可以局部的钩子，这样可能不太清晰，下面我演示一下就清楚了。</p>
+<p>有些时候我们的限制不想针对于全局，只想针对于某个项目组，或者组中的某些项目。下面示例，创建一个新的仓库，并对这个仓库添加独立的 hook 限制。<code>全局钩子</code> 和 <code>局部钩子</code> 的脚本方式是一样的，只是放置的路径不同，全局即我们上面配置的容器中 <code>/etc/gitlab/hooks</code> 而 局部的 是在 <code>项目绝对路径/custom_hooks/</code> 下，可能局部的钩子，这样说有点抽象，下面我演示一下就清楚了。</p>
 </blockquote>
 <h2 id="添加局部-hook强制-git-commit-输入-jira-issue-id">添加局部 hook，强制 git <code>commit</code> 输入 jira issue id</h2>
 <blockquote>
@@ -544,7 +544,7 @@ error: failed to push some refs to <span class="s1">&#39;http://gitlab.treesir.p
 </div>
 </div><h3 id="找到对应项目在磁盘中的路径">找到对应项目在磁盘中的路径</h3>
 <blockquote>
-<p>从 gitlab 多少版本开始，项目的路径就是已 <code>hash</code> 形式存在磁盘中，目的好像是为了提高磁盘io性能，我看官方文档好像是这个说的。</p>
+<p>从 gitlab 多少版本开始，项目的路径就是已 <code>hash</code> 形式存在磁盘中，目的好像是为了提高磁盘io性能，我看官方文档好像是这样说的。</p>
 </blockquote>
 <p><strong>创建一个新的项目</strong></p>
 <p><img src="https://cdn.treesir.pub/img/image-20210413114851496.png" alt="image-20210413114851496"></p>

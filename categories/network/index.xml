@@ -6,7 +6,16 @@
     <description>Recent content in network on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 15 May 2021 16:20:46 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/network/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 29 Jul 2021 08:56:04 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/network/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>K3s 集群修改 Flannel CNI 插件网络模式</title>
+      <link>https://cdryzun.github.io/post/k3s-change-flannel-cni-model/</link>
+      <pubDate>Thu, 29 Jul 2021 08:56:04 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/k3s-change-flannel-cni-model/</guid>
+      <description>背景说明 在 之前搭建 的 k3s 集群中因为某些原因我将 openwrt 节点，进行了系统重装，更改固件为了 esir 高大全的 op 固件，由于其 固件中没有将 vxlan 模块编译进内核当中，而</description>
+    </item>
+    
     <item>
       <title>使用 Docker-Compose 部署 openConnect Vpn Server</title>
       <link>https://cdryzun.github.io/post/ocserv-vpn-install/</link>
