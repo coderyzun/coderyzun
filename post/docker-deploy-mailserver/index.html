@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>使用 Docker Compose 5分钟 部署 一台邮件服务器 - 「Yang&#39;zun」PlayGround</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用 Docker Compose docker-mailserver docker 镜像，一键部署一台 邮件服务器。" /><meta name="keywords" content="centos7, email, install, devops, docker-compose" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/docker-deploy-mailserver/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<meta property="og:title" content="使用 Docker Compose 5分钟 部署 一台邮件服务器" />
+<meta property="og:description" content="使用 Docker Compose docker-mailserver docker 镜像，一键部署一台 邮件服务器。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/docker-deploy-mailserver/" />
+<meta property="article:published_time" content="2021-08-03T11:37:38+08:00" />
+<meta property="article:modified_time" content="2021-08-03T11:37:38+08:00" />
+<meta itemprop="name" content="使用 Docker Compose 5分钟 部署 一台邮件服务器">
+<meta itemprop="description" content="使用 Docker Compose docker-mailserver docker 镜像，一键部署一台 邮件服务器。">
+<meta itemprop="datePublished" content="2021-08-03T11:37:38+08:00" />
+<meta itemprop="dateModified" content="2021-08-03T11:37:38+08:00" />
+<meta itemprop="wordCount" content="2674">
+
+
+
+<meta itemprop="keywords" content="email,install,dokcer-compose," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用 Docker Compose 5分钟 部署 一台邮件服务器"/>
+<meta name="twitter:description" content="使用 Docker Compose docker-mailserver docker 镜像，一键部署一台 邮件服务器。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
+</head>
+<body>
+  <header id="header" class="header">
+      <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+  </header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">使用 Docker Compose 5分钟 部署 一台邮件服务器</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-08-03 </span>
+        <div class="post-category">
+            <a href="/categories/docker/"> docker </a>
+            <a href="/categories/devops/"> devops </a>
+            </div>
+          <span class="more-meta"> 约 2674 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a>
+      <ul>
+        <li><a href="#环境说明">环境说明</a></li>
+        <li><a href="#基础介绍">基础介绍</a>
+          <ul>
+            <li><a href="#常见邮件服务端口--协议-介绍">常见邮件服务端口 &amp; 协议 介绍</a></li>
+            <li><a href="#常见-邮件软件-和-安全软件-介绍">常见 邮件软件 和 安全软件 介绍</a></li>
+            <li><a href="#反垃圾邮件技术-介绍">反垃圾邮件技术 介绍</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#安装部署">安装部署</a>
+      <ul>
+        <li><a href="#安装前准备工作">安装前准备工作</a></li>
+        <li><a href="#部署-docker-mailserver-容器镜像">部署 <code>docker-mailserver</code> 容器镜像</a>
+          <ul>
+            <li><a href="#clone-仓库地址">clone 仓库地址</a></li>
+            <li><a href="#更改后的配置展示">更改后的配置展示</a></li>
+          </ul>
+        </li>
+        <li><a href="#启动容器--后续配置工作">启动容器 &amp; 后续配置工作</a>
+          <ul>
+            <li><a href="#添加-email-user">添加 email user</a></li>
+            <li><a href="#生成-dkim-签名记录">生成 <code>DKIM</code> 签名记录</a></li>
+            <li><a href="#添加-dkim-记录值至-aliyun">添加 DKIM 记录值至 aliyun</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#验证测试">验证测试</a>
+      <ul>
+        <li><a href="#证书验证测试">证书验证测试</a></li>
+        <li><a href="#macos--windows-添加邮件记录">MacOS &amp; Windows 添加邮件记录</a></li>
+        <li><a href="#测试邮件发送">测试邮件发送</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考文档">参考文档</a></li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="背景">背景</h1>
+<blockquote>
+<p>由于 <code>Gmail</code> 邮箱在国内无法使用 且 <code>国内手机</code> 号码无法继续注册账号原因，最近想着折腾一下 自建一台 <code>邮件服务器</code> 玩玩。正好在国外有台 vps (搬瓦工的)，比较空闲，目前且用来做扶墙使用，有点浪费，决定使用此台服务器搭建 <code>邮件服务器</code> 。选择的部署方案选择了较为轻便的 <code>docker</code>，在了解网上主流的实现镜像后 <code>analogic/poste.io</code> &amp; <code>mailserver/docker-mailserver</code>，由于目前 vps 资源为 <code>2c 1g</code> 的低配置，试着跑了一下前者，资源占用非常大(可能 默认开了什么功能什么的)，当前配置下完全跑不动。了解后者这个 <a href="https://github.com/docker-mailserver/docker-mailserver/">项目</a> 后，可以在最低 <code>1c 512m</code> 下运行，决定选用后者 <code>docker-mailserver</code> 作为部署。</p>
+</blockquote>
+<h2 id="环境说明">环境说明</h2>
+<blockquote>
+<ul>
+<li>
+<p>Email 服务器: <code>23.105.194.216 </code>  (搬瓦工 vps)</p>
+</li>
+<li>
+<p>使用容器镜像: <code>mailserver/docker-mailserver:latest</code></p>
+</li>
+<li>
+<p>系统版本: <code>CentOS Linux release 7.9.2009 (Core)</code></p>
+</li>
+<li>
+<p>内核版本: <code>4.14.129-bbrplus</code></p>
+</li>
+<li>
+<p>Docker Version: <code>20.10.7</code></p>
+</li>
+<li>
+<p>Docker Compose Version: <code>1.29.2</code></p>
+</li>
+<li>
+<p>DNS 服务商: <code>aliyun</code></p>
+</li>
+</ul>
+</blockquote>
+<h2 id="基础介绍">基础介绍</h2>
+<h3 id="常见邮件服务端口--协议-介绍">常见邮件服务端口 &amp; 协议 介绍</h3>
+<blockquote>
+<p>详细介绍信息， 查看<a href="https://docker-mailserver.github.io/docker-mailserver/edge/config/security/understanding-the-ports/">此文档</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>协议</th>
+<th>端口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SMTP</strong></td>
+<td>25/587/465</td>
+</tr>
+<tr>
+<td><strong>IMAP</strong></td>
+<td>143/993</td>
+</tr>
+<tr>
+<td>POP3</td>
+<td>110/995</td>
+</tr>
+</tbody>
+</table>
+<h3 id="常见-邮件软件-和-安全软件-介绍">常见 邮件软件 和 安全软件 介绍</h3>
+<table>
+<thead>
+<tr>
+<th>软件名称</th>
+<th>简介</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sendmail</td>
+<td>用于发邮件。资格最老的邮局，所有Linux发行版基本都带。但是配置麻烦。</td>
+</tr>
+<tr>
+<td><strong>postfix</strong></td>
+<td><a href="http://www.postfix.org/">Wietse Venema</a> 觉得 sendmail 配置太麻烦了，就开发了一个 &ldquo;简化配置版 sendmail&rdquo;，即postfix。支持smtp协议。</td>
+</tr>
+<tr>
+<td><strong>dovecot</strong></td>
+<td>用于收邮件，支持imap/pop3。</td>
+</tr>
+<tr>
+<td>spamassasin</td>
+<td>垃圾邮件过滤器。可以自订规则。</td>
+</tr>
+<tr>
+<td>clamav</td>
+<td>邮件杀毒工具。</td>
+</tr>
+<tr>
+<td><strong>opendkim</strong></td>
+<td>生成dkim签名。有什么用？详见下面的“反垃圾邮件技术”。</td>
+</tr>
+<tr>
+<td>fail2ban</td>
+<td>防止别人暴力破解用户名密码的工具。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="反垃圾邮件技术-介绍">反垃圾邮件技术 介绍</h3>
+<p>假设我要在1.1.1.2这台机器上配置 best.pm、best.nl 这两个域名用于发邮件。1.1.1.2 的主机名是 mail1.wangchenyu.net.cn。那么我们需要</p>
+<ul>
+<li><strong>设置 rDNS，将 1.1.1.2 映射到 mail1.wangchenyu.net.cn</strong>。DNS是域名 -&gt; IP的解析。rDNS 即I P-&gt; 域名的解析。有了这个rDNS记录，收到邮件的服务器就能确认 mail1.wangchenyu.net.cn 可以被用在1.1.1.2这个IP上。一般在主机商后台可以添加 rdns 记录，找不到的话提交一个工单即可。</li>
+<li><strong>设置 best.pm 和 best.nl 的MX记录，记录名为 @，值为 mail1.wangchenyu.net.cn，优先级为10。<strong>MX记录用于别人向best.pm这个域发送邮件时查找</strong>收信服务器</strong>。不设置的话无法收到别人发的邮件，并且自己发出的邮件的“可信度”也会大大降低。优先级</li>
+<li><strong>设置DKIM签名。DKIM先由发件服务器生成</strong>，之后每封邮件都会带上这个签名。接着，<strong>还要在 best.pm 和 best.nl 上各添加一条TXT记录</strong>，记录名和值<strong>在发件服务器生成DKIM时都会提供</strong>。收到邮件后会对比邮件中的DKIM签名和DNS中的TXT记录是否一致</li>
+<li><strong>设置SPF记录</strong> 这个记录规定了可以用这个域发邮件的主机。**在 best.pm 和 best.nl 上各添加一条TXT记录，**记录名为<code>@</code>，值为<code>v=spf1 mx ~all</code>即可允许所有IP使用此域。</li>
+<li><strong>设置DMARC记录</strong> 这个记录指出他们的地址被 SPF 和/或 DKIM/或别的方法保护。**在 best.pm 和 best.nl 上各添加一条TXT记录，**记录名为<code>_dmarc</code>，值为<code>v=DMARC1; p=none</code></li>
+</ul>
+<h1 id="安装部署">安装部署</h1>
+<blockquote>
+<p>这里安装部署我们使用 <code>Docker Compose</code>，使用较低版本还不行，建议是按照下面的步骤 <code>安装最新</code> 的版本，如你已安装和配置，对下面部分配置做跳过即可。</p>
+</blockquote>
+<h2 id="安装前准备工作">安装前准备工作</h2>
+<ul>
+<li>
+<p>安装 docker</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">curl -fsSL https://get.docker.com -o get-docker.sh  <span class="c1"># 使用脚本安装</span>
+sudo sh get-docker.sh
+  
+cat &gt; /etc/docker/daemon.json <span class="s">&lt;&lt; EOF `# 配置优化`
+</span><span class="s">{
+</span><span class="s">    &#34;oom-score-adjust&#34;: -1000,
+</span><span class="s">    &#34;log-driver&#34;: &#34;json-file&#34;,
+</span><span class="s">    &#34;log-opts&#34;: {
+</span><span class="s">    &#34;max-size&#34;: &#34;100m&#34;,
+</span><span class="s">    &#34;max-file&#34;: &#34;3&#34;
+</span><span class="s">    },
+</span><span class="s">    &#34;max-concurrent-downloads&#34;: 10,
+</span><span class="s">    &#34;exec-opts&#34;: [&#34;native.cgroupdriver=systemd&#34;],
+</span><span class="s">    &#34;max-concurrent-uploads&#34;: 10,
+</span><span class="s">    &#34;storage-driver&#34;: &#34;overlay2&#34;,
+</span><span class="s">    &#34;storage-opts&#34;: [
+</span><span class="s">    &#34;overlay2.override_kernel_check=true&#34;
+</span><span class="s">    ]
+</span><span class="s">}
+</span><span class="s">EOF</span>
+  
+systemctl start docker <span class="se">\ </span> <span class="sb">`</span><span class="c1"># 启动 并设置开机自启`</span>
+<span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> docker <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> systemctl status docker
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>安装 docker-compose</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">curl -L <span class="s2">&#34;https://github.com/docker/compose/releases/download/1.29.2/docker-compose-</span><span class="k">$(</span>uname -s<span class="k">)</span><span class="s2">-</span><span class="k">$(</span>uname -m<span class="k">)</span><span class="s2">&#34;</span> -o /usr/local/bin/docker-compose <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> chmod +x /usr/local/bin/docker-compose <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> docker-compose --version
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>阿里云设置 DNS 记录</p>
+<blockquote>
+<p>这里 设置的 DNS 未包含 <code>DKIM</code> 签名记录。这个记录需要在后面，使用脚本进行生成。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>DNS 类型</th>
+<th>记录名</th>
+<th>记录值</th>
+<th>TTL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>mail</td>
+<td>23.105.194.216</td>
+<td>30 分钟</td>
+</tr>
+<tr>
+<td>MX</td>
+<td>@</td>
+<td>mail.treesir.pub |10  (优先级 10)</td>
+<td>30 分钟</td>
+</tr>
+<tr>
+<td>TXT</td>
+<td>@</td>
+<td>v=spf1 mx ~all</td>
+<td>30 分钟</td>
+</tr>
+<tr>
+<td>TXT</td>
+<td>_dmarc</td>
+<td>v=DMARC1; p=quarantine; rua=mailto:dmarc.report@treesir.pub; ruf=mailto:dmarc.report@treesir.pub; fo=0; adkim=r; aspf=r; pct=100; rf=afrf; ri=86400; sp=quarantine</td>
+<td>30 分钟</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>表中 <code>treesir.pub</code> 注意替换为你自己的 主域名。</p>
+</blockquote>
+</li>
+<li>
+<p>VPS 服务器设置 反向解析 <code>PTR</code> (rdns) 记录</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210803123544465.png" alt="image-20210803123544465"></p>
+</li>
+<li>
+<p>使用 <code>certbot</code> 生成 <code>letsencrypt</code> 证书</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install -y certbot
+  
+certbot certonly --manual --preferred-challenge dns -d  mail.treesir.pub <span class="c1"># `此 命令会生成 一条 TXT 记录记录用于验证`</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210803140906174.png" alt="image-20210803140906174"></p>
+<blockquote>
+<p>将生成的 TXT 记录添加至 DNS 解析，添加后 使用 <code>dig</code> 进行检查解析是否生效后。<code>生效</code> 没有问题后 <code>回车</code> 继续。注意此条记录 <code>不要删除</code>，后续 <code>续签证书</code>时 还需要用到，正常情况下会在 <code>/etc/letsencrypt/archive/xxx/</code>  下生成对应域名的证书。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install bind-utils <span class="sb">`</span><span class="c1"># 安装 dig 命令`</span>
+
+dig TXT _acme-challenge.mail.treesir.pub <span class="sb">`</span><span class="c1"># 检查 解析`</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210803141426633.png" alt="image-20210803141426633"></p>
+</blockquote>
+<p><strong>配置定时续签证书</strong></p>
+<blockquote>
+<p>注意添加 crontab 定时任务时，检查一下 <code>crond</code> 服务器 是否有在正常运行。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">crontab -e  <span class="sb">`</span><span class="c1"># 打开 crontab 配置文件`</span>
+  
+<span class="m">0</span> <span class="m">5</span> * * <span class="m">1</span> /usr/bin/certbot renew --quiet
+  
+service crond status <span class="sb">`</span><span class="c1"># 检查服务是否正常运行`</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h2 id="部署-docker-mailserver-容器镜像">部署 <code>docker-mailserver</code> 容器镜像</h2>
+<h3 id="clone-仓库地址">clone 仓库地址</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">git clone https://github.com/docker-mailserver/docker-mailserver.git
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="更改后的配置展示">更改后的配置展示</h3>
+<p><code>docker-compose.yml</code> 文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">version: <span class="s1">&#39;3.8&#39;</span>
+
+services:
+  mailserver:
+    image: docker.io/mailserver/docker-mailserver:latest
+    hostname: mail
+    domainname: treesir.pub
+    container_name: mailserver
+    env_file: mailserver.env
+    dns: 223.5.5.5
+    ports:
+      - <span class="s2">&#34;25:25&#34;</span>
+      - <span class="s2">&#34;143:143&#34;</span>
+      - <span class="s2">&#34;587:587&#34;</span>
+      - <span class="s2">&#34;993:993&#34;</span>
+      - <span class="s2">&#34;110:110&#34;</span>
+      - <span class="s2">&#34;995:995&#34;</span>
+    volumes:
+      - ./data/maildata:/var/mail
+      - ./data/mailstate:/var/mail-state
+      - ./data/maillogs:/var/log/mail
+      - /etc/localtime:/etc/localtime:ro
+      - ./config/:/tmp/docker-mailserver
+      - /etc/letsencrypt/archive/mail.treesir.pub:/tmp/ssl:ro
+    restart: always
+    stop_grace_period: 1m
+    cap_add: <span class="o">[</span> <span class="s2">&#34;NET_ADMIN&#34;</span>, <span class="s2">&#34;SYS_PTRACE&#34;</span> <span class="o">]</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p><code>mailserver.env</code> 文件</p>
+<blockquote>
+<p>这里由于文件较长，不方便演示，且打印未注释的代码段</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span><span class="lnt">91
+</span><span class="lnt">92
+</span><span class="lnt">93
+</span><span class="lnt">94
+</span><span class="lnt">95
+</span><span class="lnt">96
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat mailserver.env <span class="p">|</span>egrep -v <span class="s1">&#39;^$|^#&#39;</span>
+
+<span class="nv">OVERRIDE_HOSTNAME</span><span class="o">=</span>
+<span class="nv">DMS_DEBUG</span><span class="o">=</span><span class="m">1</span>
+<span class="nv">SUPERVISOR_LOGLEVEL</span><span class="o">=</span>
+<span class="nv">ONE_DIR</span><span class="o">=</span><span class="m">1</span>
+<span class="nv">POSTMASTER_ADDRESS</span><span class="o">=</span>yangzun@treesir.pub
+<span class="nv">ENABLE_UPDATE_CHECK</span><span class="o">=</span><span class="m">1</span>
+<span class="nv">UPDATE_CHECK_INTERVAL</span><span class="o">=</span>1d
+<span class="nv">PERMIT_DOCKER</span><span class="o">=</span>network
+<span class="nv">NETWORK_INTERFACE</span><span class="o">=</span>
+<span class="nv">TLS_LEVEL</span><span class="o">=</span>
+<span class="nv">SPOOF_PROTECTION</span><span class="o">=</span>
+<span class="nv">ENABLE_SRS</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">ENABLE_POP3</span><span class="o">=</span><span class="m">1</span>
+<span class="nv">ENABLE_CLAMAV</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">ENABLE_AMAVIS</span><span class="o">=</span><span class="m">1</span>
+<span class="nv">AMAVIS_LOGLEVEL</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">ENABLE_FAIL2BAN</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">FAIL2BAN_BLOCKTYPE</span><span class="o">=</span>drop
+<span class="nv">ENABLE_MANAGESIEVE</span><span class="o">=</span>
+<span class="nv">POSTSCREEN_ACTION</span><span class="o">=</span>enforce
+<span class="nv">SMTP_ONLY</span><span class="o">=</span>
+<span class="nv">SSL_TYPE</span><span class="o">=</span>manual
+<span class="nv">SSL_CERT_PATH</span><span class="o">=</span>/tmp/ssl/fullchain1.pem
+<span class="nv">SSL_KEY_PATH</span><span class="o">=</span>/tmp/ssl/privkey1.pem
+<span class="nv">SSL_ALT_CERT_PATH</span><span class="o">=</span>
+<span class="nv">SSL_ALT_KEY_PATH</span><span class="o">=</span>
+<span class="nv">VIRUSMAILS_DELETE_DELAY</span><span class="o">=</span>
+<span class="nv">ENABLE_POSTFIX_VIRTUAL_TRANSPORT</span><span class="o">=</span>
+<span class="nv">POSTFIX_DAGENT</span><span class="o">=</span>
+<span class="nv">POSTFIX_MAILBOX_SIZE_LIMIT</span><span class="o">=</span><span class="m">102400000</span>
+<span class="nv">ENABLE_QUOTAS</span><span class="o">=</span><span class="m">1</span>
+<span class="nv">POSTFIX_MESSAGE_SIZE_LIMIT</span><span class="o">=</span><span class="m">102400000</span>
+<span class="nv">PFLOGSUMM_TRIGGER</span><span class="o">=</span>
+<span class="nv">PFLOGSUMM_RECIPIENT</span><span class="o">=</span>
+<span class="nv">PFLOGSUMM_SENDER</span><span class="o">=</span>
+<span class="nv">LOGWATCH_INTERVAL</span><span class="o">=</span>
+<span class="nv">LOGWATCH_RECIPIENT</span><span class="o">=</span>
+<span class="nv">REPORT_RECIPIENT</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">REPORT_SENDER</span><span class="o">=</span>
+<span class="nv">REPORT_INTERVAL</span><span class="o">=</span>daily
+<span class="nv">POSTFIX_INET_PROTOCOLS</span><span class="o">=</span>all
+<span class="nv">ENABLE_SPAMASSASSIN</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">SPAMASSASSIN_SPAM_TO_INBOX</span><span class="o">=</span><span class="m">1</span>
+<span class="nv">MOVE_SPAM_TO_JUNK</span><span class="o">=</span><span class="m">1</span>
+<span class="nv">SA_TAG</span><span class="o">=</span>2.0
+<span class="nv">SA_TAG2</span><span class="o">=</span>6.31
+<span class="nv">SA_KILL</span><span class="o">=</span>6.31
+<span class="nv">SA_SPAM_SUBJECT</span><span class="o">=</span>***SPAM*****
+<span class="nv">ENABLE_FETCHMAIL</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">FETCHMAIL_POLL</span><span class="o">=</span><span class="m">300</span>
+<span class="nv">ENABLE_LDAP</span><span class="o">=</span>
+<span class="nv">LDAP_START_TLS</span><span class="o">=</span>
+<span class="nv">LDAP_SERVER_HOST</span><span class="o">=</span>
+<span class="nv">LDAP_SEARCH_BASE</span><span class="o">=</span>
+<span class="nv">LDAP_BIND_DN</span><span class="o">=</span>
+<span class="nv">LDAP_BIND_PW</span><span class="o">=</span>
+<span class="nv">LDAP_QUERY_FILTER_USER</span><span class="o">=</span>
+<span class="nv">LDAP_QUERY_FILTER_GROUP</span><span class="o">=</span>
+<span class="nv">LDAP_QUERY_FILTER_ALIAS</span><span class="o">=</span>
+<span class="nv">LDAP_QUERY_FILTER_DOMAIN</span><span class="o">=</span>
+<span class="nv">DOVECOT_TLS</span><span class="o">=</span>
+<span class="nv">DOVECOT_USER_FILTER</span><span class="o">=</span>
+<span class="nv">DOVECOT_PASS_FILTER</span><span class="o">=</span>
+<span class="nv">DOVECOT_MAILBOX_FORMAT</span><span class="o">=</span>maildir
+<span class="nv">DOVECOT_AUTH_BIND</span><span class="o">=</span>
+<span class="nv">ENABLE_POSTGREY</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">POSTGREY_DELAY</span><span class="o">=</span><span class="m">300</span>
+<span class="nv">POSTGREY_MAX_AGE</span><span class="o">=</span><span class="m">35</span>
+<span class="nv">POSTGREY_TEXT</span><span class="o">=</span>Delayed by Postgrey
+<span class="nv">POSTGREY_AUTO_WHITELIST_CLIENTS</span><span class="o">=</span><span class="m">5</span>
+<span class="nv">ENABLE_SASLAUTHD</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">SASLAUTHD_MECHANISMS</span><span class="o">=</span>
+<span class="nv">SASLAUTHD_MECH_OPTIONS</span><span class="o">=</span>
+<span class="nv">SASLAUTHD_LDAP_SERVER</span><span class="o">=</span>
+<span class="nv">SASLAUTHD_LDAP_BIND_DN</span><span class="o">=</span>
+<span class="nv">SASLAUTHD_LDAP_PASSWORD</span><span class="o">=</span>
+<span class="nv">SASLAUTHD_LDAP_SEARCH_BASE</span><span class="o">=</span>
+<span class="nv">SASLAUTHD_LDAP_FILTER</span><span class="o">=</span>
+<span class="nv">SASLAUTHD_LDAP_START_TLS</span><span class="o">=</span>
+<span class="nv">SASLAUTHD_LDAP_TLS_CHECK_PEER</span><span class="o">=</span>
+<span class="nv">SASLAUTHD_LDAP_TLS_CACERT_FILE</span><span class="o">=</span>
+<span class="nv">SASLAUTHD_LDAP_TLS_CACERT_DIR</span><span class="o">=</span>
+<span class="nv">SASLAUTHD_LDAP_PASSWORD_ATTR</span><span class="o">=</span>
+<span class="nv">SASL_PASSWD</span><span class="o">=</span>
+<span class="nv">SASLAUTHD_LDAP_AUTH_METHOD</span><span class="o">=</span>
+<span class="nv">SASLAUTHD_LDAP_MECH</span><span class="o">=</span>
+<span class="nv">SRS_SENDER_CLASSES</span><span class="o">=</span>envelope_sender
+<span class="nv">SRS_EXCLUDE_DOMAINS</span><span class="o">=</span>
+<span class="nv">SRS_SECRET</span><span class="o">=</span>
+<span class="nv">DEFAULT_RELAY_HOST</span><span class="o">=</span>
+<span class="nv">RELAY_HOST</span><span class="o">=</span>
+<span class="nv">RELAY_PORT</span><span class="o">=</span><span class="m">25</span>
+<span class="nv">RELAY_USER</span><span class="o">=</span>
+<span class="nv">RELAY_PASSWORD</span><span class="o">=</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>上面的 配置含义说明，请参考 <a href="https://docker-mailserver.github.io/docker-mailserver/edge/config/environment/">此文档</a></p>
+</blockquote>
+<h2 id="启动容器--后续配置工作">启动容器 &amp; 后续配置工作</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker-compose up -d <span class="sb">`</span><span class="c1"># 启动容器`</span>
+
+docker-compose logs -f <span class="sb">`</span><span class="c1"># 观察容器 相关日志`</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="添加-email-user">添加 email user</h3>
+<blockquote>
+<p>服务器在公网，这里就不要使用 <code>弱密码</code>了，防止 hacker 进行 暴力破解。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">./setup.sh email add yangzun@treesir.pub <span class="s2">&#34;xxx&#34;</span> <span class="sb">`</span><span class="c1"># 添加 邮件账号及密码`</span>
+
+./setup.sh email update yangzun@treesir.pub <span class="s2">&#34;xxx&#34;</span> <span class="sb">`</span><span class="c1"># 更新 邮件账号及密码`</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="生成-dkim-签名记录">生成 <code>DKIM</code> 签名记录</h3>
+<blockquote>
+<p>注意下面的配置中，设置了 <code>keysize</code> 参数。原因是默认使用的 keysize 大小为 <code>4096</code> ，在 <code>aliyun</code>中 无法进行正常的添加。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">./setup.sh config dkim keysize <span class="m">2048</span>
+
+cat config/opendkim/keys/treesir.pub/mail.txt  <span class="sb">`</span><span class="c1"># 查看 DKIM 签名记录`</span>
+mail._domainkey IN      TXT     <span class="o">(</span> <span class="s2">&#34;v=DKIM1; h=sha256; k=rsa; &#34;</span>
+          <span class="s2">&#34;p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0ojqOcyeDlOn6TcpXCsU92xul6d54wlx/UwPTuE0aywFc+ihyKGAm9D8nmroneN7gf82qTtDbJiHghzRlf6JdpR3kM4ipWKaNRSlUL/64HQqrMeEWx5ErpcgwrXxKWI/rcQ7Rjg2BliP6ayJiEflH0FOtxfgLHnYEcSKupmCV8znM4rZ/LHx9RDwc7o8jWujey6h9zrYPXyqim&#34;</span>
+          <span class="s2">&#34;obGSB0PZGNQhe7mWRefMraFGgnNq+PrtEnmaOFxH2rG1Qh2hhMkeqJsH56yx9f1mxWYTX7r9FtvweGRb+GJNfi6a4vpDrTCffxx6XvGrq032i7VqHpmiaUUuM3j2x1DwHrIbpWTQIDAQAB&#34;</span> <span class="o">)</span>  <span class="p">;</span> ----- DKIM key mail <span class="k">for</span> treesir.pub
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210803143040167.png" alt="image-20210803143040167"></p>
+<blockquote>
+<p>注意生成的记录，需要进行合并起来 才能使用。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210803143222296.png" alt="image-20210803143222296"></p>
+<h3 id="添加-dkim-记录值至-aliyun">添加 DKIM 记录值至 aliyun</h3>
+<table>
+<thead>
+<tr>
+<th>DNS 类型</th>
+<th>记录名</th>
+<th>记录值</th>
+<th>TTL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TXT</td>
+<td>mail._domainkey</td>
+<td>v=DKIM1; h=sha256; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0ojqOcyeDlOn6TcpXCsU92xul6d54wlx/UwPTuE0aywFc+ihyKGAm9D8nmroneN7gf82qTtDbJiHghzRlf6JdpR3kM4ipWKaNRSlUL/64HQqrMeEWx5ErpcgwrXxKWI/rcQ7Rjg2BliP6ayJiEflH0FOtxfgLHnYEcSKupmCV8znM4rZ/LHx9RDwc7o8jWujey6h9zrYPXyqimobGSB0PZGNQhe7mWRefMraFGgnNq+PrtEnmaOFxH2rG1Qh2hhMkeqJsH56yx9f1mxWYTX7r9FtvweGRb+GJNfi6a4vpDrTCffxx6XvGrq032i7VqHpmiaUUuM3j2x1DwHrIbpWTQIDAQAB</td>
+<td>30 分钟</td>
+</tr>
+</tbody>
+</table>
+<p><img src="https://cdn.treesir.pub/img/image-20210803143453332.png" alt="image-20210803143453332"></p>
+<h1 id="验证测试">验证测试</h1>
+<blockquote>
+<p>测试的平台为 <code>MacOS</code> &amp; <code>Windows</code> 两个平台 ，由于先前测试使用的工具为 <code>Foxmail</code> 会出现无法发送邮件问题 ，所以这里 MacOS 中使用的 邮件工具为 自带应用 <code>Mail</code> ，Windows 邮件工具使用 <code>eM Clien</code>。</p>
+</blockquote>
+<h2 id="证书验证测试">证书验证测试</h2>
+<blockquote>
+<p>在进行邮件测试前，可以使用 <a href="https://www.checktls.com/">此链接</a> 中的工具，测试 是否支持 <code>tls</code> 验证。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210803144655191.png" alt="image-20210803144655191"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210803145009819.png" alt="image-20210803145009819"></p>
+<h2 id="macos--windows-添加邮件记录">MacOS &amp; Windows 添加邮件记录</h2>
+<ul>
+<li>
+<p>macos</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210803145301936.png" alt="image-20210803145301936" style="zoom:67%;" />    <img src="https://cdn.treesir.pub/img/image-20210803145510252.png" alt="image-20210803145510252" style="zoom:67%;" /></p>
+</li>
+<li>
+<p>window</p>
+<blockquote>
+<p><code>eM Clien</code> 工具会自动为我们配置 <code>IMAP</code> &amp; <code>SMTP</code> 地址信息。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210803150203282.png" alt="image-20210803150203282" style="zoom: 33%;" /> <img src="https://cdn.treesir.pub/img/image-20210803150231988.png" alt="image-20210803150231988" style="zoom: 33%;" /></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210803150531520.png" alt="image-20210803150531520" style="zoom: 67%;" /> <img src="https://cdn.treesir.pub/img/image-20210803150604468.png" alt="image-20210803150604468" style="zoom:50%;" /></p>
+</li>
+</ul>
+<h2 id="测试邮件发送">测试邮件发送</h2>
+<ul>
+<li>
+<p><strong>Windows to MacOS</strong></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210803151017304.png" alt="image-20210803151017304" style="zoom: 33%;" /> <img src="https://cdn.treesir.pub/img/image-20210803151050244.png" alt="image-20210803151050244" style="zoom: 33%;" /></p>
+<p><code>正常收到邮件了</code></p>
+</li>
+<li>
+<p><strong>Macos to Windows</strong></p>
+<p><code>回复一个邮件 进行测试</code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210803151529428.png" alt="image-20210803151529428" style="zoom: 33%;" />   <img src="https://cdn.treesir.pub/img/image-20210803151625536.png" alt="image-20210803151625536" style="zoom: 33%;" /></p>
+<p><code>测试 邮件收发 一切正常。</code></p>
+</li>
+<li>
+<p><strong>Send to Gmail</strong></p>
+<p><code>测试发送邮件至 Gmail</code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210803152341683.png" alt="image-20210803152341683"></p>
+<blockquote>
+<p>正常收到邮件</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="参考文档">参考文档</h1>
+<ul>
+<li><a href="https://www.itmanbu.com/docker-mail-server.html">https://www.itmanbu.com/docker-mail-server.html</a></li>
+<li><a href="https://wiki.dovecot.org/TestInstallation">https://wiki.dovecot.org/TestInstallation</a></li>
+<li><a href="https://docker-mailserver.github.io/docker-mailserver/edge/">https://docker-mailserver.github.io/docker-mailserver/edge/</a></li>
+</ul>
+<h1 id="总结">总结</h1>
+<blockquote>
+<p>一开始使用的 工具是 <code> Foxmail</code> 工具进行测试，卡在无法发送邮件这里，以为是自己的证书配置出错了，经过一系类的折腾、拍错，花了一天左右的时间总算是搭建出来了。看到其相关文档，好像还可以与 <code>LDAP</code> 进行集成，这就不错了，有时间 继续研究一下。</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-08-03
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/email/">email</a>
+          <a href="/tags/install/">install</a>
+          <a href="/tags/dokcer-compose/">dokcer-compose</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/k3s-change-flannel-cni-model/">
+            <span class="next-text nav-default">K3s 集群修改 Flannel CNI 插件网络模式</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  
+
+  <span class="copyright-year">
+    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
+    </span>
+
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

@@ -6,7 +6,16 @@
     <description>Recent content in docker on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 04 Mar 2021 16:31:06 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/docker/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 03 Aug 2021 11:37:38 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 Docker Compose 5分钟 部署 一台邮件服务器</title>
+      <link>https://cdryzun.github.io/post/docker-deploy-mailserver/</link>
+      <pubDate>Tue, 03 Aug 2021 11:37:38 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/docker-deploy-mailserver/</guid>
+      <description>背景 由于 Gmail 邮箱在国内无法使用 且 国内手机 号码无法继续注册账号原因，最近想着折腾一下 自建一台 邮件服务器 玩玩。正好在国外有台 vps (搬瓦工的)，比较空</description>
+    </item>
+    
     <item>
       <title>使用 Docker 部署 Gitlab，及常用优化项的说明</title>
       <link>https://cdryzun.github.io/post/gitlab-deploy/</link>

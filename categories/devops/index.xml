@@ -6,7 +6,16 @@
     <description>Recent content in devops on 「Yang&#39;zun」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 22 Jul 2021 15:38:00 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/devops/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 03 Aug 2021 11:37:38 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/devops/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 Docker Compose 5分钟 部署 一台邮件服务器</title>
+      <link>https://cdryzun.github.io/post/docker-deploy-mailserver/</link>
+      <pubDate>Tue, 03 Aug 2021 11:37:38 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/docker-deploy-mailserver/</guid>
+      <description>背景 由于 Gmail 邮箱在国内无法使用 且 国内手机 号码无法继续注册账号原因，最近想着折腾一下 自建一台 邮件服务器 玩玩。正好在国外有台 vps (搬瓦工的)，比较空</description>
+    </item>
+    
     <item>
       <title>记录一次 Nexus3 Pypi 私服 Blob Storage 异常的修复</title>
       <link>https://cdryzun.github.io/post/nexus3-pypi-blob-storage-fix/</link>
