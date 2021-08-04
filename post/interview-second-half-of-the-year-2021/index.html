@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Yang&#39;zun" /><meta name="description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点。 (题目后带 * 为实际碰到过的相关面试问题 ） K8s 相关 api-Server 为什么 k8s 要用申明式？ 答：只需描述期望状态" /><meta name="keywords" content="github action, pipeline, gitlab, nexus3, 技术分享, 前端技术, 计算机网络, devops, kubernetes, jenkins, centos, 技术积累, 个人文档, 个人总结, mysql, 运维, 自动化, python, hugo, k3s, kafka, go lang, helm, traefik, kubeadm, rancher, redis, rke, nginx, apache, 网络安全" />
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的" /><meta name="keywords" content="github action, pipeline, gitlab, nexus3, 技术分享, 前端技术, 计算机网络, devops, kubernetes, jenkins, centos, 技术积累, 个人文档, 个人总结, mysql, 运维, 自动化, python, hugo, k3s, kafka, go lang, helm, traefik, kubeadm, rancher, redis, rke, nginx, apache, 网络安全" />
 
 
 
@@ -41,23 +41,23 @@
 
 
 <meta property="og:title" content="2021 下半年相关知识点整理" />
-<meta property="og:description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点。 (题目后带 * 为实际碰到过的相关面试问题 ） K8s 相关 api-Server 为什么 k8s 要用申明式？ 答：只需描述期望状态" />
+<meta property="og:description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/" />
 <meta property="article:published_time" content="2021-06-29T11:38:41+08:00" />
 <meta property="article:modified_time" content="2021-06-29T11:38:41+08:00" />
 <meta itemprop="name" content="2021 下半年相关知识点整理">
-<meta itemprop="description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点。 (题目后带 * 为实际碰到过的相关面试问题 ） K8s 相关 api-Server 为什么 k8s 要用申明式？ 答：只需描述期望状态">
+<meta itemprop="description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的">
 <meta itemprop="datePublished" content="2021-06-29T11:38:41+08:00" />
 <meta itemprop="dateModified" content="2021-06-29T11:38:41+08:00" />
-<meta itemprop="wordCount" content="37294">
+<meta itemprop="wordCount" content="37750">
 
 
 
 <meta itemprop="keywords" content="" />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="2021 下半年相关知识点整理"/>
-<meta name="twitter:description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点。 (题目后带 * 为实际碰到过的相关面试问题 ） K8s 相关 api-Server 为什么 k8s 要用申明式？ 答：只需描述期望状态"/>
+<meta name="twitter:description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -141,8 +141,8 @@
       <div class="post-meta">
         <span class="post-time"> 2021-06-29 </span>
         
-          <span class="more-meta"> 约 37294 字 </span>
-          <span class="more-meta"> 预计阅读 75 分钟 </span>
+          <span class="more-meta"> 约 37750 字 </span>
+          <span class="more-meta"> 预计阅读 76 分钟 </span>
         
       </div>
     </header>
@@ -201,7 +201,7 @@
     <div class="post-content">
       <h1 id="概述">概述</h1>
 <blockquote>
-<p><strong>此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点。</strong>  (题目后带 <strong><code>*</code></strong> 为实际碰到过的相关面试问题 ）</p>
+<p><strong>此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点</strong>   (题目后带 <strong><code>*</code></strong> 为实际碰到过的相关面试问题 ）。题目均来自 <code>互联网</code> 、实际面试题 及 自己对某些知识点的自问自答整理。</p>
 </blockquote>
 <h1 id="k8s-相关">K8s 相关</h1>
 <h2 id="api-server">api-Server</h2>
@@ -569,6 +569,15 @@
 <li>
 <p>为什么你删除了大量数据，db 大小不减少？为何 etcd 社区建议 db 大小不要超过 8G?</p>
 <blockquote>
+<p>答: etcd db 大小太大会造成如下六个问题:</p>
+<ul>
+<li>启动耗时：etcd 启动的时候，需打开 boltdb db 文件，读取 db 文件所有 keyvalue 数据，用于重建内存 treeIndex 模块。因此在大量 key 导致 db 文件过大的场景中，这会导致 etcd 启动较慢</li>
+<li>节点内存配置：etcd 在启动的时候会通过 mmap 将 db 文件映射内存中，若节点可用内存不足，小于 db 文件大小时，可能会出现缺页文件中断，导致服务稳定性、性能下降</li>
+<li>treeIndex 索引性能：etcd 不支持数据分片，内存中的 treeIndex 若保存了几十万到上千万的 key，这会增加查询、修改操作的整体延时</li>
+<li>boltdb 性能：大 db 文件场景会导致事务提交耗时增长、抖动。</li>
+<li>集群稳定性：大 db 文件场景下，无论你是百万级别小 key 还是上千个大 value 场景，一旦出现 expensive request 后，很容易导致 etcd OOM、节点带宽满而丢包。</li>
+<li>快照：当 Follower 节点落后 Leader 较多数据的时候，会触发 Leader 生成快照重建发送给 Follower 节点，Follower 基于它进行还原重建操作。较大的 db 文件会导致Leader 发送快照需要消耗较多的 CPU、网络带宽资源，同时 Follower 节点重建还原慢。</li>
+</ul>
 </blockquote>
 </li>
 <li>
@@ -1476,10 +1485,10 @@
 <li>开发人员在测试分支提交 fix 代码 (commit 不关联 jira id 无法提交代码)</li>
 <li>使用 gitlab webhook 触发对应模块的 Jenkins Pipeline，pipeline 中集成了 代码构建、单元测试、代码质量检查(sonarqube)、镜像私服(NXRM3)，将镜像打包成 docker 镜像 push 至私服中。生成 helm charts app 上传到 helm 私服，最终使用 &ldquo;helm upgrade &ndash;install&rdquo; 进行安装</li>
 <li>流水线构建完成后 钉钉通知，使用 api 更新 Gitlab Pipeline status。</li>
-<li>开发人员自验证，验证通过后，在 Jira 中对应的 issue id 中 更改工作流状态，此时 jira 会将 问题已更新这台记录方式给测试人员，测试人员收到这条邮件后，去往 测试环境进行验证。</li>
+<li>开发人员自验证，验证通过后，在 Jira 中对应的 issue id 中 更改工作流状态，此时 jira 会将 问题已更新这条记录，已邮件通知方式通知测试人员，测试人员收到这条邮件后，去往 测试环境进行验证。</li>
 <li>验证通过</li>
 <li>测试人员 更新 Jira 工作流状态</li>
-<li>此时使用 Jira webhook 触发 jenkins 管理流水线，管理流水线工作，基于此仓库 测试环境代码分支 进行合并至主干(使用 Gitlab api，受理人：对应开发)，完成 一个 bug 的迭代更新。</li>
+<li>此时使用 Jira webhook 触发 jenkins 管理流水线，管理流水线工作，基于此仓库 测试环境代码分支 进行合并至主干 (使用 Gitlab api 创建 merge request，受理人是：<code>对应开发</code> )，完成 一个 bug 的生命周期管理。</li>
 </ul>
 <p><img src="https://cdn.treesir.pub/img/upgrade-v1-pipeline.png" alt="upgrade-v1-pipeline"></p>
 </li>

@@ -76,7 +76,7 @@
       <pubDate>Tue, 29 Jun 2021 11:38:41 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</guid>
-      <description>概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点。 (题目后带 * 为实际碰到过的相关面试问题 ） K8s 相关 api-Server 为什么 k8s 要用申明式？ 答：只需描述期望状态</description>
+      <description>概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的</description>
     </item>
     
     <item>
