@@ -50,7 +50,7 @@
 <meta itemprop="description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的">
 <meta itemprop="datePublished" content="2021-06-29T11:38:41+08:00" />
 <meta itemprop="dateModified" content="2021-06-29T11:38:41+08:00" />
-<meta itemprop="wordCount" content="37750">
+<meta itemprop="wordCount" content="38467">
 
 
 
@@ -141,8 +141,8 @@
       <div class="post-meta">
         <span class="post-time"> 2021-06-29 </span>
         
-          <span class="more-meta"> 约 37750 字 </span>
-          <span class="more-meta"> 预计阅读 76 分钟 </span>
+          <span class="more-meta"> 约 38467 字 </span>
+          <span class="more-meta"> 预计阅读 77 分钟 </span>
         
       </div>
     </header>
@@ -761,6 +761,22 @@
 <li>
 <p>sidecar 要保证顺序启动怎么保证？几种方式可以做到？</p>
 <blockquote>
+<p>答：可实现方法如下所示:</p>
+<ul>
+<li>用户控制
+<ul>
+<li>业务容器判断，主动判断 Sidecar 是否就绪。 - <code>不优雅</code></li>
+<li>业务容器 sleep 一段时间就绪，等待 Sidecar 就绪 - <code>不优雅</code></li>
+</ul>
+</li>
+<li>Lifecycle Hooks（<code>推荐</code>）
+<ul>
+<li>Sidecar 容器，也就是 <code>主容器</code>  添加 PostStart 生命周期钩子，判断自身启动就绪后，再去启动 启动容器。</li>
+</ul>
+</li>
+<li>富容器: Sidecar 容器功能与业务容器整合至一起。</li>
+<li>修改源码</li>
+</ul>
 </blockquote>
 </li>
 <li>
@@ -931,11 +947,171 @@
 <li>
 <p>cni 网络插件有哪些， 之间有什么区别? <code>*</code></p>
 <blockquote>
+<p>下面数据均来自 <a href="https://kubevious.io/blog/post/comparing-kubernetes-container-network-interface-cni-providers">此链接</a></p>
+</blockquote>
+<blockquote>
+<p>答: 常见代表性的 cni 常见有：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Flannel</strong></th>
+<th><strong>Calico</strong></th>
+<th><strong>Cilium</strong></th>
+<th>Weavenet</th>
+<th><strong>Canal</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>部署方式</td>
+<td>DaemonSet</td>
+<td>DaemonSet</td>
+<td>DaemonSet</td>
+<td>DaemonSet</td>
+<td>DaemonSet</td>
+</tr>
+<tr>
+<td>封装和路由技术</td>
+<td>VxLAN</td>
+<td>IPinIP、BGP、eBPF</td>
+<td>VxLAN、eBPF</td>
+<td>VxLAN</td>
+<td>VxLAN</td>
+</tr>
+<tr>
+<td>网络策略</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>数据存储</td>
+<td>Etcd</td>
+<td>Etcd</td>
+<td>Etcd</td>
+<td>No</td>
+<td>Etcd</td>
+</tr>
+<tr>
+<td>加密</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>流量入口策略</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>企业付费支持</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p><strong>各插件优缺点说明</strong></p>
+<ul>
+<li>Flannel 优缺点说明:
+<ul>
+<li>优点：
+<ul>
+<li>IPsec 加密支持</li>
+<li>单个二进制安装和配置</li>
+</ul>
+</li>
+<li>缺点
+<ul>
+<li>不支持网络策略</li>
+<li>不要运行多个主机，通过单个守护程序运行多个网络，同时为每个主机运行多个守护程序是可能的。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Calico 优缺点说明:
+<ul>
+<li>优点：
+<ul>
+<li>支持网络策略</li>
+<li>高网络性能</li>
+<li>SCTP 支持</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li>不支持网络策略</li>
+<li>不要运行多个主机，通过单个守护程序运行多个网络，同时为每个主机运行多个守护程序是可能的。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Cilium 优缺点说明:
+<ul>
+<li>优点：
+<ul>
+<li>多集群支持</li>
+<li>可与其他 CNI 一起使用</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li>可能需要与其他 CNI 配对使用 BGP</li>
+<li>为多个集群设置复杂</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Weave  优缺点说明:
+<ul>
+<li>优点：
+<ul>
+<li>内核级通信</li>
+<li>网络策略和加密支持</li>
+<li>为故障排除问题提供付费支持</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li>由于基于内核的路由，仅支持 Linux</li>
+<li>由于默认加密标准导致网络速度降低</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Canal 优缺点说明:
+<ul>
+<li>优点：
+<ul>
+<li>提供统一的方式来部署 Flannel 和 Calico</li>
+<li>支持网络策略</li>
+<li>支持 Flannel Overlay 网络</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li>Flannel 和 Calico 两个项目之间没有怎么深度整合</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </blockquote>
 </li>
 <li>
 <p>cni 网络插件的 选型 需要注意什么？</p>
 <blockquote>
+<p>答：没有单一的 CNI 提供程序可以满足所有项目需求。为了 <code>便于设置和配置</code>  ，Flannel 和 Weavenet 提供了强大的功能。Calico 的 <code>性能更好</code>，因为它通过 BGP 作为底层网络。Cilium 通过 <code>BP</code>F 使用完全不同的 <code>应用层过滤模型</code>，更面向 <code>企业安全</code>。没有最好的 cni插件，只有适合当前项目的。</p>
 </blockquote>
 </li>
 <li>
