@@ -50,7 +50,7 @@
 <meta itemprop="description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点。 (题目后带 * 为实际碰到过的相关面试问题 ） K8s 相关 api-Server 为什么 k8s 要用申明式？ 答：只需描述期望状态">
 <meta itemprop="datePublished" content="2021-06-29T11:38:41+08:00" />
 <meta itemprop="dateModified" content="2021-06-29T11:38:41+08:00" />
-<meta itemprop="wordCount" content="34559">
+<meta itemprop="wordCount" content="37142">
 
 
 
@@ -141,8 +141,8 @@
       <div class="post-meta">
         <span class="post-time"> 2021-06-29 </span>
         
-          <span class="more-meta"> 约 34559 字 </span>
-          <span class="more-meta"> 预计阅读 69 分钟 </span>
+          <span class="more-meta"> 约 37142 字 </span>
+          <span class="more-meta"> 预计阅读 75 分钟 </span>
         
       </div>
     </header>
@@ -180,16 +180,20 @@
     </li>
     <li><a href="#应用运维相关">应用运维相关</a>
       <ul>
+        <li><a href="#linux">Linux</a></li>
+        <li><a href="#prometheus-监控">Prometheus 监控</a></li>
         <li><a href="#mysql">Mysql</a></li>
         <li><a href="#ceph">Ceph</a></li>
         <li><a href="#spring-cloud-alibaba">Spring cloud alibaba</a></li>
         <li><a href="#网络安全">网络安全</a></li>
         <li><a href="#架构设计相关">架构设计相关</a></li>
         <li><a href="#监控系统相关">监控系统相关</a></li>
-        <li><a href="#redis">Redis</a></li>
+        <li><a href="#redis--nosql">Redis &amp; NoSQL</a></li>
+        <li><a href="#kafka">Kafka</a></li>
       </ul>
     </li>
     <li><a href="#个人问题">个人问题</a></li>
+    <li><a href="#提问面试官">提问面试官</a></li>
   </ul>
 </nav>
   </div>
@@ -216,6 +220,7 @@
 <li>
 <p>api-server 到 etcd 怎么保证事件不丢失？</p>
 <blockquote>
+<p>答：etcd 引用了 WAL 日志机制，当 etcd Apply 模块执行的提案已获得多数节点确认、持久化，此时 etcd 节点 down 机重启后，会从 WAL 中解析出 Raft 日志条目内容，追加到 Raft 日志的存储中，并重放已提交的日志提案给 Apply 模块执行</p>
 </blockquote>
 </li>
 <li>
@@ -255,7 +260,7 @@
 <li>
 <p>如何实现 scheduler 水平扩展？</p>
 <blockquote>
-<p>答：scheduler 只能有一个leader ，一般有三个节点就够。</p>
+<p>答：scheduler 只能有一个 leader ，一般有三个节点就够。</p>
 </blockquote>
 </li>
 <li>
@@ -537,6 +542,12 @@
 <li>
 <p>为什么基于 Raft 实现的 etcd 还可能会出现数据不一致?</p>
 <blockquote>
+<p>答：目前社区中 etcd 使用还存在部分 bug 导致：</p>
+<ul>
+<li>案例一：如 etcd 节点重启时，如果最后一条命令是鉴权相关的。 而 consistent index 有幂等性，节点重启导致不会被持久化，当节点恢复后鉴权命令被重复执行，而鉴权模块的 RoleGrantPermission 接口未实现幂等，重复执行会修改鉴权版本号，导致此时出现不一致。进而导致 MVCC 模块的 key-value 数据不一致，导致严重的数据毁坏。</li>
+<li>案例二：etcd 集群版本升级，某些 接口增加了鉴权。导致 apply 失败 导致数据不一致。</li>
+<li>案例三：defrag (整理碎片) 未正常结束时会生成 db.tmp 临时文件。这个文件可能包含部分上一次 defrag 写入的部分key/value 数据，。而 etcd 下次 defrag 时并不会清理它，复用后就可能会出现各种异常场景，如重启后 key 增多、删除的用户数据 key 再次出现、删除 user/role 再次出现等。<code>etcd 3.2.29、etcd 3.3.19、etcd 3.4.4</code> 后的版本都已经修复这个 Bug。</li>
+</ul>
 </blockquote>
 </li>
 <li>
@@ -623,12 +634,42 @@
 </ul>
 </blockquote>
 </li>
+<li>
+<p>etcd 最佳实践有哪些？</p>
+<blockquote>
+<p>答：</p>
+<ul>
+<li>
+<p>etcd 的数据毁坏检测功能，目前开启 etcd 数据检测三种方式：</p>
+</li>
+<li>
+<p>etcd 节点启动时检查，添加 <code>--experimental-initial-corrupt-check</code> 参数。启动的时候每个节点都会去获取 peer 节点的 boltdb hash 值，然后相互对比，如果不相等就会无法启动。</p>
+</li>
+<li>
+<p>定时检查在集群运行中， 添加 <code>--experimental-corrupt-check-time</code> 参数。定时检测是指 Leader 节点获取它当前最新的版本号，并通过 Raft 模块的 ReadIndex 机制确认 Leader 身份。当确认完成后，获取各个节点的 revision 和 boltdb hash 值，若出现 Follower 节点的 revision 大于 Leader 等异常情况时，就可以认为不一致，发送 corrupt 告警，触发集群 corruption 保护，拒绝读写。</p>
+</li>
+</ul>
+<p>etcd 数据毁坏检测的功能目前还是一个试验 (experimental) 特性，在比较新的版本才趋于稳定、成熟（推荐 v3.4.9 以上），应用层的数据一致性检测；</p>
+<ul>
+<li>
+<p>开启 metrics 指标 (<code>推荐</code>)，设置一致性阈值告警。</p>
+</li>
+<li>
+<p>定时数据备份: 可以使用开源的 etcd-operator 中的 backup-operator 去实现定时数据备份，建议是 <code>30分钟</code> 进行备份一次。</p>
+</li>
+<li>
+<p>良好的运维规范（比如使用较新稳定版本、确保版本一致性、灰度变更）。</p>
+</li>
+</ul>
+</blockquote>
+</li>
 </ul>
 <h2 id="kubectl">kubeCtl</h2>
 <ul>
 <li>
 <p>简述一下 kubectl exec 实现的原理？</p>
 <blockquote>
+<p>答：kubecl 命令中 加入 <code>-v=7</code> 可以看到详细信息 首先会读取 config 文件 ，生成 GET/POST请 求 去访问apiserver apiserver 会向 kubelet 发起连接。</p>
 </blockquote>
 </li>
 </ul>
@@ -1400,6 +1441,41 @@
 <li>
 <p>你们现在 devops 是怎么玩的?  集成了哪些工具和应用？<code>*</code></p>
 <blockquote>
+<p>答：目前集成了的应用，Jenkins、DingTalk、Gitlab、JIRA、NXRM3、Rancher、OpenLDAP、SornarQube</p>
+<ul>
+<li>
+<p>代码管理风格 (主干开发，分支发布)</p>
+</li>
+<li>
+<p>开发环境:</p>
+<ul>
+<li>开发人员在主干分支进行开发功能</li>
+<li>使用 Gitlab Webhook 触发 Jenkins Pipeline，Pipeline 中集成了 代码构建、单元测试、代码质量检查(sonarqube)、镜像私服(NXRM3)、Jira(commit 不关联 jira id 无法提交代码)。将镜像打包成 Docker 镜像 push 至私服中。生成 helm charts app 上传到 Helm 私服，最终使用 &ldquo;helm upgrade &ndash;install&rdquo; 进行安装</li>
+<li>流水线构建完成后 钉钉通知。使用 api 更新 Gitlab Pipeline status。</li>
+</ul>
+</li>
+<li>
+<p>测试环境发布版本: (集成 Jira 版本控制)</p>
+<ul>
+<li>测试人员，在 Jira 中创建版本。</li>
+<li>触发 Jira webhook 触发 jenkins manage Pipeline 进行 hook 信息的解析，根据创建的版本 对仓库进行持久 release 分支(测试分支)。</li>
+<li>基于此条 新创建的分支进行发布版本</li>
+</ul>
+</li>
+<li>
+<p>测试环境：</p>
+<ul>
+<li>开发人员在测试分支提交 fix 代码 (commit 不关联 jira id 无法提交代码)</li>
+<li>使用 gitlab webhook 触发对应模块的 Jenkins Pipeline，pipeline 中集成了 代码构建、单元测试、代码质量检查(sonarqube)、镜像私服(NXRM3)，将镜像打包成 docker 镜像 push 至私服中。生成 helm charts app 上传到 helm 私服，最终使用 &ldquo;helm upgrade &ndash;install&rdquo; 进行安装</li>
+<li>流水线构建完成后 钉钉通知，使用 api 更新 Gitlab Pipeline status。</li>
+<li>开发人员自验证，验证通过后，在 Jira 中对应的 issue id 中 更改工作流状态，此时 jira 会将 问题已更新这台记录方式给测试人员，测试人员收到这条邮件后，去往 测试环境进行验证。</li>
+<li>验证通过</li>
+<li>测试人员 更新 Jira 工作流状态</li>
+<li>此时使用 Jira webhook 触发 jenkins 管理流水线，管理流水线工作，基于此仓库 测试环境代码分支 进行合并至主干(使用 Gitlab api，受理人：对应开发)，完成 一个 bug 的迭代更新。</li>
+</ul>
+<p><img src="https://cdn.treesir.pub/img/upgrade-v1-pipeline.png" alt="upgrade-v1-pipeline"></p>
+</li>
+</ul>
 </blockquote>
 </li>
 <li>
@@ -1677,6 +1753,21 @@
 <li>Kibana：提供了一个 Web GUI，用户可以浏览和搜索存储在 Elasticsearch 中的日志。通过在每台node上部署一个以DaemonSet方式运行的fluentd来收集每台node上的日志。Fluentd将docker日志目录 <code>/var/lib/docker/containers</code> 和 <code>/var/log</code> 目录挂载到Pod中，然后Pod会在node节点的 /var/log/pods 目录中创建新的目录，可以区别不同的容器日志输出，该目录下有一个日志文件链接到 /var/lib/docker/contianers 目录下的容器日志输出。</li>
 </ul>
 </blockquote>
+</li>
+<li>
+<p>Elasticsearch 的数据如何备份与恢复？</p>
+</li>
+<li>
+<p>你们项目中使用的logstash过滤器插件是什么？实现哪些功能？</p>
+</li>
+<li>
+<p>是否用了索引Template？对ES集群做了哪些优化？</p>
+</li>
+<li>
+<p>kibana如何自定义图表和仪表盘？</p>
+</li>
+<li>
+<p>elasticsearch分片副本是什么？你们配置的参数是多少？、集群规模？、qps峰值和平均峰值？</p>
 </li>
 </ul>
 <h2 id="docker">Docker</h2>
@@ -1992,6 +2083,33 @@ ENTRYPOINT <span class="o">[</span><span class="s2">&#34;/app&#34;</span><span c
 </li>
 </ul>
 <h1 id="应用运维相关">应用运维相关</h1>
+<h2 id="linux">Linux</h2>
+<ul>
+<li>如何清空Kafka某个 topic 里的消息</li>
+<li>nginx日志访问量前十的ip怎么统计？</li>
+<li>nginx负载均衡算法有哪些？</li>
+<li>如何升级内核，目前最新版本号多少？</li>
+<li>大于2T的磁盘如何分区？</li>
+<li>删除 /var/log/ 下.log 结尾的30天前的日志文件？</li>
+<li>磁盘100%，服务器上找不到对应的文件，排查思路？</li>
+<li>新上接口时好时坏，排查思路？</li>
+<li>收到用户反馈APP或网站无法访问，你会怎么处理？</li>
+<li>业务pv、QPS均值和峰值分别是多少？集群规模多少？怎么保障业务高可用？</li>
+<li>在日常工作中遇到了什么棘手的问题，如何排查？</li>
+<li>某个进程偶现CPU高，如何排查是哪里出现问题了？</li>
+<li>监控系统、接口监控、错误日志监控、Nginx状态监控、消息队列拥堵监控、服务使用内存和CPU监控、服务器基础监控？</li>
+<li>老板偶尔用手机使用了咱们的产品，就出现了一个报错，你该如何定位，我们这边有多少多少的并发？</li>
+</ul>
+<h2 id="prometheus-监控">Prometheus 监控</h2>
+<ul>
+<li>prometheus对比zabbix有哪些优势？</li>
+<li>prometheus组件有哪些，功能是什么？</li>
+<li>指标类型有哪些？</li>
+<li>在应对上千节点监控时，如何保障性能？</li>
+<li>简述从添加节点监控到grafana成图的整个流程？</li>
+<li>在工作中用到了哪些exporter？</li>
+<li>报警收敛怎么做的？</li>
+</ul>
 <h2 id="mysql">Mysql</h2>
 <ul>
 <li>
@@ -2051,7 +2169,7 @@ ENTRYPOINT <span class="o">[</span><span class="s2">&#34;/app&#34;</span><span c
 <blockquote>
 <p>答：这里已 ddos 的两大类型进行分别说明：</p>
 <ul>
-<li>带宽消耗型攻击:  <code>udp flood</code>、<code>icmp flood</code>、``</li>
+<li>带宽消耗型攻击:  <code>udp flood</code>、<code>icmp flood</code>、</li>
 <li>资源消耗型攻击:</li>
 </ul>
 </blockquote>
@@ -2103,13 +2221,46 @@ ENTRYPOINT <span class="o">[</span><span class="s2">&#34;/app&#34;</span><span c
 </blockquote>
 </li>
 </ul>
-<h2 id="redis">Redis</h2>
+<h2 id="redis--nosql">Redis &amp; NoSQL</h2>
 <ul>
 <li>
 <p>redis 分片集群的 实现原理是什么？</p>
 <blockquote>
 </blockquote>
 </li>
+<li>
+<p>Redis数据持久化有哪些方式？</p>
+</li>
+<li>
+<p>Redis集群方案有哪些？</p>
+</li>
+<li>
+<p>Redis如何进行数据备份与恢复？</p>
+</li>
+<li>
+<p>MongoDB如何进行数据备份？</p>
+</li>
+<li>
+<p>Kafka 为何比 Redis RabbitMQ 快？</p>
+</li>
+</ul>
+<h2 id="kafka">Kafka</h2>
+<ul>
+<li>Apache Kafka 是什么？</li>
+<li>什么是消费者组？</li>
+<li>在 Kafka 中，ZooKeeper 的作用是什么？</li>
+<li>解释下 Kafka 中位移（offset）的作用？</li>
+<li>阐述下 Kafka 中的领导者副本（Leader Replica）和追随者副本（Follower Replica）的区别？</li>
+<li>如何设置 Kafka 能接收的最大消息的大小？</li>
+<li>监控 Kafka 的框架都有哪些？</li>
+<li>Broker 的 Heap Size 如何设置？</li>
+<li>如何估算 Kafka 集群的机器数量？</li>
+<li>Leader 总是 -1，怎么破？</li>
+<li>LEO、LSO、AR、ISR、HW 都表示什么含义？</li>
+<li>__consumer_offsets 是做什么用的？</li>
+<li>简述 Follower 副本消息同步的完整流程？</li>
+<li>Controller 发生网络分区（Network Partitioning）时，Kafka 会怎么样？</li>
+<li>如何调优 Kafka？</li>
 </ul>
 <h1 id="个人问题">个人问题</h1>
 <ul>
@@ -2118,6 +2269,14 @@ ENTRYPOINT <span class="o">[</span><span class="s2">&#34;/app&#34;</span><span c
 <blockquote>
 </blockquote>
 </li>
+</ul>
+<h1 id="提问面试官">提问面试官</h1>
+<ul>
+<li>这个岗位每天、每周、每月都做什么？</li>
+<li>这个岗位当前需要立即解决的痛点？</li>
+<li>团队规模&amp;协作与沟通的模式？</li>
+<li>集群与服务规模？</li>
+<li>当前架构/业务与未来演进方向？</li>
 </ul>
 
     </div>
