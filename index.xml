@@ -116,6 +116,15 @@
     </item>
     
     <item>
+      <title>2021下半年总结面试题与分析</title>
+      <link>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</link>
+      <pubDate>Sat, 29 May 2021 11:38:41 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</guid>
+      <description>概述 此篇文档 为下半年整理的，相关面试题。 (* 表示本人实际 碰见过的相关面试题 ） K8s 相关 api-Server 为什么 k8s 要用申明式？ 答：只需描述期望状态就行, 剩下的交给k</description>
+    </item>
+    
+    <item>
       <title>快速删除 Rancher 中 失败的 pod资源 </title>
       <link>https://cdryzun.github.io/post/quick-delete-rancher-failed-pod/</link>
       <pubDate>Thu, 27 May 2021 08:59:56 +0800</pubDate>

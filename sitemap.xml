@@ -415,6 +415,13 @@
   </url>
   
   <url>
+    <loc>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</loc>
+    <lastmod>2021-05-29T11:38:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://cdryzun.github.io/post/quick-delete-rancher-failed-pod/</loc>
     <lastmod>2021-05-27T08:59:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
