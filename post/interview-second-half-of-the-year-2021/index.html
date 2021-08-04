@@ -50,7 +50,7 @@
 <meta itemprop="description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点。 (题目后带 * 为实际碰到过的相关面试问题 ） K8s 相关 api-Server 为什么 k8s 要用申明式？ 答：只需描述期望状态">
 <meta itemprop="datePublished" content="2021-06-29T11:38:41+08:00" />
 <meta itemprop="dateModified" content="2021-06-29T11:38:41+08:00" />
-<meta itemprop="wordCount" content="37142">
+<meta itemprop="wordCount" content="37294">
 
 
 
@@ -141,7 +141,7 @@
       <div class="post-meta">
         <span class="post-time"> 2021-06-29 </span>
         
-          <span class="more-meta"> 约 37142 字 </span>
+          <span class="more-meta"> 约 37294 字 </span>
           <span class="more-meta"> 预计阅读 75 分钟 </span>
         
       </div>
@@ -595,6 +595,12 @@
 <li>
 <p>etcd 有几种集群启动机制？分别是什么？</p>
 <blockquote>
+<p>答：etcd 构建自身高可用集群主要有三种形式:</p>
+<ul>
+<li>静态发现: 预先已知etcd集群中有哪些节点，在启动时通过 <code>--initial-cluster </code>参数直接指定好etcd的各个节点地址</li>
+<li>etcd动态发现: 通过已有的etcd集群作为数据交互点，然后在扩展新的集群时实现通过已有集群进行服务发现的机制</li>
+<li>DNS动态发现: 通过DNS查询方式获取其他节点地址信息</li>
+</ul>
 </blockquote>
 </li>
 <li>
@@ -641,18 +647,20 @@
 <ul>
 <li>
 <p>etcd 的数据毁坏检测功能，目前开启 etcd 数据检测三种方式：</p>
-</li>
+<ul>
 <li>
 <p>etcd 节点启动时检查，添加 <code>--experimental-initial-corrupt-check</code> 参数。启动的时候每个节点都会去获取 peer 节点的 boltdb hash 值，然后相互对比，如果不相等就会无法启动。</p>
 </li>
 <li>
 <p>定时检查在集群运行中， 添加 <code>--experimental-corrupt-check-time</code> 参数。定时检测是指 Leader 节点获取它当前最新的版本号，并通过 Raft 模块的 ReadIndex 机制确认 Leader 身份。当确认完成后，获取各个节点的 revision 和 boltdb hash 值，若出现 Follower 节点的 revision 大于 Leader 等异常情况时，就可以认为不一致，发送 corrupt 告警，触发集群 corruption 保护，拒绝读写。</p>
 </li>
-</ul>
-<p>etcd 数据毁坏检测的功能目前还是一个试验 (experimental) 特性，在比较新的版本才趋于稳定、成熟（推荐 v3.4.9 以上），应用层的数据一致性检测；</p>
-<ul>
 <li>
 <p>开启 metrics 指标 (<code>推荐</code>)，设置一致性阈值告警。</p>
+</li>
+</ul>
+<blockquote>
+<p>etcd 数据毁坏检测的功能目前还是一个试验 (experimental) 特性，在比较新的版本才趋于稳定、成熟（推荐 <code>v3.4.9 以上</code>），应用层的数据一致性检测；</p>
+</blockquote>
 </li>
 <li>
 <p>定时数据备份: 可以使用开源的 etcd-operator 中的 backup-operator 去实现定时数据备份，建议是 <code>30分钟</code> 进行备份一次。</p>
