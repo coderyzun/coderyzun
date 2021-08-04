@@ -71,6 +71,15 @@
     </item>
     
     <item>
+      <title>2021 下半年相关知识点整理</title>
+      <link>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</link>
+      <pubDate>Tue, 29 Jun 2021 11:38:41 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</guid>
+      <description>概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点。 (题目后带 * 为实际碰到过的相关面试问题 ） K8s 相关 api-Server 为什么 k8s 要用申明式？ 答：只需描述期望状态</description>
+    </item>
+    
+    <item>
       <title>使用 Kube-Vip 部署 高可用的 Kubernetes 集群</title>
       <link>https://cdryzun.github.io/post/kube-vip-deploy-ha-k8s-cluster/</link>
       <pubDate>Thu, 24 Jun 2021 11:01:10 +0800</pubDate>
@@ -113,15 +122,6 @@
       
       <guid>https://cdryzun.github.io/post/kubernetes-deploy-gitlab/</guid>
       <description>环境说明 Kubernetes Version: v1.20.4 Postgres Version: 12.7 Redis Version: 5.0.9 因在官方提供的 gitlab-ce 镜像中，内置了 Postgres &amp;amp; Redis 的安装，在实际生产使用过程中，想让其连接使用外部统一的服务进行使用，来合理统一</description>
-    </item>
-    
-    <item>
-      <title>2021下半年总结面试题与分析</title>
-      <link>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</link>
-      <pubDate>Sat, 29 May 2021 11:38:41 +0800</pubDate>
-      
-      <guid>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</guid>
-      <description>概述 此篇文档 为下半年整理的，相关面试题。 (* 表示本人实际 碰见过的相关面试题 ） K8s 相关 api-Server 为什么 k8s 要用申明式？ 答：只需描述期望状态就行, 剩下的交给k</description>
     </item>
     
     <item>

@@ -254,6 +254,13 @@
   </url>
   
   <url>
+    <loc>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</loc>
+    <lastmod>2021-06-29T11:38:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://cdryzun.github.io/tags/containerd/</loc>
     <lastmod>2021-06-24T11:01:10+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -410,13 +417,6 @@
   <url>
     <loc>https://cdryzun.github.io/post/kubernetes-deploy-gitlab/</loc>
     <lastmod>2021-06-01T10:13:29+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</loc>
-    <lastmod>2021-05-29T11:38:41+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
