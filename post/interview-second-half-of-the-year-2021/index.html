@@ -50,7 +50,7 @@
 <meta itemprop="description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的">
 <meta itemprop="datePublished" content="2021-06-29T11:38:41+08:00" />
 <meta itemprop="dateModified" content="2021-06-29T11:38:41+08:00" />
-<meta itemprop="wordCount" content="39383">
+<meta itemprop="wordCount" content="40273">
 
 
 
@@ -141,8 +141,8 @@
       <div class="post-meta">
         <span class="post-time"> 2021-06-29 </span>
         
-          <span class="more-meta"> 约 39383 字 </span>
-          <span class="more-meta"> 预计阅读 79 分钟 </span>
+          <span class="more-meta"> 约 40273 字 </span>
+          <span class="more-meta"> 预计阅读 81 分钟 </span>
         
       </div>
     </header>
@@ -1111,7 +1111,7 @@
 <li>
 <p>cni 网络插件的 选型 需要注意什么？</p>
 <blockquote>
-<p>答：没有单一的 CNI 提供程序可以满足所有项目需求。为了 <code>便于设置和配置</code>  ，Flannel 和 Weavenet 提供了强大的功能。Calico 的 <code>性能更好</code>，因为它通过 BGP 作为底层网络。Cilium 通过 <code>BP</code>F 使用完全不同的 <code>应用层过滤模型</code>，更面向 <code>企业安全</code>。没有最好的 cni插件，只有适合当前项目的。</p>
+<p>答：没有单一的 CNI 提供程序可以满足所有项目需求。为了 <code>便于设置和配置</code>  ，Flannel 和 Weavenet 提供了强大的功能。Calico 的 <code>性能更好</code>，因为它通过 BGP 作为底层网络。Cilium 通过 <code>BPF</code> 使用完全不同的 <code>应用层过滤模型</code>，更面向 <code>企业安全</code>。没有最好的 cni插件，只有适合当前项目的。</p>
 </blockquote>
 </li>
 <li>
@@ -1335,7 +1335,7 @@
 <li>
 <p>谈谈你对在离线业务混部的想法？</p>
 <blockquote>
-<p>答：离线业务混部的话，要对离线业务进行一个 <code>资源监控</code> 和 <code>资源限制</code>，不要使其影响到了其他业务的正常运行。可以引入 <code>混沌工厂</code> 对系统进行一个 故障预演，尽早发现系统中的不足，同时锻炼了 开发人员 &amp; 运维人员 解决问题的能力、发现问题并及时得到解决的能力。</p>
+<p>答：离线业务混部的话，要对离线业务进行一个 <code>资源监控</code> 和 <code>资源限制</code>，不要使其影响到了其他业务的正常运行。可以引入 <code>混沌工程</code> 对系统进行一个真实流量模拟，尽早发现系统中的缺陷和不足，使产品更加健壮稳定的运行，同时锻炼 开发人员 &amp; 运维人员 解决问题、发现问题的能力。</p>
 </blockquote>
 </li>
 <li>
@@ -1519,7 +1519,7 @@
 </blockquote>
 </li>
 <li>
-<p>简述Kubernetes常见的部署方式？</p>
+<p>简述Kubernetes常见的部署方式？ <code>*</code></p>
 <blockquote>
 <p>答：常见的Kubernetes部署方式有：</p>
 <ul>
@@ -2364,20 +2364,136 @@ ENTRYPOINT <span class="o">[</span><span class="s2">&#34;/app&#34;</span><span c
 <h1 id="应用运维相关">应用运维相关</h1>
 <h2 id="linux">Linux</h2>
 <ul>
-<li>如何清空Kafka某个 topic 里的消息</li>
-<li>nginx日志访问量前十的ip怎么统计？</li>
-<li>nginx负载均衡算法有哪些？</li>
-<li>如何升级内核，目前最新版本号多少？</li>
-<li>大于2T的磁盘如何分区？</li>
-<li>删除 /var/log/ 下.log 结尾的30天前的日志文件？</li>
-<li>磁盘100%，服务器上找不到对应的文件，排查思路？</li>
-<li>新上接口时好时坏，排查思路？</li>
-<li>收到用户反馈APP或网站无法访问，你会怎么处理？</li>
-<li>业务pv、QPS均值和峰值分别是多少？集群规模多少？怎么保障业务高可用？</li>
-<li>在日常工作中遇到了什么棘手的问题，如何排查？</li>
-<li>某个进程偶现CPU高，如何排查是哪里出现问题了？</li>
-<li>监控系统、接口监控、错误日志监控、Nginx状态监控、消息队列拥堵监控、服务使用内存和CPU监控、服务器基础监控？</li>
-<li>老板偶尔用手机使用了咱们的产品，就出现了一个报错，你该如何定位，我们这边有多少多少的并发？</li>
+<li>
+<p>如何清空Kafka某个 topic 里的消息</p>
+<blockquote>
+<p>答：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">bin/kafka-topics.sh --delete --topic xxx --zookeeper zookeeper-1.default.svc.cluster.local:2181
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+</li>
+<li>
+<p>nginx日志访问量前十的ip怎么统计？</p>
+<blockquote>
+<p>答：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"> awk <span class="s1">&#39;{print $1}&#39;</span> nginx.log<span class="p">|</span>sort <span class="p">|</span>uniq -c<span class="p">|</span>sort -rn<span class="p">|</span>head -n <span class="m">10</span>
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+</li>
+<li>
+<p>nginx 负载均衡算法有哪些？</p>
+<blockquote>
+<p>答： nginx 支持负载均衡算法有如下：</p>
+<ul>
+<li>轮询（默认）：每个请求按时间顺序逐一分配到不同的后端服务，如果后端某台服务器死机，自动剔除故障系统，使用户访问不受影响</li>
+<li>weight (加权轮询)：weight的值越大分配到的访问概率越高，主要用于后端每台服务器性能不均衡的情况下</li>
+<li>least_conn：least_connected 方式可以更公平的将负载分配到多个机器上面，如自动分配到较空闲节点</li>
+<li>ip_hash：每个请求按访问IP的哈希结果分配，使来自同一个IP的访客固定访问一台后端服务器，并且可以有效解决动态网页存在的session共享问题</li>
+<li>fair（第三方）：比 weight、ip_hash更智能的负载均衡算法，fair算法可以根据页面大小和加载时间长短智能地进行负载均衡，也就是根据后端服务器的响应时间来分配请求，响应时间短的优先分配</li>
+<li>url_hash（第三方）：按访问的URL的哈希结果来分配请求，使每个URL定向到一台后端服务器，可以进一步提高后端缓存服务器的效率</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>如何升级内核，目前最新版本号多少？</p>
+<blockquote>
+<p>答：centos 更新内核方法如下：</p>
+<ul>
+<li>下载对应 kernel rpm 文件包，使用 <code>rpm -ivhU xxx.rpm</code> 进行安装 或使用 <code>yum localinstall xxx.rpm</code></li>
+<li>使用 <code>grub2-set-default</code> 更新系统默认内核</li>
+<li>使用 <code>grub2-mkconfig -o /boot/grub2/grub.cfg</code> 更新 grub 引导文件</li>
+<li>重启生效，注意以前内核注意保留，防止更新失败，可回滚。</li>
+</ul>
+<p>最新的 内核版本号可以去，<code>kernel.org</code> 站点进行查看。</p>
+</blockquote>
+</li>
+<li>
+<p>大于2T的磁盘如何分区？</p>
+<blockquote>
+<p>答：fdisk 只能分区小于 2t 的磁盘，大于 2t 的话，就要用到 <code>parted</code></p>
+</blockquote>
+</li>
+<li>
+<p>删除 /var/log/ 下.log 结尾的30天前的日志文件？</p>
+<blockquote>
+<p>答：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">find /var/log/ -mtime +30 -name <span class="s2">&#34;*.log&#34;</span> -exec rm -rf <span class="o">{}</span> <span class="se">\;</span>
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+</li>
+<li>
+<p>磁盘100%，服务器上找不到对应的文件，排查思路？</p>
+<blockquote>
+<p>答：排查思路如下:</p>
+<p>思路一:</p>
+<ul>
+<li>首先要看看 这个问题是不是，因为把大文件删除后，磁盘空间是不是未得到正常释放导致。</li>
+<li>如果是这样，进入 对应删除文件所在目录，使用 <code>lsof</code> 查看是否有进程 一直在占用，是的话可以 <code>kill</code> 掉相应的进程，重启服务进行恢复。</li>
+</ul>
+<p>思路二:</p>
+<ul>
+<li>
+<p>使用 <code>dh -i</code> 检查 磁盘 <code>inode</code> 空间是否充足</p>
+</li>
+<li>
+<p>如果此时在执行某些命令的时候 <code>无法执行</code>，可以去 <code>/var/log/</code> 下清理部分日志，先恢复可以执行命令先。</p>
+</li>
+<li>
+<p>然后使用 find 全盘查找，查找大于某个大小的文件，示例搜索 大于 20M</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">find / -path <span class="s2">&#34;/&#34;</span> -prune -o -type f -a -size +20M -print<span class="p">|</span>xargs ls -lh
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>找到文件后，对其进行删除，注意删除文件时，不要使用 <code>rm</code> ，而使用 <code>&gt;</code> 即 <code>重定向方式</code>，来进行释放空间，这样就不会出现，思路一 中所描述到的问题了。</p>
+</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>新上接口时好时坏，排查思路？</p>
+</li>
+<li>
+<p>收到用户反馈APP或网站无法访问，你会怎么处理？</p>
+</li>
+<li>
+<p>业务pv、QPS均值和峰值分别是多少？集群规模多少？怎么保障业务高可用？</p>
+</li>
+<li>
+<p>在日常工作中遇到了什么棘手的问题，如何排查？</p>
+</li>
+<li>
+<p>某个进程偶现CPU高，如何排查是哪里出现问题了？</p>
+</li>
+<li>
+<p>监控系统、接口监控、错误日志监控、Nginx状态监控、消息队列拥堵监控、服务使用内存和CPU监控、服务器基础监控？</p>
+</li>
+<li>
+<p>老板偶尔用手机使用了咱们的产品，就出现了一个报错，你该如何定位，我们这边有多少多少的并发？</p>
+</li>
 </ul>
 <h2 id="prometheus-监控">Prometheus 监控</h2>
 <ul>
