@@ -71,15 +71,6 @@
     </item>
     
     <item>
-      <title>2021 下半年相关知识点整理</title>
-      <link>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</link>
-      <pubDate>Tue, 29 Jun 2021 11:38:41 +0800</pubDate>
-      
-      <guid>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</guid>
-      <description>概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的</description>
-    </item>
-    
-    <item>
       <title>使用 Kube-Vip 部署 高可用的 Kubernetes 集群</title>
       <link>https://cdryzun.github.io/post/kube-vip-deploy-ha-k8s-cluster/</link>
       <pubDate>Thu, 24 Jun 2021 11:01:10 +0800</pubDate>
