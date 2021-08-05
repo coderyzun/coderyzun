@@ -50,7 +50,7 @@
 <meta itemprop="description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的">
 <meta itemprop="datePublished" content="2021-06-29T11:38:41+08:00" />
 <meta itemprop="dateModified" content="2021-06-29T11:38:41+08:00" />
-<meta itemprop="wordCount" content="40273">
+<meta itemprop="wordCount" content="40689">
 
 
 
@@ -141,8 +141,8 @@
       <div class="post-meta">
         <span class="post-time"> 2021-06-29 </span>
         
-          <span class="more-meta"> 约 40273 字 </span>
-          <span class="more-meta"> 预计阅读 81 分钟 </span>
+          <span class="more-meta"> 约 40689 字 </span>
+          <span class="more-meta"> 预计阅读 82 分钟 </span>
         
       </div>
     </header>
@@ -2184,7 +2184,7 @@ ENTRYPOINT <span class="o">[</span><span class="s2">&#34;/app&#34;</span><span c
 <li>
 <p>如何清理后台停止的容器？</p>
 <blockquote>
-<p>答：可以使用 sudo docker rm $sudo( docker ps -a -q) 命令。</p>
+<p>答：可以使用 docker rm <code>docker ps -aq</code> 命令。</p>
 </blockquote>
 </li>
 <li>
@@ -2226,8 +2226,20 @@ ENTRYPOINT <span class="o">[</span><span class="s2">&#34;/app&#34;</span><span c
 <li>
 <p>如何批量清理临时镜像文件？</p>
 <blockquote>
-<p>答：可以使用 <code>sudo docker rmi $( sudo docker images -q -f dangling=true)</code> 命令</p>
-</blockquote>
+<p>答：可以使用如下命令:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker rmi <span class="sb">`</span>docker images -q -f <span class="nv">dangling</span><span class="o">=</span><span class="nb">true</span><span class="sb">`</span>  <span class="c1"># 方法一</span>
+
+docker system prune -a --volumes  -f  <span class="c1"># 方法二</span>
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
 </li>
 <li>
 <p>构建Docker镜像应该遵循哪些原则？</p>
@@ -2474,10 +2486,45 @@ ENTRYPOINT <span class="o">[</span><span class="s2">&#34;/app&#34;</span><span c
 </blockquote>
 </li>
 <li>
-<p>新上接口时好时坏，排查思路？</p>
+<p>新上 api 接口时好时坏，排查思路？</p>
+<blockquote>
+<p>答：检查系统中，是否引用了 负载均衡器，如果是这样，可能是某一个后端应用导致，具体逐一排查思路如下:</p>
+<ul>
+<li>
+<p>浏览器访问页面，使用 f12 打开 debug 终端进行测试。</p>
+</li>
+<li>
+<p>使用 Postman 进行模拟 api 请求测试。</p>
+</li>
+<li>
+<p>检查前端应用日志，如 nginx</p>
+</li>
+<li>
+<p>检查后端应用的日志，进行排查。</p>
+</li>
+<li>
+<p>如上述问题多检查没问题后，检查各应用、服务器依赖、配置参数、内核参数的版本是否一致。</p>
+</li>
+</ul>
+</blockquote>
 </li>
 <li>
 <p>收到用户反馈APP或网站无法访问，你会怎么处理？</p>
+<blockquote>
+<p>答：处理流程如下:</p>
+<ul>
+<li>对用户反馈的问题进行有效沟通。了解 <code>到底是</code> 什么问题先。</li>
+<li>对用户所述问题 进行初步分析，故障可能出现的位置，站点无法访问，可以从如下几个点进行逐一排查：
+<ul>
+<li>询问用户那边网络质量怎么样，是不是 dns 污染，或者 运营商 线路故障所导致的故障</li>
+<li>进行自测试，检查是否为 与客户所描述一致</li>
+<li>根据系统提示错误 进行逐一排查</li>
+<li>检查 服务器是否 Down 机：前往 <code>监控系统</code> 和 <code>日志系统</code> 进行 集群的全局检查，如 cpu、内存、磁盘空间的使用状态、网络情况，是否有被 恶意攻击等</li>
+<li>排查是否为资源运营商 故障导致 如 CDN 异常、运营商节点被攻击，导致网络掉包严重。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
 </li>
 <li>
 <p>业务pv、QPS均值和峰值分别是多少？集群规模多少？怎么保障业务高可用？</p>
