@@ -1,164 +1,203 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-<meta charset="utf-8"/>
-<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
-<title>Rancher 开启监控后，exporter/metrics 的添加说明 (二) - 「Yang'zun」PlayGround</title>
-<meta content="webkit" name="renderer"/>
-<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
-<meta content="no-transform" http-equiv="Cache-Control"/>
-<meta content="no-siteapp" http-equiv="Cache-Control"/>
-<meta content="#f8f5ec" name="theme-color"/>
-<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
-<meta content="yes" name="apple-mobile-web-app-capable"/>
-<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
-<meta content="Yang'zun" name="author"/><meta content="使用 rancher prometheus operator 开启监控后，外部 exporter 的添加关联工作" name="description"/><meta content="rancher, prometheus, operator, devops, k8s, kubernetes, exporter, scripts" name="keywords"/>
-<meta content="Hugo 0.78.2 with theme even" name="generator"/>
-<link href="https://cdryzun.github.io/post/rancher-monitor-config-second/" rel="canonical"/>
-<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
-<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
-<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
-<link href="/manifest.json" rel="manifest"/>
-<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
-<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet"/>
-<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
-<link href="/css/custom.css" rel="stylesheet"/>
-<meta content="Rancher 开启监控后，exporter/metrics 的添加说明 (二)" property="og:title"/>
-<meta content="使用 rancher prometheus operator 开启监控后，外部 exporter 的添加关联工作" property="og:description"/>
-<meta content="article" property="og:type"/>
-<meta content="https://cdryzun.github.io/post/rancher-monitor-config-second/" property="og:url"/>
-<meta content="2021-05-17T10:41:26+08:00" property="article:published_time"/>
-<meta content="2021-05-17T10:41:26+08:00" property="article:modified_time"/>
-<meta content="Rancher 开启监控后，exporter/metrics 的添加说明 (二)" itemprop="name"/>
-<meta content="使用 rancher prometheus operator 开启监控后，外部 exporter 的添加关联工作" itemprop="description"/>
-<meta content="2021-05-17T10:41:26+08:00" itemprop="datePublished"/>
-<meta content="2021-05-17T10:41:26+08:00" itemprop="dateModified"/>
-<meta content="3127" itemprop="wordCount"/>
-<meta content="rancher,prometheus,operator,k8s,kubekey,exporter,metrics," itemprop="keywords"/>
-<meta content="summary" name="twitter:card"/>
-<meta content="Rancher 开启监控后，exporter/metrics 的添加说明 (二)" name="twitter:title"/>
-<meta content="使用 rancher prometheus operator 开启监控后，外部 exporter 的添加关联工作" name="twitter:description"/>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Rancher 开启监控后，exporter/metrics 的添加说明 (二) - 「Yang&#39;zun」PlayGround</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用 rancher prometheus operator 开启监控后，外部 exporter 的添加关联工作" /><meta name="keywords" content="rancher, prometheus, operator, devops, k8s, kubernetes, exporter, scripts" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/rancher-monitor-config-second/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<meta property="og:title" content="Rancher 开启监控后，exporter/metrics 的添加说明 (二)" />
+<meta property="og:description" content="使用 rancher prometheus operator 开启监控后，外部 exporter 的添加关联工作" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/rancher-monitor-config-second/" />
+<meta property="article:published_time" content="2021-05-17T10:41:26+08:00" />
+<meta property="article:modified_time" content="2021-05-17T10:41:26+08:00" />
+<meta itemprop="name" content="Rancher 开启监控后，exporter/metrics 的添加说明 (二)">
+<meta itemprop="description" content="使用 rancher prometheus operator 开启监控后，外部 exporter 的添加关联工作">
+<meta itemprop="datePublished" content="2021-05-17T10:41:26+08:00" />
+<meta itemprop="dateModified" content="2021-05-17T10:41:26+08:00" />
+<meta itemprop="wordCount" content="3127">
+
+
+
+<meta itemprop="keywords" content="rancher,prometheus,operator,k8s,kubekey,exporter,metrics," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Rancher 开启监控后，exporter/metrics 的添加说明 (二)"/>
+<meta name="twitter:description" content="使用 rancher prometheus operator 开启监控后，外部 exporter 的添加关联工作"/>
+
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
 <![endif]-->
+
 <!--[if lt IE 9]>
   <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
   <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
 <![endif]-->
-<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
+
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
 </head>
 <body>
-<header class="header" id="header">
-<div class="logo-wrapper">
-<a class="logo" href="/">「Yang'zun」PlayGround</a>
+  <header id="header" class="header">
+      <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
 </div>
+
+
+
+
+
 <nav class="site-navbar">
-<ul class="menu" id="menu">
-<li class="menu-item">
-<a class="menu-item-link" href="/">主页</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/post/">归档</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/tags/">标签</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/categories/">分类</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/about/">关于</a>
-</li>
-</ul><li style="display:inline-block;margin-right:10px;">
-<input class="docsearch-input" placeholder="Search" type="search"/>
-</li></nav>
-</header>
-<div class="mobile-navbar" id="mobile-navbar">
-<div class="mobile-header-logo">
-<a class="logo" href="/">「Yang'zun」PlayGround</a>
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+  </header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
-<div class="mobile-navbar-icon">
-<span></span>
-<span></span>
-<span></span>
-</div>
-</div>
-<nav class="mobile-menu slideout-menu" id="mobile-menu">
-<ul class="mobile-menu-list">
-<a href="/">
-<li class="mobile-menu-item">主页</li>
-</a><a href="/post/">
-<li class="mobile-menu-item">归档</li>
-</a><a href="/tags/">
-<li class="mobile-menu-item">标签</li>
-</a><a href="/categories/">
-<li class="mobile-menu-item">分类</li>
-</a><a href="/about/">
-<li class="mobile-menu-item">关于</li>
-</a>
-</ul>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
 </nav>
-<div class="container" id="mobile-panel">
-<main class="main" id="main">
-<div class="content-wrapper">
-<div class="content" id="content">
-<article class="post">
-<header class="post-header">
-<h1 class="post-title">Rancher 开启监控后，exporter/metrics 的添加说明 (二)</h1>
-<div class="post-meta">
-<span class="post-time"> 2021-05-17 </span>
-<div class="post-category">
-<a href="/categories/devops/"> devops </a>
-<a href="/categories/k8s/"> k8s </a>
-<a href="/categories/prometheus/"> prometheus </a>
-</div>
-<span class="more-meta"> 约 3127 字 </span>
-<span class="more-meta"> 预计阅读 7 分钟 </span>
-</div>
-</header>
-<div class="post-toc" id="post-toc">
-<h2 class="post-toc-title">文章目录</h2>
-<div class="post-toc-content always-active">
-<nav id="TableOfContents">
-<ul>
-<li><a href="#环境说明">环境说明</a></li>
-<li><a href="#exporter-列表">exporter 列表</a>
-<ul>
-<li><a href="#scripts-exporter"><code>scripts exporter</code></a>
-<ul>
-<li><a href="#安装配置">安装配置</a></li>
-<li><a href="#配置为-systemctl-服务并设置开启自启动">配置为 <code>systemctl</code> 服务，并设置开启自启动</a></li>
-<li><a href="#关联-prometheus-指标抓取">关联 prometheus 指标抓取</a></li>
-<li><a href="#配置集成-rancher-中的prometheus-operator">配置集成 rancher 中的<code>prometheus operator</code></a></li>
-</ul>
-</li>
-<li><a href="#php-fpm_exporter-"><code>php-fpm_exporter </code></a>
-<ul>
-<li><a href="#配置添加-php-参数">配置添加 php 参数</a></li>
-<li><a href="#添加配置-关联-nginx">添加配置 关联 nginx</a></li>
-<li><a href="#配置关联为-systemd--服务并配置自启">配置关联为 <code>systemd</code>  服务，并配置自启</a></li>
-</ul>
-</li>
-<li><a href="#win_exporter"><code>win_exporter</code></a></li>
-<li><a href="#blackbox_exporter"><code>blackbox_exporter</code></a>
-<ul>
-<li><a href="#使用-helm-进行安装">使用 helm 进行安装</a></li>
-<li><a href="#安装后与-prometheus-operator-的集成">安装后与 prometheus operator 的集成</a></li>
-<li><a href="#检查-prometheus-operator-配置是否有更新">检查 prometheus operator 配置是否有更新</a></li>
-</ul>
-</li>
-<li><a href="#traefik-metrcis-关联">traefik metrcis 关联</a>
-<ul>
-<li><a href="#helm-安装-traefik并配置开启-metrcis">helm 安装 traefik，并配置开启 <code>metrcis</code></a></li>
-<li><a href="#创建-serviceminitor-资源配置关联-operator">创建 <code>serviceMinitor</code> 资源配置关联 operator</a></li>
-<li><a href="#配置-grafana-dashboard">配置 grafana dashboard</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#总结">总结</a></li>
-</ul>
+
+  <div class="container" id="mobile-panel">
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Rancher 开启监控后，exporter/metrics 的添加说明 (二)</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-05-17 </span>
+        <div class="post-category">
+            <a href="/categories/devops/"> devops </a>
+            <a href="/categories/k8s/"> k8s </a>
+            <a href="/categories/prometheus/"> prometheus </a>
+            </div>
+          <span class="more-meta"> 约 3127 字 </span>
+          <span class="more-meta"> 预计阅读 7 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明</a></li>
+    <li><a href="#exporter-列表">exporter 列表</a>
+      <ul>
+        <li><a href="#scripts-exporter"><code>scripts exporter</code></a>
+          <ul>
+            <li><a href="#安装配置">安装配置</a></li>
+            <li><a href="#配置为-systemctl-服务并设置开启自启动">配置为 <code>systemctl</code> 服务，并设置开启自启动</a></li>
+            <li><a href="#关联-prometheus-指标抓取">关联 prometheus 指标抓取</a></li>
+            <li><a href="#配置集成-rancher-中的prometheus-operator">配置集成 rancher 中的<code>prometheus operator</code></a></li>
+          </ul>
+        </li>
+        <li><a href="#php-fpm_exporter-"><code>php-fpm_exporter </code></a>
+          <ul>
+            <li><a href="#配置添加-php-参数">配置添加 php 参数</a></li>
+            <li><a href="#添加配置-关联-nginx">添加配置 关联 nginx</a></li>
+            <li><a href="#配置关联为-systemd--服务并配置自启">配置关联为 <code>systemd</code>  服务，并配置自启</a></li>
+          </ul>
+        </li>
+        <li><a href="#win_exporter"><code>win_exporter</code></a></li>
+        <li><a href="#blackbox_exporter"><code>blackbox_exporter</code></a>
+          <ul>
+            <li><a href="#使用-helm-进行安装">使用 helm 进行安装</a></li>
+            <li><a href="#安装后与-prometheus-operator-的集成">安装后与 prometheus operator 的集成</a></li>
+            <li><a href="#检查-prometheus-operator-配置是否有更新">检查 prometheus operator 配置是否有更新</a></li>
+          </ul>
+        </li>
+        <li><a href="#traefik-metrcis-关联">traefik metrcis 关联</a>
+          <ul>
+            <li><a href="#helm-安装-traefik并配置开启-metrcis">helm 安装 traefik，并配置开启 <code>metrcis</code></a></li>
+            <li><a href="#创建-serviceminitor-资源配置关联-operator">创建 <code>serviceMinitor</code> 资源配置关联 operator</a></li>
+            <li><a href="#配置-grafana-dashboard">配置 grafana dashboard</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
 </nav>
+  </div>
 </div>
-</div>
-<div class="post-content">
-<h1 id="环境说明">环境说明</h1>
+    <div class="post-content">
+      <h1 id="环境说明">环境说明</h1>
 <blockquote>
 <p><a href="https://www.treesir.pub/post/rancher-monitor-config-first/"><code>上期</code></a> 介绍了 <code>rancher prometheus operator</code> 的安装和基础 targets 的修复工作。有的时候我们抓取的 exporter metrics 并不在同集群且与集群没有任何关联时，应该怎么和 rancher <code>monitor</code> 进行关联配置呢？下面文档将配置展示部署外部  <code>exporter </code>, 的安装说明、指标抓取、 和监控系统的关联。</p>
 </blockquote>
@@ -231,16 +270,16 @@ cp script_exporter-1.1.0.linux-amd64/script_exporter /application/script_exporte
 <pre class="chroma"><code class="language-bash" data-lang="bash">cat &gt; /application/script_exporter/conf/script-exporter.yml <span class="s">&lt;&lt; EOF
 </span><span class="s">scripts:
 </span><span class="s">  # 此配置文件 创建一个whoami的脚本 当程序不是root用户执行时抛出异常
-</span><span class="s">  - name: 'whoami'
-</span><span class="s">    script: if [ \`whoami\` != 'root' ];then exit 1 ;fi
+</span><span class="s">  - name: &#39;whoami&#39;
+</span><span class="s">    script: if [ \`whoami\` != &#39;root&#39; ];then exit 1 ;fi
 </span><span class="s">EOF</span>
   
 <span class="c1"># 使用 root 用户启动测试程序</span>
 /application/script_exporter/bin/script_exporter -config.file /application/script_exporter/conf/script-exporter.yml <span class="c1"># 测试启动</span>
   
 curl http://localhost:9172/probe?pattern<span class="o">=</span>.*  <span class="c1"># 测试触发脚本的 metrics 指标暴露</span>
-script_duration_seconds<span class="o">{</span><span class="nv">script</span><span class="o">=</span><span class="s2">"whoami"</span><span class="o">}</span> 0.002529
-script_success<span class="o">{</span><span class="nv">script</span><span class="o">=</span><span class="s2">"whoami"</span><span class="o">}</span> <span class="m">1</span>  <span class="c1"># 这里由于我使用的是 root 启动的 指标显示为 1,下面我们尝试更为 非 root 用户启动看看</span>
+script_duration_seconds<span class="o">{</span><span class="nv">script</span><span class="o">=</span><span class="s2">&#34;whoami&#34;</span><span class="o">}</span> 0.002529
+script_success<span class="o">{</span><span class="nv">script</span><span class="o">=</span><span class="s2">&#34;whoami&#34;</span><span class="o">}</span> <span class="m">1</span>  <span class="c1"># 这里由于我使用的是 root 启动的 指标显示为 1,下面我们尝试更为 非 root 用户启动看看</span>
   
 useradd exporter  <span class="c1"># 添加测试用户  exporter</span>
   
@@ -250,13 +289,13 @@ su - exporter <span class="c1"># 切换为 exporter 用户启动程序</span>
 /application/script_exporter/bin/script_exporter -config.file /application/script_exporter/conf/script-exporter.yml
   
 curl http://localhost:9172/probe?pattern<span class="o">=</span>.*  <span class="c1"># 再次触发脚本执行</span>
-script_duration_seconds<span class="o">{</span><span class="nv">script</span><span class="o">=</span><span class="s2">"whoami"</span><span class="o">}</span> 0.004814
-script_success<span class="o">{</span><span class="nv">script</span><span class="o">=</span><span class="s2">"whoami"</span><span class="o">}</span> <span class="m">0</span> <span class="c1"># 可以放回为 非 0，即错误验证码</span>
+script_duration_seconds<span class="o">{</span><span class="nv">script</span><span class="o">=</span><span class="s2">&#34;whoami&#34;</span><span class="o">}</span> 0.004814
+script_success<span class="o">{</span><span class="nv">script</span><span class="o">=</span><span class="s2">&#34;whoami&#34;</span><span class="o">}</span> <span class="m">0</span> <span class="c1"># 可以放回为 非 0，即错误验证码</span>
 </code></pre></td></tr></table>
 </div>
 </div></li>
 </ul>
-<p><img alt="image-20210518165925938" src="https://cdn.treesir.pub/img/image-20210518165925938.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210518165925938.png" alt="image-20210518165925938"></p>
 <blockquote>
 <p>从上面测试的结果我们可以得出结论，那就是 <code>执行脚本返回了非0状态码</code> metrics 对象 指标项就会是 <code>0</code>, 那么我们更具此条规律添加脚本即可。下面示例展示一个生产环境使用的 配置文件。</p>
 <div class="highlight"><div class="chroma">
@@ -269,8 +308,8 @@ script_success<span class="o">{</span><span class="nv">script</span><span class=
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">cat script-exporter.yml
 scripts:
-  - name: <span class="s1">'1.44-raid-check'</span>
-    script: <span class="k">if</span> ! ssh 192.168.1.44 <span class="s2">"if [ \`MegaCli -PDList -aAll -NoLog | grep 'Firmware state'|wc -l \` -ne \`MegaCli -PDList -aAll -NoLog | egrep 'Online,|Hotspare,'|wc -l\` ] ;then exit 1 ;fi"</span><span class="p">;</span><span class="k">then</span> <span class="nb">exit</span> <span class="m">1</span> <span class="p">;</span><span class="k">fi</span>
+  - name: <span class="s1">&#39;1.44-raid-check&#39;</span>
+    script: <span class="k">if</span> ! ssh 192.168.1.44 <span class="s2">&#34;if [ \`MegaCli -PDList -aAll -NoLog | grep &#39;Firmware state&#39;|wc -l \` -ne \`MegaCli -PDList -aAll -NoLog | egrep &#39;Online,|Hotspare,&#39;|wc -l\` ] ;then exit 1 ;fi&#34;</span><span class="p">;</span><span class="k">then</span> <span class="nb">exit</span> <span class="m">1</span> <span class="p">;</span><span class="k">fi</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>此脚本，使用 ssh 远程至目标机器 <code>192.168.1.44</code>，检查磁盘整列<code>raid</code>是否有掉盘情况，远程使用 <code>ssh-keygen &amp; ssh-copy-id</code> 做了 <code>免密钥</code> 处理，所有不需要输入密码。</p>
@@ -341,7 +380,7 @@ systemctl start script-exporter.service <span class="se">\
 </span><span class="se"></span><span class="o">&amp;&amp;</span> systemctl status script-exporter.service 
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210518172834285" src="https://cdn.treesir.pub/img/image-20210518172834285.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210518172834285.png" alt="image-20210518172834285"></p>
 <h3 id="关联-prometheus-指标抓取">关联 prometheus 指标抓取</h3>
 <blockquote>
 <p>此示例使用普通的 prometheus，配置文件进行关联</p>
@@ -362,15 +401,15 @@ systemctl start script-exporter.service <span class="se">\
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">  - job_name: <span class="s1">'script_exporter'</span>
+<pre class="chroma"><code class="language-bash" data-lang="bash">  - job_name: <span class="s1">&#39;script_exporter&#39;</span>
     scrape_interval: 15s
     metrics_path: /probe
     params:
-      pattern: <span class="o">[</span><span class="s1">'.'</span><span class="o">]</span>
+      pattern: <span class="o">[</span><span class="s1">&#39;.&#39;</span><span class="o">]</span>
     static_configs:
-      - targets: <span class="o">[</span><span class="s1">'exporter_ip:exporter_port'']
+      - targets: <span class="o">[</span><span class="s1">&#39;exporter_ip:exporter_port&#39;&#39;]
 </span><span class="s1">        labels: demo
-</span><span class="s1">          instance: '</span>exporter_ip:exporter_port<span class="err">'</span>
+</span><span class="s1">          instance: &#39;</span>exporter_ip:exporter_port<span class="err">&#39;</span>
     relabel_configs:
       - target_label: script
         replacement: service
@@ -380,16 +419,16 @@ systemctl start script-exporter.service <span class="se">\
 <blockquote>
 <p>更改对应的 <code>secrets</code> 资源对象即可，secrets 资源对象中对配置文件做了一层 <code>base64</code> 加密</p>
 </blockquote>
-<p><img alt="image-20210518174237033" src="https://cdn.treesir.pub/img/image-20210518174237033.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210518174237033.png" alt="image-20210518174237033"></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get secrets prometheus-cluster-monitoring-additional-scrape-configs  -n cattle-prometheus -o yaml<span class="p">|</span> awk -F <span class="s1">':'</span> <span class="s1">'NR==3{print $2}'</span><span class="p">|</span>tr -d <span class="s1">' '</span><span class="p">|</span>base64 -d
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get secrets prometheus-cluster-monitoring-additional-scrape-configs  -n cattle-prometheus -o yaml<span class="p">|</span> awk -F <span class="s1">&#39;:&#39;</span> <span class="s1">&#39;NR==3{print $2}&#39;</span><span class="p">|</span>tr -d <span class="s1">&#39; &#39;</span><span class="p">|</span>base64 -d
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210518180411380" src="https://cdn.treesir.pub/img/image-20210518180411380.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210518180411380.png" alt="image-20210518180411380"></p>
 <p><strong>更改 secrets 中配置</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -414,33 +453,33 @@ systemctl start script-exporter.service <span class="se">\
 </span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get secrets prometheus-cluster-monitoring-additional-scrape-configs  -n cattle-prometheus -o yaml<span class="p">|</span> awk -F <span class="s1">':'</span> <span class="s1">'NR==3{print $2}'</span><span class="p">|</span>tr -d <span class="s1">' '</span><span class="p">|</span>base64 -d &gt; prometheus-cluster-monitoring-additional-scrape-configs.yaml  <span class="c1"># 重定向至 文件中方便更改</span>
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get secrets prometheus-cluster-monitoring-additional-scrape-configs  -n cattle-prometheus -o yaml<span class="p">|</span> awk -F <span class="s1">&#39;:&#39;</span> <span class="s1">&#39;NR==3{print $2}&#39;</span><span class="p">|</span>tr -d <span class="s1">&#39; &#39;</span><span class="p">|</span>base64 -d &gt; prometheus-cluster-monitoring-additional-scrape-configs.yaml  <span class="c1"># 重定向至 文件中方便更改</span>
 
 vim prometheus-cluster-monitoring-additional-scrape-configs.yaml
 ...
-- job_name: <span class="s1">'scripts-demo'</span>
+- job_name: <span class="s1">&#39;scripts-demo&#39;</span>
   metrics_path: /probe
   params:
-      pattern: <span class="o">[</span><span class="s1">'.*'</span><span class="o">]</span>  <span class="c1"># 执行所有脚本，也可以使用正则表达式进行匹配 如 ".*raid-check"</span>
+      pattern: <span class="o">[</span><span class="s1">&#39;.*&#39;</span><span class="o">]</span>  <span class="c1"># 执行所有脚本，也可以使用正则表达式进行匹配 如 &#34;.*raid-check&#34;</span>
   static_configs:
     - targets:
       - 192.168.8.88:9172  <span class="c1"># 指定为对应 exporter 监听地址，更改后进行保存</span>
       
 
-cat prometheus-cluster-monitoring-additional-scrape-configs.yaml <span class="p">|</span>base64 <span class="p">|</span>tr -d <span class="s1">'\n'</span>
+cat prometheus-cluster-monitoring-additional-scrape-configs.yaml <span class="p">|</span>base64 <span class="p">|</span>tr -d <span class="s1">&#39;\n&#39;</span>
 
 
 kubectl edit secrets prometheus-cluster-monitoring-additional-scrape-configs -n cattle-prometheus  <span class="c1"># 将上面的结果输出进行替换</span>
 
-kubectl get secrets prometheus-cluster-monitoring-additional-scrape-configs  -n cattle-prometheus -o yaml<span class="p">|</span> awk -F <span class="s1">':'</span> <span class="s1">'NR==3{print $2}'</span><span class="p">|</span>tr -d <span class="s1">' '</span><span class="p">|</span>base64 -d <span class="p">|</span> tail -n <span class="m">10</span> <span class="c1"># 检查是否生效</span>
+kubectl get secrets prometheus-cluster-monitoring-additional-scrape-configs  -n cattle-prometheus -o yaml<span class="p">|</span> awk -F <span class="s1">&#39;:&#39;</span> <span class="s1">&#39;NR==3{print $2}&#39;</span><span class="p">|</span>tr -d <span class="s1">&#39; &#39;</span><span class="p">|</span>base64 -d <span class="p">|</span> tail -n <span class="m">10</span> <span class="c1"># 检查是否生效</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210518181520514" src="https://cdn.treesir.pub/img/image-20210518181520514.png"/></p>
-<p><img alt="image-20210518181713236" src="https://cdn.treesir.pub/img/image-20210518181713236.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210518181520514.png" alt="image-20210518181520514"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210518181713236.png" alt="image-20210518181713236"></p>
 <p><strong>稍等片刻等待配置文件生效</strong></p>
-<p><img alt="image-20210518181831673" src="https://cdn.treesir.pub/img/image-20210518181831673.png"/></p>
-<p><img alt="image-20210518181853843" src="https://cdn.treesir.pub/img/image-20210518181853843.png"/></p>
-<p><img alt="image-20210518181914625" src="https://cdn.treesir.pub/img/image-20210518181914625.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210518181831673.png" alt="image-20210518181831673"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210518181853843.png" alt="image-20210518181853843"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210518181914625.png" alt="image-20210518181914625"></p>
 <blockquote>
 <p>从上述结果展示中，可以看到正常关联上了。</p>
 </blockquote>
@@ -457,7 +496,7 @@ kubectl get secrets prometheus-cluster-monitoring-additional-scrape-configs  -n 
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">egrep <span class="s1">'/ping|/status'</span> /usr/local/php/etc/php-fpm.d/walle.conf 
+<pre class="chroma"><code class="language-bash" data-lang="bash">egrep <span class="s1">&#39;/ping|/status&#39;</span> /usr/local/php/etc/php-fpm.d/walle.conf 
 pm.status_path <span class="o">=</span> /status
 ping.path <span class="o">=</span> /ping
 </code></pre></td></tr></table>
@@ -703,16 +742,16 @@ helm repo update
 </span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
 </span><span class="w">      </span><span class="nt">http</span><span class="p">:</span><span class="w">
 </span><span class="w">        </span><span class="nt">basic_auth</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="w">  </span><span class="c"># 配置账号密码 防止 http 探针出现 "401" 状态码，导致不通过</span><span class="w">
-</span><span class="w">          </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="w">
+</span><span class="w">          </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;admin&#34;</span><span class="w">  </span><span class="c"># 配置账号密码 防止 http 探针出现 &#34;401&#34; 状态码，导致不通过</span><span class="w">
+</span><span class="w">          </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;admin&#34;</span><span class="w">
 </span><span class="w">    </span><span class="nt">http_post_2xx</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">http</span><span class="w">
 </span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
 </span><span class="w">      </span><span class="nt">http</span><span class="p">:</span><span class="w">
 </span><span class="w">        </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="l">POST</span><span class="w">
 </span><span class="w">        </span><span class="nt">basic_auth</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="w">
-</span><span class="w">          </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="w">
+</span><span class="w">          </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;admin&#34;</span><span class="w">
+</span><span class="w">          </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;admin&#34;</span><span class="w">
 </span><span class="w">    </span><span class="nt">tcp_connect</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">tcp</span><span class="w">
 </span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
@@ -720,7 +759,7 @@ helm repo update
 </span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">tcp</span><span class="w">
 </span><span class="w">      </span><span class="nt">tcp</span><span class="p">:</span><span class="w">
 </span><span class="w">        </span><span class="nt">query_response</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">"^+OK"</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;^+OK&#34;</span><span class="w">
 </span><span class="w">        </span><span class="nt">tls</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="w">        </span><span class="nt">tls_config</span><span class="p">:</span><span class="w">
 </span><span class="w">          </span><span class="nt">insecure_skip_verify</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
@@ -729,31 +768,31 @@ helm repo update
 </span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
 </span><span class="w">      </span><span class="nt">tcp</span><span class="p">:</span><span class="w">
 </span><span class="w">        </span><span class="nt">query_response</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">"^SSH-2.0-"</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;^SSH-2.0-&#34;</span><span class="w">
 </span><span class="w">    </span><span class="nt">smtp_starttls</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">tcp</span><span class="w">
 </span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
 </span><span class="w">      </span><span class="nt">tcp</span><span class="p">:</span><span class="w">
 </span><span class="w">        </span><span class="nt">query_response</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">"^220 "</span><span class="w">
-</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">"EHLO prober"</span><span class="w">
-</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">"^250-STARTTLS"</span><span class="w">
-</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">"STARTTLS"</span><span class="w">
-</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">"^220"</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;^220 &#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;EHLO prober&#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;^250-STARTTLS&#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;STARTTLS&#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;^220&#34;</span><span class="w">
 </span><span class="w">        </span>- <span class="nt">starttls</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">"EHLO prober"</span><span class="w">
-</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">"^250-AUTH"</span><span class="w">
-</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">"QUIT"</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;EHLO prober&#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;^250-AUTH&#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;QUIT&#34;</span><span class="w">
 </span><span class="w">    </span><span class="nt">irc_banner</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">tcp</span><span class="w">
 </span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
 </span><span class="w">      </span><span class="nt">tcp</span><span class="p">:</span><span class="w">
 </span><span class="w">        </span><span class="nt">query_response</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">"NICK prober"</span><span class="w">
-</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">"USER prober prober prober :prober"</span><span class="w">
-</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">"PING :([^ ]+)"</span><span class="w">
-</span><span class="w">          </span><span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">"PONG "</span><span class="w">
-</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">"^:[^ ]+ 001"</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;NICK prober&#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;USER prober prober prober :prober&#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;PING :([^ ]+)&#34;</span><span class="w">
+</span><span class="w">          </span><span class="nt">send</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;PONG &#34;</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">expect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;^:[^ ]+ 001&#34;</span><span class="w">
 </span><span class="w">    </span><span class="nt">icmp_test</span><span class="p">:</span><span class="w">
 </span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">icmp</span><span class="w">
 </span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
@@ -763,7 +802,7 @@ helm repo update
 </span><span class="w">      </span><span class="nt">prober</span><span class="p">:</span><span class="w"> </span><span class="l">dns</span><span class="w">
 </span><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">5s</span><span class="w">
 </span><span class="w">      </span><span class="nt">dns</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="nt">query_name</span><span class="p">:</span><span class="w"> </span><span class="s2">"kubernetes.default.svc.cluster.local"</span><span class="w">
+</span><span class="w">        </span><span class="nt">query_name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;kubernetes.default.svc.cluster.local&#34;</span><span class="w">
 </span><span class="w">        </span><span class="nt">preferred_ip_protocol</span><span class="p">:</span><span class="w"> </span><span class="l">ip4</span><span class="w">
 </span><span class="w">        </span><span class="nt">ip_protocol_fallback</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
 </span><span class="w">        </span><span class="nt">validate_answer_rrs</span><span class="p">:</span><span class="w">
@@ -777,7 +816,7 @@ helm repo update
 </span><span class="w">          </span><span class="nt">Origin</span><span class="p">:</span><span class="w"> </span><span class="l">example.com</span><span class="w">
 </span><span class="w">        </span><span class="nt">fail_if_header_not_matches</span><span class="p">:</span><span class="w">
 </span><span class="w">          </span>- <span class="nt">header</span><span class="p">:</span><span class="w"> </span><span class="l">Access-Control-Allow-Origin</span><span class="w">
-</span><span class="w">            </span><span class="nt">regexp</span><span class="p">:</span><span class="w"> </span><span class="s1">'(\*|example\.com)'</span><span class="w">
+</span><span class="w">            </span><span class="nt">regexp</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;(\*|example\.com)&#39;</span><span class="w">
 </span><span class="w">            </span><span class="nt">allow_missing</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
 </span><span class="w"></span><span class="nt">allowIcmp</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">  </span><span class="c"># 允许使用使用 icmp 协议，默认为 未打开状态</span><span class="w">
 </span><span class="w"></span><span class="l">EOF</span><span class="w">
@@ -787,8 +826,8 @@ helm repo update
 </span><span class="w"></span><span class="l">helm upgrade --install blackbox -f ./values.yaml prometheus-community/prometheus-blackbox-exporter -n prometheus</span><span class="w">
 </span></code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210519091850925" src="https://cdn.treesir.pub/img/image-20210519091850925.png"/></p>
-<p><img alt="image-20210519092102301" src="https://cdn.treesir.pub/img/image-20210519092102301.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210519091850925.png" alt="image-20210519091850925"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519092102301.png" alt="image-20210519092102301"></p>
 </li>
 </ul>
 <h3 id="安装后与-prometheus-operator-的集成">安装后与 prometheus operator 的集成</h3>
@@ -803,7 +842,7 @@ helm repo update
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get secrets prometheus-cluster-monitoring-additional-scrape-configs  -n cattle-prometheus -o yaml<span class="p">|</span> awk -F <span class="s1">':'</span> <span class="s1">'NR==3{print $2}'</span><span class="p">|</span>tr -d <span class="s1">' '</span><span class="p">|</span>base64 -d &gt; prometheus-cluster-monitoring-additional-scrape-configs.yaml
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get secrets prometheus-cluster-monitoring-additional-scrape-configs  -n cattle-prometheus -o yaml<span class="p">|</span> awk -F <span class="s1">&#39;:&#39;</span> <span class="s1">&#39;NR==3{print $2}&#39;</span><span class="p">|</span>tr -d <span class="s1">&#39; &#39;</span><span class="p">|</span>base64 -d &gt; prometheus-cluster-monitoring-additional-scrape-configs.yaml
 </code></pre></td></tr></table>
 </div>
 </div></li>
@@ -912,7 +951,7 @@ helm repo update
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">cat prometheus-cluster-monitoring-additional-scrape-configs.yaml  
 ....
-- job_name: <span class="s1">'http-blackbox'</span>
+- job_name: <span class="s1">&#39;http-blackbox&#39;</span>
   metrics_path: /probe
   params:
     module: <span class="o">[</span>http_2xx<span class="o">]</span>  <span class="c1">#使用 http 模块</span>
@@ -935,7 +974,7 @@ helm repo update
   - target_label: __address__
     replacement: blackbox-prometheus-blackbox-exporter.prometheus:9115  <span class="c1"># 使用 k8s 内部域名进行通讯</span>
   
-- job_name: <span class="s1">'icmp-ping'</span>
+- job_name: <span class="s1">&#39;icmp-ping&#39;</span>
   metrics_path: /probe
   params:
     module: <span class="o">[</span>icmp_test<span class="o">]</span>
@@ -943,9 +982,9 @@ helm repo update
     - targets:
       - 192.168.8.1
       labels:
-        dc: <span class="s1">'ancun-local'</span>
-        group: <span class="s1">'icmp'</span>
-        instance: <span class="s1">'icmp-status'</span>
+        dc: <span class="s1">&#39;ancun-local&#39;</span>
+        group: <span class="s1">&#39;icmp&#39;</span>
+        instance: <span class="s1">&#39;icmp-status&#39;</span>
   relabel_configs:
   - source_labels: <span class="o">[</span>__address__<span class="o">]</span>
     regex: <span class="o">(</span>.*<span class="o">)(</span>:80<span class="o">)</span>?
@@ -962,7 +1001,7 @@ helm repo update
     target_label: __address__
     replacement: blackbox-prometheus-blackbox-exporter.prometheus:9115
   
-- job_name: <span class="s1">'tcp-port-status'</span>
+- job_name: <span class="s1">&#39;tcp-port-status&#39;</span>
   metrics_path: /probe
   params:
     module: <span class="o">[</span>tcp_connect<span class="o">]</span>
@@ -972,14 +1011,14 @@ helm repo update
       - 192.168.8.1:9000
       labels:
         group: tcp
-        net: <span class="s1">'local'</span>
+        net: <span class="s1">&#39;local&#39;</span>
         type: nginx
     - targets:
       - 192.168.1.31:32379
       labels:
         group: tcp
-        net: <span class="s1">'local'</span>
-        type: <span class="s1">'redis'</span>
+        net: <span class="s1">&#39;local&#39;</span>
+        type: <span class="s1">&#39;redis&#39;</span>
     - targets:
       - 192.168.1.50:3306
       - 192.168.1.51:3306
@@ -987,8 +1026,8 @@ helm repo update
       - 192.168.1.232:3306
       labels:
         group: tcp
-        net: <span class="s1">'local'</span>
-        type: <span class="s1">'mysql'</span>
+        net: <span class="s1">&#39;local&#39;</span>
+        type: <span class="s1">&#39;mysql&#39;</span>
   relabel_configs:
   - source_labels: <span class="o">[</span>__address__<span class="o">]</span>
     target_label: __param_target 
@@ -1006,7 +1045,7 @@ helm repo update
       
       
       
-cat prometheus-cluster-monitoring-additional-scrape-configs.yaml <span class="p">|</span>base64 <span class="p">|</span>tr -d <span class="s1">'\n'</span> <span class="c1"># 对配置文件进行 base 转码</span>
+cat prometheus-cluster-monitoring-additional-scrape-configs.yaml <span class="p">|</span>base64 <span class="p">|</span>tr -d <span class="s1">&#39;\n&#39;</span> <span class="c1"># 对配置文件进行 base 转码</span>
 </code></pre></td></tr></table>
 </div>
 </div></li>
@@ -1017,19 +1056,19 @@ cat prometheus-cluster-monitoring-additional-scrape-configs.yaml <span class="p"
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">cat prometheus-cluster-monitoring-additional-scrape-configs.yaml <span class="p">|</span>base64 <span class="p">|</span>tr -d <span class="s1">'\n'</span> <span class="c1"># 对配置文件进行 base 转码</span>
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat prometheus-cluster-monitoring-additional-scrape-configs.yaml <span class="p">|</span>base64 <span class="p">|</span>tr -d <span class="s1">&#39;\n&#39;</span> <span class="c1"># 对配置文件进行 base 转码</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210519095529359" src="https://cdn.treesir.pub/img/image-20210519095529359.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210519095529359.png" alt="image-20210519095529359"></p>
 </li>
 </ul>
 <h3 id="检查-prometheus-operator-配置是否有更新">检查 prometheus operator 配置是否有更新</h3>
-<p><img alt="image-20210519095713025" src="https://cdn.treesir.pub/img/image-20210519095713025.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519095713025.png" alt="image-20210519095713025"></p>
 <blockquote>
 <p>可以看到所添加的配置项已 在 dashboard 页面有所展示了</p>
 </blockquote>
 <p><strong>我们在 查询页面输入 <code>probe_success</code>  看看探针执行情况</strong></p>
-<p><img alt="image-20210519100159941" src="https://cdn.treesir.pub/img/image-20210519100159941.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519100159941.png" alt="image-20210519100159941"></p>
 <blockquote>
 <p>可以看到可以正常看到探针检查情况，标注的两处探针检查未通过说明:  <code>1</code> 位置，检查未通过是因为 blackbox 配置的 <code>basic_auth</code> 认证密钥不匹配导致，<code>2</code> 位置为 无法访问的局域网，属于正常情况。</p>
 </blockquote>
@@ -1111,12 +1150,12 @@ cat &gt; prod-values.yaml <span class="s">&lt;&lt; EOF
 </span><span class="s">    level: ERROR # 设置日志级别，建议
 </span><span class="s">
 </span><span class="s">tolerations:   
-</span><span class="s">- key: "node-role.kubernetes.io/master"
-</span><span class="s">  operator: "Equal"
-</span><span class="s">  effect: "NoSchedule"  # 容忍污点
+</span><span class="s">- key: &#34;node-role.kubernetes.io/master&#34;
+</span><span class="s">  operator: &#34;Equal&#34;
+</span><span class="s">  effect: &#34;NoSchedule&#34;  # 容忍污点
 </span><span class="s">
 </span><span class="s">nodeSelector:   # 节点亲和，固定到标签 master01 节点上
-</span><span class="s">  kubernetes.io/hostname: "node1"
+</span><span class="s">  kubernetes.io/hostname: &#34;node1&#34;
 </span><span class="s">  
 </span><span class="s">additionalArguments:  # 添加额外暴露 指标的参数
 </span><span class="s">- --entryPoints.metrics.address=:8082
@@ -1127,10 +1166,10 @@ kubectl create ns traefik
 
 helm upgrade --install traefik -n traefik -f ./prod-values.yaml ./traefik/
 
-kubectl get po -n traefik -o wide<span class="p">|</span>awk <span class="s1">'NR==2{print $6}'</span><span class="p">|</span>xargs -t -I<span class="o">{}</span> curl http://<span class="o">{}</span>:8082/metrics <span class="c1"># 测试是否有指标暴露</span>
+kubectl get po -n traefik -o wide<span class="p">|</span>awk <span class="s1">&#39;NR==2{print $6}&#39;</span><span class="p">|</span>xargs -t -I<span class="o">{}</span> curl http://<span class="o">{}</span>:8082/metrics <span class="c1"># 测试是否有指标暴露</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210519163811419" src="https://cdn.treesir.pub/img/image-20210519163811419.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210519163811419.png" alt="image-20210519163811419"></p>
 <h3 id="创建-serviceminitor-资源配置关联-operator">创建 <code>serviceMinitor</code> 资源配置关联 operator</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1208,18 +1247,18 @@ kubectl get po -n traefik -o wide<span class="p">|</span>awk <span class="s1">'N
 </span><span class="s">EOF</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210519165145388" src="https://cdn.treesir.pub/img/image-20210519165145388.png"/></p>
-<p><img alt="image-20210519165317938" src="https://cdn.treesir.pub/img/image-20210519165317938.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210519165145388.png" alt="image-20210519165145388"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519165317938.png" alt="image-20210519165317938"></p>
 <h3 id="配置-grafana-dashboard">配置 grafana dashboard</h3>
 <p>进入system 项目下，点击 <code>服务发现</code>, 点击访问 grafana 的 nodePort 地址</p>
-<p><img alt="image-20210519165409341" src="https://cdn.treesir.pub/img/image-20210519165409341.png"/></p>
-<p><img alt="image-20210519165514913" src="https://cdn.treesir.pub/img/image-20210519165514913.png"/></p>
-<p><img alt="image-20210519165609255" src="https://cdn.treesir.pub/img/image-20210519165609255.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519165409341.png" alt="image-20210519165409341"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519165514913.png" alt="image-20210519165514913"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519165609255.png" alt="image-20210519165609255"></p>
 <blockquote>
 <p>点击导入 ID为 <code>11462</code> 的 traefik  dashboard，官方社区提供的 <code>dashboard</code> <a href="https://grafana.com/grafana/dashboards?search=traefik">搜索地址</a></p>
 </blockquote>
-<p><img alt="image-20210519165832870" src="https://cdn.treesir.pub/img/image-20210519165832870.png"/></p>
-<p><img alt="image-20210519170642778" src="https://cdn.treesir.pub/img/image-20210519170642778.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519165832870.png" alt="image-20210519165832870"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210519170642778.png" alt="image-20210519170642778"></p>
 <blockquote>
 <p>如提示插件未安装情况，进入对应容器使用下面命令进行安装即可。</p>
 <div class="highlight"><div class="chroma">
@@ -1235,53 +1274,59 @@ kubectl get po -n traefik -o wide<span class="p">|</span>awk <span class="s1">'N
 <blockquote>
 <p>此篇文档主要介绍了外部 exporter 与 rancher 中 <code>monitor</code>  的配置关联工作的另外一种方法，那就是直接更改 <code>secret</code> 资源对象。对比使用 <a href="https://www.treesir.pub/post/rancher-monitor-config-first/#%E6%B7%BB%E5%8A%A0-etcd-%E6%8C%87%E6%A0%87%E5%8F%91%E7%8E%B0">前面</a> 的使用创建的<code>serviceMonitor</code> 资源对象，此方法相较于没有那么优雅，为保证 <code>prometheus  operator</code> 使用理念，如果不是像 <code>scripts exporter</code> &amp; <code>blackbox exporter</code> 这种配置比较繁琐麻烦的使用 <code>serviceMonitor</code>关联难管理的 ，还是 <code>偏向建议</code> 于使用 <code>serviceMonitor</code> 资源对象进行配置关联。</p>
 </blockquote>
-</div>
-<div class="post-copyright">
-<p class="copyright-item">
-<span class="item-title">文章作者</span>
-<span class="item-content">Yang'zun</span>
-</p>
-<p class="copyright-item">
-<span class="item-title">上次更新</span>
-<span class="item-content">
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
         2021-05-17
         
     </span>
-</p>
-<p class="copyright-item">
-<span class="item-title">许可协议</span>
-<span class="item-content"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a></span>
-</p>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
 </div>
 <footer class="post-footer">
-<div class="post-tags">
-<a href="/tags/rancher/">rancher</a>
-<a href="/tags/prometheus/">prometheus</a>
-<a href="/tags/operator/">operator</a>
-<a href="/tags/k8s/">k8s</a>
-<a href="/tags/kubekey/">kubekey</a>
-<a href="/tags/exporter/">exporter</a>
-<a href="/tags/metrics/">metrics</a>
-</div>
-<nav class="post-nav">
-<a class="prev" href="/post/rancher-monitor-config-third/">
-<i class="iconfont icon-left"></i>
-<span class="prev-text nav-default">Rancher 开启监控后的，阈值告警配置说明 (三)</span>
-<span class="prev-text nav-mobile">上一篇</span>
-</a>
-<a class="next" href="/post/rancher-monitor-config-first/">
-<span class="next-text nav-default">Rancher 开启监控，及生产应用的优化配置工作说明 (一)</span>
-<span class="next-text nav-mobile">下一篇</span>
-<i class="iconfont icon-right"></i>
-</a>
-</nav>
-</footer>
-</article>
-</div>
-<div id="vcomments"></div>
-<script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
-<script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
-<script type="text/javascript">
+      <div class="post-tags">
+          <a href="/tags/rancher/">rancher</a>
+          <a href="/tags/prometheus/">prometheus</a>
+          <a href="/tags/operator/">operator</a>
+          <a href="/tags/k8s/">k8s</a>
+          <a href="/tags/kubekey/">kubekey</a>
+          <a href="/tags/exporter/">exporter</a>
+          <a href="/tags/metrics/">metrics</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/rancher-monitor-config-third/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Rancher 开启监控后的，阈值告警配置说明 (三)</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/rancher-monitor-config-first/">
+            <span class="next-text nav-default">Rancher 开启监控，及生产应用的优化配置工作说明 (一)</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
     new Valine({
         el: '#vcomments' ,
         appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
@@ -1293,39 +1338,64 @@ kubectl get po -n traefik -o wide<span class="p">|</span>awk <span class="s1">'N
         visitor:  false 
     });
   </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:yangzun@treesir.pub" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-</main>
-<footer class="footer" id="footer">
-<div class="social-links">
-<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
-<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
-<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
-</div>
+
 <div class="copyright">
-<span class="power-by">
+  <span class="power-by">
     由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
   </span>
-<span class="division">|</span>
-<span class="theme-info">
+  <span class="division">|</span>
+  <span class="theme-info">
     主题 - 
     <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
-</span>
-<span class="copyright-year">
-<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘 ICP 备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
-    © 
+  </span>
+
+  
+
+  
+
+  <span class="copyright-year">
+    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+    &copy; 
     2019 - 
     2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
-</span>
+    </span>
+
 </div>
-</footer>
-<div class="back-to-top" id="back-to-top">
-<i class="iconfont icon-up"></i>
-</div>
-</div>
-<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
-<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
-<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
-<script src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js" type="text/javascript"></script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
 <script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
 <script>
     docsearch({

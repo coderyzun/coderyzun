@@ -1,139 +1,178 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-<meta charset="utf-8"/>
-<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
-<title>Raid 阵列卡 Megacli 管理工具的使用记录 - 「Yang'zun」PlayGround</title>
-<meta content="webkit" name="renderer"/>
-<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
-<meta content="no-transform" http-equiv="Cache-Control"/>
-<meta content="no-siteapp" http-equiv="Cache-Control"/>
-<meta content="#f8f5ec" name="theme-color"/>
-<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
-<meta content="yes" name="apple-mobile-web-app-capable"/>
-<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
-<meta content="Yang'zun" name="author"/><meta content="Raid 阵列卡 Megacli 管理工具的使用记录" name="description"/><meta content="raid, megacli, 阵列卡, 管理" name="keywords"/>
-<meta content="Hugo 0.78.2 with theme even" name="generator"/>
-<link href="https://cdryzun.github.io/post/raid-megacli/" rel="canonical"/>
-<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
-<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
-<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
-<link href="/manifest.json" rel="manifest"/>
-<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
-<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet"/>
-<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
-<link href="/css/custom.css" rel="stylesheet"/>
-<meta content="Raid 阵列卡 Megacli 管理工具的使用记录" property="og:title"/>
-<meta content="Raid 阵列卡 Megacli 管理工具的使用记录" property="og:description"/>
-<meta content="article" property="og:type"/>
-<meta content="https://cdryzun.github.io/post/raid-megacli/" property="og:url"/>
-<meta content="2021-02-24T20:54:13+08:00" property="article:published_time"/>
-<meta content="2021-02-24T20:54:13+08:00" property="article:modified_time"/>
-<meta content="Raid 阵列卡 Megacli 管理工具的使用记录" itemprop="name"/>
-<meta content="Raid 阵列卡 Megacli 管理工具的使用记录" itemprop="description"/>
-<meta content="2021-02-24T20:54:13+08:00" itemprop="datePublished"/>
-<meta content="2021-02-24T20:54:13+08:00" itemprop="dateModified"/>
-<meta content="225" itemprop="wordCount"/>
-<meta content="raid,stroage," itemprop="keywords"/>
-<meta content="summary" name="twitter:card"/>
-<meta content="Raid 阵列卡 Megacli 管理工具的使用记录" name="twitter:title"/>
-<meta content="Raid 阵列卡 Megacli 管理工具的使用记录" name="twitter:description"/>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Raid 阵列卡 Megacli 管理工具的使用记录 - 「Yang&#39;zun」PlayGround</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="Raid 阵列卡 Megacli 管理工具的使用记录" /><meta name="keywords" content="raid, megacli, 阵列卡, 管理" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/raid-megacli/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<meta property="og:title" content="Raid 阵列卡 Megacli 管理工具的使用记录" />
+<meta property="og:description" content="Raid 阵列卡 Megacli 管理工具的使用记录" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/raid-megacli/" />
+<meta property="article:published_time" content="2021-02-24T20:54:13+08:00" />
+<meta property="article:modified_time" content="2021-02-24T20:54:13+08:00" />
+<meta itemprop="name" content="Raid 阵列卡 Megacli 管理工具的使用记录">
+<meta itemprop="description" content="Raid 阵列卡 Megacli 管理工具的使用记录">
+<meta itemprop="datePublished" content="2021-02-24T20:54:13+08:00" />
+<meta itemprop="dateModified" content="2021-02-24T20:54:13+08:00" />
+<meta itemprop="wordCount" content="225">
+
+
+
+<meta itemprop="keywords" content="raid,stroage," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Raid 阵列卡 Megacli 管理工具的使用记录"/>
+<meta name="twitter:description" content="Raid 阵列卡 Megacli 管理工具的使用记录"/>
+
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
 <![endif]-->
+
 <!--[if lt IE 9]>
   <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
   <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
 <![endif]-->
-<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
+
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
 </head>
 <body>
-<header class="header" id="header">
-<div class="logo-wrapper">
-<a class="logo" href="/">「Yang'zun」PlayGround</a>
+  <header id="header" class="header">
+      <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
 </div>
+
+
+
+
+
 <nav class="site-navbar">
-<ul class="menu" id="menu">
-<li class="menu-item">
-<a class="menu-item-link" href="/">主页</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/post/">归档</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/tags/">标签</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/categories/">分类</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/about/">关于</a>
-</li>
-</ul><li style="display:inline-block;margin-right:10px;">
-<input class="docsearch-input" placeholder="Search" type="search"/>
-</li></nav>
-</header>
-<div class="mobile-navbar" id="mobile-navbar">
-<div class="mobile-header-logo">
-<a class="logo" href="/">「Yang'zun」PlayGround</a>
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+  </header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
-<div class="mobile-navbar-icon">
-<span></span>
-<span></span>
-<span></span>
-</div>
-</div>
-<nav class="mobile-menu slideout-menu" id="mobile-menu">
-<ul class="mobile-menu-list">
-<a href="/">
-<li class="mobile-menu-item">主页</li>
-</a><a href="/post/">
-<li class="mobile-menu-item">归档</li>
-</a><a href="/tags/">
-<li class="mobile-menu-item">标签</li>
-</a><a href="/categories/">
-<li class="mobile-menu-item">分类</li>
-</a><a href="/about/">
-<li class="mobile-menu-item">关于</li>
-</a>
-</ul>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
 </nav>
-<div class="container" id="mobile-panel">
-<main class="main" id="main">
-<div class="content-wrapper">
-<div class="content" id="content">
-<article class="post">
-<header class="post-header">
-<h1 class="post-title">Raid 阵列卡 Megacli 管理工具的使用记录</h1>
-<div class="post-meta">
-<span class="post-time"> 2021-02-24 </span>
-<div class="post-category">
-<a href="/categories/linux/"> linux </a>
-</div>
-<span class="more-meta"> 约 225 字 </span>
-<span class="more-meta"> 预计阅读 1 分钟 </span>
-</div>
-</header>
-<div class="post-toc" id="post-toc">
-<h2 class="post-toc-title">文章目录</h2>
-<div class="post-toc-content always-active">
-<nav id="TableOfContents">
-<ul>
-<li><a href="#安装">安装</a></li>
-<li><a href="#命令使用记录">命令使用记录</a>
-<ul>
-<li><a href="#将某块物理盘下线上线">将某块物理盘下线/上线</a></li>
-<li><a href="#查看磁盘是否有错误">查看磁盘是否有错误</a></li>
-<li><a href="#查看磁盘状态">查看磁盘状态</a></li>
-<li><a href="#查看-raid-卡-rebuild-参数">查看 RAID 卡 Rebuild 参数</a></li>
-<li><a href="#显示所有逻辑磁盘组信息">显示所有逻辑磁盘组信息</a></li>
-<li><a href="#显示所有的物理信息">显示所有的物理信息</a></li>
-<li><a href="#查看物理单块磁盘状态">查看物理单块磁盘状态</a></li>
-<li><a href="#上下线磁盘">上下线磁盘</a></li>
-</ul>
-</li>
-</ul>
+
+  <div class="container" id="mobile-panel">
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Raid 阵列卡 Megacli 管理工具的使用记录</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-24 </span>
+        <div class="post-category">
+            <a href="/categories/linux/"> linux </a>
+            </div>
+          <span class="more-meta"> 约 225 字 </span>
+          <span class="more-meta"> 预计阅读 1 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装">安装</a></li>
+    <li><a href="#命令使用记录">命令使用记录</a>
+      <ul>
+        <li><a href="#将某块物理盘下线上线">将某块物理盘下线/上线</a></li>
+        <li><a href="#查看磁盘是否有错误">查看磁盘是否有错误</a></li>
+        <li><a href="#查看磁盘状态">查看磁盘状态</a></li>
+        <li><a href="#查看-raid-卡-rebuild-参数">查看 RAID 卡 Rebuild 参数</a></li>
+        <li><a href="#显示所有逻辑磁盘组信息">显示所有逻辑磁盘组信息</a></li>
+        <li><a href="#显示所有的物理信息">显示所有的物理信息</a></li>
+        <li><a href="#查看物理单块磁盘状态">查看物理单块磁盘状态</a></li>
+        <li><a href="#上下线磁盘">上下线磁盘</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
+  </div>
 </div>
-</div>
-<div class="post-content">
-<h1 id="安装">安装</h1>
+    <div class="post-content">
+      <h1 id="安装">安装</h1>
 <p><a href="https://gist.github.com/fxkraus/595ab82e07cd6f8e057d31bc0bc5e779"><strong>安装参考文档</strong></a></p>
 <p><a href="https://www.cnblogs.com/luxiaodai/p/9871612.html"><strong>使用参考文档</strong></a></p>
 <blockquote>
@@ -186,14 +225,14 @@ MegaCli -PDOnline -PhysDrv [1:4] -a0
 </code></pre></td></tr></table>
 </div>
 </div><p><strong>配置示例</strong></p>
-<p><img alt="image-20210514155136341" src="https://cdn.treesir.pub/img/image-20210514155136341.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210514155136341.png" alt="image-20210514155136341"></p>
 <h2 id="查看磁盘是否有错误">查看磁盘是否有错误</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">MegaCli -PDList -aAll  <span class="p">|</span>grep -i <span class="s1">'Error Count:'</span>  <span class="c1"># 查看磁盘是否有错误</span>
+<pre class="chroma"><code class="language-bash" data-lang="bash">MegaCli -PDList -aAll  <span class="p">|</span>grep -i <span class="s1">&#39;Error Count:&#39;</span>  <span class="c1"># 查看磁盘是否有错误</span>
 </code></pre></td></tr></table>
 </div>
 </div><h2 id="查看磁盘状态">查看磁盘状态</h2>
@@ -202,7 +241,7 @@ MegaCli -PDOnline -PhysDrv [1:4] -a0
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">MegaCli -PDList -a0<span class="p">|</span>grep <span class="s1">'Firmware state'</span>
+<pre class="chroma"><code class="language-bash" data-lang="bash">MegaCli -PDList -a0<span class="p">|</span>grep <span class="s1">&#39;Firmware state&#39;</span>
 </code></pre></td></tr></table>
 </div>
 </div><h2 id="查看-raid-卡-rebuild-参数">查看 RAID 卡 Rebuild 参数</h2>
@@ -253,48 +292,53 @@ MegaCli -PDOnline -PhysDrv <span class="o">[</span>252:3<span class="o">]</span>
 </code></pre></td></tr></table>
 </div>
 </div>
-</div>
-<div class="post-copyright">
-<p class="copyright-item">
-<span class="item-title">文章作者</span>
-<span class="item-content">Yang'zun</span>
-</p>
-<p class="copyright-item">
-<span class="item-title">上次更新</span>
-<span class="item-content">
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
         2021-02-24
         
     </span>
-</p>
-<p class="copyright-item">
-<span class="item-title">许可协议</span>
-<span class="item-content"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a></span>
-</p>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
 </div>
 <footer class="post-footer">
-<div class="post-tags">
-<a href="/tags/raid/">raid</a>
-<a href="/tags/stroage/">stroage</a>
-</div>
-<nav class="post-nav">
-<a class="prev" href="/post/qume-libvirt-install/">
-<i class="iconfont icon-left"></i>
-<span class="prev-text nav-default">Centos7 编译安装 Qemu 及安装 libvirt 管理工具</span>
-<span class="prev-text nav-mobile">上一篇</span>
-</a>
-<a class="next" href="/post/jira-install/">
-<span class="next-text nav-default">Jira &amp; confluence 安装 并 配置 破解激活</span>
-<span class="next-text nav-mobile">下一篇</span>
-<i class="iconfont icon-right"></i>
-</a>
-</nav>
-</footer>
-</article>
-</div>
-<div id="vcomments"></div>
-<script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
-<script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
-<script type="text/javascript">
+      <div class="post-tags">
+          <a href="/tags/raid/">raid</a>
+          <a href="/tags/stroage/">stroage</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/qume-libvirt-install/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Centos7 编译安装 Qemu 及安装 libvirt 管理工具</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/jira-install/">
+            <span class="next-text nav-default">Jira &amp; confluence 安装 并 配置 破解激活</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
     new Valine({
         el: '#vcomments' ,
         appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
@@ -306,39 +350,64 @@ MegaCli -PDOnline -PhysDrv <span class="o">[</span>252:3<span class="o">]</span>
         visitor:  false 
     });
   </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:yangzun@treesir.pub" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-</main>
-<footer class="footer" id="footer">
-<div class="social-links">
-<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
-<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
-<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
-</div>
+
 <div class="copyright">
-<span class="power-by">
+  <span class="power-by">
     由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
   </span>
-<span class="division">|</span>
-<span class="theme-info">
+  <span class="division">|</span>
+  <span class="theme-info">
     主题 - 
     <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
-</span>
-<span class="copyright-year">
-<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘 ICP 备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
-    © 
+  </span>
+
+  
+
+  
+
+  <span class="copyright-year">
+    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+    &copy; 
     2019 - 
     2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
-</span>
+    </span>
+
 </div>
-</footer>
-<div class="back-to-top" id="back-to-top">
-<i class="iconfont icon-up"></i>
-</div>
-</div>
-<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
-<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
-<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
-<script src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js" type="text/javascript"></script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
 <script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
 <script>
     docsearch({

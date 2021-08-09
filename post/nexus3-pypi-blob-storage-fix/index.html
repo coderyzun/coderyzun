@@ -1,141 +1,180 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-<meta charset="utf-8"/>
-<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
-<title>记录一次 Nexus3 Pypi 私服 Blob Storage 异常的修复 - 「Yang'zun」PlayGround</title>
-<meta content="webkit" name="renderer"/>
-<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
-<meta content="no-transform" http-equiv="Cache-Control"/>
-<meta content="no-siteapp" http-equiv="Cache-Control"/>
-<meta content="#f8f5ec" name="theme-color"/>
-<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
-<meta content="yes" name="apple-mobile-web-app-capable"/>
-<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
-<meta content="Yang'zun" name="author"/><meta content="devops jenkins pipeline 使用 Nexus3 Pypi 私服 时 Blob Storage 异常无法使用的修复过程记录。" name="description"/><meta content="neuxs3, devops, fix, pypi, 私服, 下载失败, error, blob, orientdb, pipeline, jenkins" name="keywords"/>
-<meta content="Hugo 0.78.2 with theme even" name="generator"/>
-<link href="https://cdryzun.github.io/post/nexus3-pypi-blob-storage-fix/" rel="canonical"/>
-<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
-<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
-<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
-<link href="/manifest.json" rel="manifest"/>
-<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
-<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet"/>
-<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
-<link href="/css/custom.css" rel="stylesheet"/>
-<meta content="记录一次 Nexus3 Pypi 私服 Blob Storage 异常的修复" property="og:title"/>
-<meta content="devops jenkins pipeline 使用 Nexus3 Pypi 私服 时 Blob Storage 异常无法使用的修复过程记录。" property="og:description"/>
-<meta content="article" property="og:type"/>
-<meta content="https://cdryzun.github.io/post/nexus3-pypi-blob-storage-fix/" property="og:url"/>
-<meta content="2021-07-22T15:38:00+08:00" property="article:published_time"/>
-<meta content="2021-07-22T15:38:00+08:00" property="article:modified_time"/>
-<meta content="记录一次 Nexus3 Pypi 私服 Blob Storage 异常的修复" itemprop="name"/>
-<meta content="devops jenkins pipeline 使用 Nexus3 Pypi 私服 时 Blob Storage 异常无法使用的修复过程记录。" itemprop="description"/>
-<meta content="2021-07-22T15:38:00+08:00" itemprop="datePublished"/>
-<meta content="2021-07-22T15:38:00+08:00" itemprop="dateModified"/>
-<meta content="1284" itemprop="wordCount"/>
-<meta content="neuxs3,fix,pypi,jenkins,pipeline," itemprop="keywords"/>
-<meta content="summary" name="twitter:card"/>
-<meta content="记录一次 Nexus3 Pypi 私服 Blob Storage 异常的修复" name="twitter:title"/>
-<meta content="devops jenkins pipeline 使用 Nexus3 Pypi 私服 时 Blob Storage 异常无法使用的修复过程记录。" name="twitter:description"/>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>记录一次 Nexus3 Pypi 私服 Blob Storage 异常的修复 - 「Yang&#39;zun」PlayGround</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="devops jenkins pipeline 使用 Nexus3 Pypi 私服 时 Blob Storage 异常无法使用的修复过程记录。" /><meta name="keywords" content="neuxs3, devops, fix, pypi, 私服, 下载失败, error, blob, orientdb, pipeline, jenkins" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/nexus3-pypi-blob-storage-fix/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<meta property="og:title" content="记录一次 Nexus3 Pypi 私服 Blob Storage 异常的修复" />
+<meta property="og:description" content="devops jenkins pipeline 使用 Nexus3 Pypi 私服 时 Blob Storage 异常无法使用的修复过程记录。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/nexus3-pypi-blob-storage-fix/" />
+<meta property="article:published_time" content="2021-07-22T15:38:00+08:00" />
+<meta property="article:modified_time" content="2021-07-22T15:38:00+08:00" />
+<meta itemprop="name" content="记录一次 Nexus3 Pypi 私服 Blob Storage 异常的修复">
+<meta itemprop="description" content="devops jenkins pipeline 使用 Nexus3 Pypi 私服 时 Blob Storage 异常无法使用的修复过程记录。">
+<meta itemprop="datePublished" content="2021-07-22T15:38:00+08:00" />
+<meta itemprop="dateModified" content="2021-07-22T15:38:00+08:00" />
+<meta itemprop="wordCount" content="1284">
+
+
+
+<meta itemprop="keywords" content="neuxs3,fix,pypi,jenkins,pipeline," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="记录一次 Nexus3 Pypi 私服 Blob Storage 异常的修复"/>
+<meta name="twitter:description" content="devops jenkins pipeline 使用 Nexus3 Pypi 私服 时 Blob Storage 异常无法使用的修复过程记录。"/>
+
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
 <![endif]-->
+
 <!--[if lt IE 9]>
   <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
   <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
 <![endif]-->
-<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
+
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
 </head>
 <body>
-<header class="header" id="header">
-<div class="logo-wrapper">
-<a class="logo" href="/">「Yang'zun」PlayGround</a>
+  <header id="header" class="header">
+      <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
 </div>
+
+
+
+
+
 <nav class="site-navbar">
-<ul class="menu" id="menu">
-<li class="menu-item">
-<a class="menu-item-link" href="/">主页</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/post/">归档</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/tags/">标签</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/categories/">分类</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/about/">关于</a>
-</li>
-</ul><li style="display:inline-block;margin-right:10px;">
-<input class="docsearch-input" placeholder="Search" type="search"/>
-</li></nav>
-</header>
-<div class="mobile-navbar" id="mobile-navbar">
-<div class="mobile-header-logo">
-<a class="logo" href="/">「Yang'zun」PlayGround</a>
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+  </header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
-<div class="mobile-navbar-icon">
-<span></span>
-<span></span>
-<span></span>
-</div>
-</div>
-<nav class="mobile-menu slideout-menu" id="mobile-menu">
-<ul class="mobile-menu-list">
-<a href="/">
-<li class="mobile-menu-item">主页</li>
-</a><a href="/post/">
-<li class="mobile-menu-item">归档</li>
-</a><a href="/tags/">
-<li class="mobile-menu-item">标签</li>
-</a><a href="/categories/">
-<li class="mobile-menu-item">分类</li>
-</a><a href="/about/">
-<li class="mobile-menu-item">关于</li>
-</a>
-</ul>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
 </nav>
-<div class="container" id="mobile-panel">
-<main class="main" id="main">
-<div class="content-wrapper">
-<div class="content" id="content">
-<article class="post">
-<header class="post-header">
-<h1 class="post-title">记录一次 Nexus3 Pypi 私服 Blob Storage 异常的修复</h1>
-<div class="post-meta">
-<span class="post-time"> 2021-07-22 </span>
-<div class="post-category">
-<a href="/categories/devops/"> devops </a>
-</div>
-<span class="more-meta"> 约 1284 字 </span>
-<span class="more-meta"> 预计阅读 3 分钟 </span>
-</div>
-</header>
-<div class="post-toc" id="post-toc">
-<h2 class="post-toc-title">文章目录</h2>
-<div class="post-toc-content always-active">
-<nav id="TableOfContents">
-<ul>
-<li><a href="#说明">说明</a></li>
-<li><a href="#修复过程">修复过程</a>
-<ul>
-<li><a href="#尝试修复方法-一">尝试修复方法 (一)</a></li>
-<li><a href="#尝试修复方法-二">尝试修复方法 (二)</a></li>
-<li><a href="#尝试修复方法-三">尝试修复方法 (三)</a></li>
-<li><a href="#修复-依赖拉取查看-404-问题">修复 依赖拉取、查看 <code>404</code> 问题</a></li>
-</ul>
-</li>
-<li><a href="#参考链接">参考链接</a></li>
-<li><a href="#总结">总结</a></li>
-</ul>
+
+  <div class="container" id="mobile-panel">
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">记录一次 Nexus3 Pypi 私服 Blob Storage 异常的修复</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-07-22 </span>
+        <div class="post-category">
+            <a href="/categories/devops/"> devops </a>
+            </div>
+          <span class="more-meta"> 约 1284 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#说明">说明</a></li>
+    <li><a href="#修复过程">修复过程</a>
+      <ul>
+        <li><a href="#尝试修复方法-一">尝试修复方法 (一)</a></li>
+        <li><a href="#尝试修复方法-二">尝试修复方法 (二)</a></li>
+        <li><a href="#尝试修复方法-三">尝试修复方法 (三)</a></li>
+        <li><a href="#修复-依赖拉取查看-404-问题">修复 依赖拉取、查看 <code>404</code> 问题</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考链接">参考链接</a></li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
 </nav>
+  </div>
 </div>
-</div>
-<div class="post-content">
-<h1 id="说明">说明</h1>
+    <div class="post-content">
+      <h1 id="说明">说明</h1>
 <blockquote>
 <p>在 devops 集成环境中的 <code>测试环境</code> 中，今天发现有几条 pipeline 一直是在构建超时状态。初步查看了一下，以为是哪个 依赖版本的兼容性有些问题, 导致 pip 一直是找不到合适的版本，和开发一起进行了一次排查，在 开发环境上即正常，测试环境就不行了，而且使用的是同一套代码 和 Dockerfile 文件，排除与版本有关，具体错误表现如下图所示：</p>
 </blockquote>
-<p><img alt="image-20210721170700491" src="https://cdn.treesir.pub/img/image-20210721170700491.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210721170700491.png" alt="image-20210721170700491"></p>
 <p><strong>滚动的检查 nexus3 私服日志</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -145,8 +184,8 @@
 <pre class="chroma"><code class="language-bash" data-lang="bash">docker logs  -f --tail <span class="m">100</span> nexus3
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210721171037634" src="https://cdn.treesir.pub/img/image-20210721171037634.png"/></p>
-<p><img alt="image-20210721171052792" src="https://cdn.treesir.pub/img/image-20210721171052792.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210721171037634.png" alt="image-20210721171037634"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210721171052792.png" alt="image-20210721171052792"></p>
 <blockquote>
 <p>去对应的 blob 看对应的文件内容也是空的，初步结合日志得出，是 blobstorage 的对应的 存储数据 丢失导致。</p>
 </blockquote>
@@ -189,23 +228,23 @@ REPAIR DATABASE --fix-bonsai
 DISCONNECT
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210721172248837" src="https://cdn.treesir.pub/img/image-20210721172248837.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210721172248837.png" alt="image-20210721172248837"></p>
 <p>再次触发一条 pipeline 测试效果，还是一样的，没有什么效果。</p>
-<p><img alt="image-20210721172720110" src="https://cdn.treesir.pub/img/image-20210721172720110.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210721172720110.png" alt="image-20210721172720110"></p>
 <h2 id="尝试修复方法-二">尝试修复方法 (二)</h2>
 <blockquote>
 <p>此方法的方式为:  将 nexus3 的数据进行备份，将老的数据删除，然后基于备份好的数据进行恢复。</p>
 </blockquote>
 <p><strong>创建 备份数据 task 任务</strong></p>
-<p><img alt="image-20210721172844252" src="https://cdn.treesir.pub/img/image-20210721172844252.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210721172844252.png" alt="image-20210721172844252"></p>
 <p><strong>选择 备份导出数据库</strong></p>
-<p><img alt="image-20210721172857718" src="https://cdn.treesir.pub/img/image-20210721172857718.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210721172857718.png" alt="image-20210721172857718"></p>
 <p><strong>设置备份任务</strong></p>
-<p><img alt="image-20210721173128605" src="https://cdn.treesir.pub/img/image-20210721173128605.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210721173128605.png" alt="image-20210721173128605"></p>
 <p><strong>启动备份任务</strong></p>
-<p><img alt="image-20210721173158292" src="https://cdn.treesir.pub/img/image-20210721173158292.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210721173158292.png" alt="image-20210721173158292"></p>
 <p><strong>等待任务执行 成功</strong></p>
-<p><img alt="image-20210722160039770" src="https://cdn.treesir.pub/img/image-20210722160039770.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722160039770.png" alt="image-20210722160039770"></p>
 <blockquote>
 <p>由于在导出过程中，被 <code>中断</code> 数据无法导出，此方法 <code>暂且放弃</code>。</p>
 </blockquote>
@@ -214,9 +253,9 @@ DISCONNECT
 <p>此方法为: 尝试创建 <code>task</code> 任务 进行一个 blob storage 存储的 <code>元数据修复</code> 工作</p>
 </blockquote>
 <p><strong>选择创建 修复 blob 元数据 task</strong></p>
-<p><img alt="image-20210722160512127" src="https://cdn.treesir.pub/img/image-20210722160512127.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722160512127.png" alt="image-20210722160512127"></p>
 <p><strong>选择需要修复的 blob storage</strong></p>
-<p><img alt="image-20210722160931972" src="https://cdn.treesir.pub/img/image-20210722160931972.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722160931972.png" alt="image-20210722160931972"></p>
 <blockquote>
 <p>等待 <code>task</code> 任务的执行完毕</p>
 </blockquote>
@@ -259,30 +298,30 @@ DISCONNECT
 <blockquote>
 <p><strong>查看一些包多显示 <code>404</code></strong></p>
 </blockquote>
-<p><img alt="image-20210722100816785" src="https://cdn.treesir.pub/img/image-20210722100816785.png"/></p>
-<p><img alt="image-20210722100943816" src="https://cdn.treesir.pub/img/image-20210722100943816.png"/></p>
-<p><img alt="image-20210722100716967" src="https://cdn.treesir.pub/img/image-20210722100716967.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722100816785.png" alt="image-20210722100816785"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722100943816.png" alt="image-20210722100943816"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722100716967.png" alt="image-20210722100716967"></p>
 <h2 id="修复-依赖拉取查看-404-问题">修复 依赖拉取、查看 <code>404</code> 问题</h2>
 <blockquote>
-<p>新建 重建私服的 <code>浏览</code>  &amp; <code>搜索</code> <strong>task</strong></p>
+<p>新建 重建私服的 <code>浏览</code>  &amp; <code>搜索</code>  <strong>task</strong></p>
 </blockquote>
 <p><strong>创建相关 task</strong></p>
-<p><img alt="image-20210722162439277" src="https://cdn.treesir.pub/img/image-20210722162439277.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722162439277.png" alt="image-20210722162439277"></p>
 <p><strong>选择对所有 仓库生效</strong></p>
-<p><img alt="image-20210722101653481" src="https://cdn.treesir.pub/img/image-20210722101653481.png"/></p>
-<p><img alt="image-20210722162501026" src="https://cdn.treesir.pub/img/image-20210722162501026.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722101653481.png" alt="image-20210722101653481"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722162501026.png" alt="image-20210722162501026"></p>
 <p><strong>启动重建任务</strong></p>
-<p><img alt="image-20210722101719109" src="https://cdn.treesir.pub/img/image-20210722101719109.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722101719109.png" alt="image-20210722101719109"></p>
 <p><strong>等待任务结束</strong></p>
-<p><img alt="image-20210722101954917" src="https://cdn.treesir.pub/img/image-20210722101954917.png"/></p>
-<p><img alt="image-20210722162536184" src="https://cdn.treesir.pub/img/image-20210722162536184.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722101954917.png" alt="image-20210722101954917"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722162536184.png" alt="image-20210722162536184"></p>
 <p><strong>再次启动 pipeline 进行测试，还是报错，开启<code>TRACE</code> 级别日志进行查阅。</strong></p>
 <blockquote>
 <p><code>TRACE</code> 日志级别建议，只在测试时开启，不要就进行关闭，内容实在太多</p>
 </blockquote>
-<p><img alt="image-20210722162741547" src="https://cdn.treesir.pub/img/image-20210722162741547.png"/></p>
-<p><img alt="image-20210722162807053" src="https://cdn.treesir.pub/img/image-20210722162807053.png"/></p>
-<p><img alt="image-20210722122658097" src="https://cdn.treesir.pub/img/image-20210722122658097.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722162741547.png" alt="image-20210722162741547"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722162807053.png" alt="image-20210722162807053"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722122658097.png" alt="image-20210722122658097"></p>
 <blockquote>
 <p>可以从相关的日志中看到  <code>Could not dispatch event AssetCreatedEvent</code>  报错。在社区寻找解决方案, <code>暂未找到合适的方法</code> 。</p>
 </blockquote>
@@ -311,7 +350,7 @@ CONNECT PLOCAL:/nexus-data/db/component/ admin admin
 REBUILD INDEX *
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210722140438216" src="https://cdn.treesir.pub/img/image-20210722140438216.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210722140438216.png" alt="image-20210722140438216"></p>
 <blockquote>
 <p>执行 重建索引的时候直接就报错了。说发现重复的 <code>key</code></p>
 </blockquote>
@@ -369,17 +408,17 @@ DISCONNECT
 docker restart nexus3 
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210722142059307" src="https://cdn.treesir.pub/img/image-20210722142059307.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210722142059307.png" alt="image-20210722142059307"></p>
 <blockquote>
 <p>再次执行时，已没有报错 出现重复的 key 了。</p>
 </blockquote>
 <p><strong>重启后，查阅系统日志</strong></p>
-<p><img alt="image-20210722142718148" src="https://cdn.treesir.pub/img/image-20210722142718148.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722142718148.png" alt="image-20210722142718148"></p>
 <blockquote>
 <p>可以从 日志中查看到，nexus 正在对 <code>存储库浏览树</code> 进行重建工作, 并且此时 已从 日志中看出 已重建完成了。</p>
 </blockquote>
 <p><strong>再次观察后续的日志输出已无相关错误打印。尝试 触发 pipeline 看看</strong></p>
-<p><img alt="image-20210722152904777" src="https://cdn.treesir.pub/img/image-20210722152904777.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210722152904777.png" alt="image-20210722152904777"></p>
 <blockquote>
 <p>可以看到已 可正常拉取到 pypi 包依赖了。</p>
 </blockquote>
@@ -391,51 +430,57 @@ docker restart nexus3
 <blockquote>
 <p>在经过此次事件后，感觉 nexus3 的 bug 还是非常多的，建议生产使用的版本，是使用社区反响较好的 bug 较少的版本。此次事件其实我在一年前的时候也是有碰到过，不过当时的解决的方式用的不是这一种，使用的方式是是 创建新的 blob 存储，而将有问题的 blog 私服进行迁移，这种方式比较简单，但是如果你 有很多个私服 并多使用在 一个 blob 存储上时，数据需要重新上传，迁移起来就比较麻烦和繁琐了。建议是 对 <code>不同环境</code> 和 <code>不同类型</code> 私服设置不同的 blob storage 来分散风险。</p>
 </blockquote>
-</div>
-<div class="post-copyright">
-<p class="copyright-item">
-<span class="item-title">文章作者</span>
-<span class="item-content">Yang'zun</span>
-</p>
-<p class="copyright-item">
-<span class="item-title">上次更新</span>
-<span class="item-content">
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
         2021-07-22
         
     </span>
-</p>
-<p class="copyright-item">
-<span class="item-title">许可协议</span>
-<span class="item-content"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a></span>
-</p>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
 </div>
 <footer class="post-footer">
-<div class="post-tags">
-<a href="/tags/neuxs3/">neuxs3</a>
-<a href="/tags/fix/">fix</a>
-<a href="/tags/pypi/">pypi</a>
-<a href="/tags/jenkins/">jenkins</a>
-<a href="/tags/pipeline/">pipeline</a>
-</div>
-<nav class="post-nav">
-<a class="prev" href="/post/k3s-change-flannel-cni-model/">
-<i class="iconfont icon-left"></i>
-<span class="prev-text nav-default">K3s 集群修改 Flannel CNI 插件网络模式</span>
-<span class="prev-text nav-mobile">上一篇</span>
-</a>
-<a class="next" href="/post/pipeline-jupyter-labextension-build-fix/">
-<span class="next-text nav-default">记录一次 JupyterLab 插件打包问题的修复</span>
-<span class="next-text nav-mobile">下一篇</span>
-<i class="iconfont icon-right"></i>
-</a>
-</nav>
-</footer>
-</article>
-</div>
-<div id="vcomments"></div>
-<script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
-<script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
-<script type="text/javascript">
+      <div class="post-tags">
+          <a href="/tags/neuxs3/">neuxs3</a>
+          <a href="/tags/fix/">fix</a>
+          <a href="/tags/pypi/">pypi</a>
+          <a href="/tags/jenkins/">jenkins</a>
+          <a href="/tags/pipeline/">pipeline</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/k3s-change-flannel-cni-model/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">K3s 集群修改 Flannel CNI 插件网络模式</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/pipeline-jupyter-labextension-build-fix/">
+            <span class="next-text nav-default">记录一次 JupyterLab 插件打包问题的修复</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
     new Valine({
         el: '#vcomments' ,
         appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
@@ -447,39 +492,64 @@ docker restart nexus3
         visitor:  false 
     });
   </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:yangzun@treesir.pub" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-</main>
-<footer class="footer" id="footer">
-<div class="social-links">
-<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
-<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
-<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
-</div>
+
 <div class="copyright">
-<span class="power-by">
+  <span class="power-by">
     由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
   </span>
-<span class="division">|</span>
-<span class="theme-info">
+  <span class="division">|</span>
+  <span class="theme-info">
     主题 - 
     <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
-</span>
-<span class="copyright-year">
-<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘 ICP 备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
-    © 
+  </span>
+
+  
+
+  
+
+  <span class="copyright-year">
+    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+    &copy; 
     2019 - 
     2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
-</span>
+    </span>
+
 </div>
-</footer>
-<div class="back-to-top" id="back-to-top">
-<i class="iconfont icon-up"></i>
-</div>
-</div>
-<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
-<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
-<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
-<script src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js" type="text/javascript"></script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
 <script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
 <script>
     docsearch({
