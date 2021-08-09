@@ -1,179 +1,140 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复 - 「Yang&#39;zun」PlayGround</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
-
-
-<meta name="author" content="Yang&#39;zun" /><meta name="description" content="Rancher 导入集群后，提示 Scheduler & Controller Manager 不健康问题的记录，与修复。" /><meta name="keywords" content="rancher, kubekey, k8s, kubernetes, Scheduler, Controller, 提示不健康, 错误修复, 导入集群, 导入, Controller Manager, Manager" />
-
-
-
-
-
-
-<meta name="generator" content="Hugo 0.78.2 with theme even" />
-
-
-<link rel="canonical" href="https://cdryzun.github.io/post/rancher-import-cluster-fix/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-
-
-
-<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
-<link rel="stylesheet" href="/css/custom.css">
-
-
-<meta property="og:title" content="Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复" />
-<meta property="og:description" content="Rancher 导入集群后，提示 Scheduler &amp; Controller Manager 不健康问题的记录，与修复。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://cdryzun.github.io/post/rancher-import-cluster-fix/" />
-<meta property="article:published_time" content="2021-06-08T08:45:22+08:00" />
-<meta property="article:modified_time" content="2021-06-08T08:45:22+08:00" />
-<meta itemprop="name" content="Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复">
-<meta itemprop="description" content="Rancher 导入集群后，提示 Scheduler &amp; Controller Manager 不健康问题的记录，与修复。">
-<meta itemprop="datePublished" content="2021-06-08T08:45:22+08:00" />
-<meta itemprop="dateModified" content="2021-06-08T08:45:22+08:00" />
-<meta itemprop="wordCount" content="994">
-
-
-
-<meta itemprop="keywords" content="rancher,kubekey," />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复"/>
-<meta name="twitter:description" content="Rancher 导入集群后，提示 Scheduler &amp; Controller Manager 不健康问题的记录，与修复。"/>
-
+<meta charset="utf-8"/>
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<title>Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复 - 「Yang'zun」PlayGround</title>
+<meta content="webkit" name="renderer"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<meta content="no-transform" http-equiv="Cache-Control"/>
+<meta content="no-siteapp" http-equiv="Cache-Control"/>
+<meta content="#f8f5ec" name="theme-color"/>
+<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Yang'zun" name="author"/><meta content="Rancher 导入集群后，提示 Scheduler &amp; Controller Manager 不健康问题的记录，与修复。" name="description"/><meta content="rancher, kubekey, k8s, kubernetes, Scheduler, Controller, 提示不健康, 错误修复, 导入集群, 导入, Controller Manager, Manager" name="keywords"/>
+<meta content="Hugo 0.78.2 with theme even" name="generator"/>
+<link href="https://cdryzun.github.io/post/rancher-import-cluster-fix/" rel="canonical"/>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/manifest.json" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
+<link href="/css/custom.css" rel="stylesheet"/>
+<meta content="Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复" property="og:title"/>
+<meta content="Rancher 导入集群后，提示 Scheduler &amp; Controller Manager 不健康问题的记录，与修复。" property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://cdryzun.github.io/post/rancher-import-cluster-fix/" property="og:url"/>
+<meta content="2021-06-08T08:45:22+08:00" property="article:published_time"/>
+<meta content="2021-06-08T08:45:22+08:00" property="article:modified_time"/>
+<meta content="Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复" itemprop="name"/>
+<meta content="Rancher 导入集群后，提示 Scheduler &amp; Controller Manager 不健康问题的记录，与修复。" itemprop="description"/>
+<meta content="2021-06-08T08:45:22+08:00" itemprop="datePublished"/>
+<meta content="2021-06-08T08:45:22+08:00" itemprop="dateModified"/>
+<meta content="994" itemprop="wordCount"/>
+<meta content="rancher,kubekey," itemprop="keywords"/>
+<meta content="summary" name="twitter:card"/>
+<meta content="Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复" name="twitter:title"/>
+<meta content="Rancher 导入集群后，提示 Scheduler &amp; Controller Manager 不健康问题的记录，与修复。" name="twitter:description"/>
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
 <![endif]-->
-
 <!--[if lt IE 9]>
   <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
   <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
 <![endif]-->
-
-<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
+<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
 </head>
 <body>
-  <header id="header" class="header">
-      <div class="logo-wrapper">
-  <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
+<header class="header" id="header">
+<div class="logo-wrapper">
+<a class="logo" href="/">「Yang'zun」PlayGround</a>
 </div>
-
-
-
-
-
 <nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">主页</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">归档</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/tags/">标签</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/categories/">分类</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/about/">关于</a>
-      </li>
-  </ul><li style="display:inline-block;margin-right:10px;">
-    <input type="search" class="docsearch-input" placeholder="Search" />
-  </li></nav>
-
-  </header>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
+<ul class="menu" id="menu">
+<li class="menu-item">
+<a class="menu-item-link" href="/">主页</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/post/">归档</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/tags/">标签</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/categories/">分类</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/about/">关于</a>
+</li>
+</ul><li style="display:inline-block;margin-right:10px;">
+<input class="docsearch-input" placeholder="Search" type="search"/>
+</li></nav>
+</header>
+<div class="mobile-navbar" id="mobile-navbar">
+<div class="mobile-header-logo">
+<a class="logo" href="/">「Yang'zun」PlayGround</a>
 </div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">主页</li>
-      </a><a href="/post/">
-        <li class="mobile-menu-item">归档</li>
-      </a><a href="/tags/">
-        <li class="mobile-menu-item">标签</li>
-      </a><a href="/categories/">
-        <li class="mobile-menu-item">分类</li>
-      </a><a href="/about/">
-        <li class="mobile-menu-item">关于</li>
-      </a>
-  </ul>
-
-  
-
-
-</nav>
-
-  <div class="container" id="mobile-panel">
-
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
-    
-    <header class="post-header">
-      <h1 class="post-title">Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复</h1>
-
-      <div class="post-meta">
-        <span class="post-time"> 2021-06-08 </span>
-        <div class="post-category">
-            <a href="/categories/k8s/"> k8s </a>
-            </div>
-          <span class="more-meta"> 约 994 字 </span>
-          <span class="more-meta"> 预计阅读 2 分钟 </span>
-        
-      </div>
-    </header>
-
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">文章目录</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#环境说明">环境说明</a></li>
-    <li><a href="#准备-k8s-模拟环境">准备 k8s 模拟环境</a>
-      <ul>
-        <li><a href="#编译安装-kubekey">编译安装 kubekey</a></li>
-        <li><a href="#启动集群">启动集群</a></li>
-        <li><a href="#rancher-导入启动的集群">Rancher 导入启动的集群</a></li>
-      </ul>
-    </li>
-    <li><a href="#问题说明与修复">问题说明与修复</a>
-      <ul>
-        <li><a href="#修复-http-端口的监听">修复 http 端口的监听</a></li>
-      </ul>
-    </li>
-    <li><a href="#todo">ToDo</a></li>
-  </ul>
-</nav>
-  </div>
+<div class="mobile-navbar-icon">
+<span></span>
+<span></span>
+<span></span>
 </div>
-    <div class="post-content">
-      <h1 id="环境说明">环境说明</h1>
+</div>
+<nav class="mobile-menu slideout-menu" id="mobile-menu">
+<ul class="mobile-menu-list">
+<a href="/">
+<li class="mobile-menu-item">主页</li>
+</a><a href="/post/">
+<li class="mobile-menu-item">归档</li>
+</a><a href="/tags/">
+<li class="mobile-menu-item">标签</li>
+</a><a href="/categories/">
+<li class="mobile-menu-item">分类</li>
+</a><a href="/about/">
+<li class="mobile-menu-item">关于</li>
+</a>
+</ul>
+</nav>
+<div class="container" id="mobile-panel">
+<main class="main" id="main">
+<div class="content-wrapper">
+<div class="content" id="content">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title">Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复</h1>
+<div class="post-meta">
+<span class="post-time"> 2021-06-08 </span>
+<div class="post-category">
+<a href="/categories/k8s/"> k8s </a>
+</div>
+<span class="more-meta"> 约 994 字 </span>
+<span class="more-meta"> 预计阅读 2 分钟 </span>
+</div>
+</header>
+<div class="post-toc" id="post-toc">
+<h2 class="post-toc-title">文章目录</h2>
+<div class="post-toc-content always-active">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#环境说明">环境说明</a></li>
+<li><a href="#准备-k8s-模拟环境">准备 k8s 模拟环境</a>
+<ul>
+<li><a href="#编译安装-kubekey">编译安装 kubekey</a></li>
+<li><a href="#启动集群">启动集群</a></li>
+<li><a href="#rancher-导入启动的集群">Rancher 导入启动的集群</a></li>
+</ul>
+</li>
+<li><a href="#问题说明与修复">问题说明与修复</a>
+<ul>
+<li><a href="#修复-http-端口的监听">修复 http 端口的监听</a></li>
+</ul>
+</li>
+<li><a href="#todo">ToDo</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<div class="post-content">
+<h1 id="环境说明">环境说明</h1>
 <ul>
 <li>Kubernetes Version: <code>v1.20.4</code>  (kubekey 部署)</li>
 <li>操作系统: <code>CentOS 7.9.2009</code></li>
@@ -212,7 +173,7 @@ git clone https://github.com/kubesphere/kubekey.git <span class="se">\
 cp -a output/kk /usr/local/bin/ 
 
 kk version <span class="c1"># 如打印了下面字段，则表示成功</span>
-version.BuildInfo<span class="o">{</span>Version:<span class="s2">&#34;latest+unreleased&#34;</span>, GitCommit:<span class="s2">&#34;f3f9e2e2d001a1b35883f5baea07912bb636db56&#34;</span>, GitTreeState:<span class="s2">&#34;clean&#34;</span>, GoVersion:<span class="s2">&#34;go1.14.7&#34;</span><span class="o">}</span>
+version.BuildInfo<span class="o">{</span>Version:<span class="s2">"latest+unreleased"</span>, GitCommit:<span class="s2">"f3f9e2e2d001a1b35883f5baea07912bb636db56"</span>, GitTreeState:<span class="s2">"clean"</span>, GoVersion:<span class="s2">"go1.14.7"</span><span class="o">}</span>
 </code></pre></td></tr></table>
 </div>
 </div><h2 id="启动集群">启动集群</h2>
@@ -297,7 +258,7 @@ spec:
     - node2
   controlPlaneEndpoint:
     domain: lb.kubesphere.local
-    address: <span class="s2">&#34;&#34;</span>
+    address: <span class="s2">""</span>
     port: <span class="m">6443</span>
   kubernetes:
     version: v1.20.4
@@ -334,7 +295,7 @@ Continue this installation? <span class="o">[</span>yes/no<span class="o">]</spa
 <blockquote>
 <p>省略创建导入步骤。问题如下所示，<code>dashbaord 界面 </code>上提示  <code> Scheduler &amp; Controller 组件不健康</code></p>
 </blockquote>
-<p><img src="https://cdn.treesir.pub/img/image-20210608102931602.png" alt="image-20210608102931602"></p>
+<p><img alt="image-20210608102931602" src="https://cdn.treesir.pub/img/image-20210608102931602.png"/></p>
 <blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -349,9 +310,9 @@ Continue this installation? <span class="o">[</span>yes/no<span class="o">]</spa
 <pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get cs
 Warning: v1 ComponentStatus is deprecated in v1.19+
 NAME                 STATUS      MESSAGE                                                                                       ERROR
-scheduler            Unhealthy   Get <span class="s2">&#34;http://127.0.0.1:10251/healthz&#34;</span>: dial tcp 127.0.0.1:10251: connect: connection refused   
-controller-manager   Unhealthy   Get <span class="s2">&#34;http://127.0.0.1:10252/healthz&#34;</span>: dial tcp 127.0.0.1:10252: connect: connection refused   
-etcd-0               Healthy     <span class="o">{</span><span class="s2">&#34;health&#34;</span>:<span class="s2">&#34;true&#34;</span><span class="o">}</span>                                                                             
+scheduler            Unhealthy   Get <span class="s2">"http://127.0.0.1:10251/healthz"</span>: dial tcp 127.0.0.1:10251: connect: connection refused   
+controller-manager   Unhealthy   Get <span class="s2">"http://127.0.0.1:10252/healthz"</span>: dial tcp 127.0.0.1:10252: connect: connection refused   
+etcd-0               Healthy     <span class="o">{</span><span class="s2">"health"</span>:<span class="s2">"true"</span><span class="o">}</span>                                                                             
 </code></pre></td></tr></table>
 </div>
 </div></blockquote>
@@ -455,13 +416,13 @@ spec:
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sed -i <span class="s1">&#39;s/.*--port=0.*/#&amp;/&#39;</span> /etc/kubernetes/manifests/kube-controller-manager.yaml
-sed -i <span class="s1">&#39;s/.*--port=0.*/#&amp;/&#39;</span> /etc/kubernetes/manifests/kube-scheduler.yaml
+<pre class="chroma"><code class="language-bash" data-lang="bash">sed -i <span class="s1">'s/.*--port=0.*/#&amp;/'</span> /etc/kubernetes/manifests/kube-controller-manager.yaml
+sed -i <span class="s1">'s/.*--port=0.*/#&amp;/'</span> /etc/kubernetes/manifests/kube-scheduler.yaml
 </code></pre></td></tr></table>
 </div>
 </div></blockquote>
 <p>再次前往对应 dashboard 界面进行查看，可以看到已无之前的错误提示</p>
-<p><img src="https://cdn.treesir.pub/img/image-20210608104356009.png" alt="image-20210608104356009"></p>
+<p><img alt="image-20210608104356009" src="https://cdn.treesir.pub/img/image-20210608104356009.png"/></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -477,58 +438,52 @@ Warning: v1 ComponentStatus is deprecated in v1.19+
 NAME                 STATUS    MESSAGE             ERROR
 controller-manager   Healthy   ok                  
 scheduler            Healthy   ok                  
-etcd-0               Healthy   <span class="o">{</span><span class="s2">&#34;health&#34;</span>:<span class="s2">&#34;true&#34;</span><span class="o">}</span> 
+etcd-0               Healthy   <span class="o">{</span><span class="s2">"health"</span>:<span class="s2">"true"</span><span class="o">}</span> 
 </code></pre></td></tr></table>
 </div>
 </div><h1 id="todo">ToDo</h1>
-
-    </div>
-
-    <div class="post-copyright">
-  <p class="copyright-item">
-    <span class="item-title">文章作者</span>
-    <span class="item-content">Yang'zun</span>
-  </p>
-  <p class="copyright-item">
-    <span class="item-title">上次更新</span>
-    <span class="item-content">
+</div>
+<div class="post-copyright">
+<p class="copyright-item">
+<span class="item-title">文章作者</span>
+<span class="item-content">Yang'zun</span>
+</p>
+<p class="copyright-item">
+<span class="item-title">上次更新</span>
+<span class="item-content">
         2021-06-08
         
     </span>
-  </p>
-  
-  <p class="copyright-item">
-    <span class="item-title">许可协议</span>
-    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
-  </p>
+</p>
+<p class="copyright-item">
+<span class="item-title">许可协议</span>
+<span class="item-content"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a></span>
+</p>
 </div>
 <footer class="post-footer">
-      <div class="post-tags">
-          <a href="/tags/rancher/">rancher</a>
-          <a href="/tags/kubekey/">kubekey</a>
-          </div>
-      <nav class="post-nav">
-        <a class="prev" href="/post/nexus-use-traefik-proxy/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        <a class="next" href="/post/kubernetes-deploy-gitlab/">
-            <span class="next-text nav-default">在 Kubernetes 中使用 localPv 部署 Gitlab</span>
-            <span class="next-text nav-mobile">下一篇</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-        </div>
-        
-
-  
-  <div id="vcomments"></div>
-  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
-  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
-  <script type="text/javascript">
+<div class="post-tags">
+<a href="/tags/rancher/">rancher</a>
+<a href="/tags/kubekey/">kubekey</a>
+</div>
+<nav class="post-nav">
+<a class="prev" href="/post/nexus-use-traefik-proxy/">
+<i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理</span>
+<span class="prev-text nav-mobile">上一篇</span>
+</a>
+<a class="next" href="/post/kubernetes-deploy-gitlab/">
+<span class="next-text nav-default">在 Kubernetes 中使用 localPv 部署 Gitlab</span>
+<span class="next-text nav-mobile">下一篇</span>
+<i class="iconfont icon-right"></i>
+</a>
+</nav>
+</footer>
+</article>
+</div>
+<div id="vcomments"></div>
+<script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+<script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+<script type="text/javascript">
     new Valine({
         el: '#vcomments' ,
         appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
@@ -540,64 +495,39 @@ etcd-0               Healthy   <span class="o">{</span><span class="s2">&#34;hea
         visitor:  false 
     });
   </script>
-
-  
-
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="social-links">
-      <a href="mailto:yangzun@treesir.pub" class="iconfont icon-email" title="email"></a>
-      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
-  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-
+</main>
+<footer class="footer" id="footer">
+<div class="social-links">
+<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
+<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
+<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
+</div>
 <div class="copyright">
-  <span class="power-by">
+<span class="power-by">
     由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
   </span>
-  <span class="division">|</span>
-  <span class="theme-info">
+<span class="division">|</span>
+<span class="theme-info">
     主题 - 
     <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
-  </span>
-
-  
-
-  
-
-  <span class="copyright-year">
-    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
-    &copy; 
+</span>
+<span class="copyright-year">
+<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘 ICP 备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
+    © 
     2019 - 
     2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
-    </span>
-
+</span>
 </div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
-    </div>
-  </div>
-  
-  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
-
-
-
-<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
-
-
-
-
-
-
-
-
+</footer>
+<div class="back-to-top" id="back-to-top">
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
+<script src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js" type="text/javascript"></script>
 <script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
 <script>
     docsearch({

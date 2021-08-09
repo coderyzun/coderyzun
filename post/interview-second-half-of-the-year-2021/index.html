@@ -1,205 +1,165 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>2021 下半年相关知识点整理 - 「Yang&#39;zun」PlayGround</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
-
-
-<meta name="author" content="Yang&#39;zun" /><meta name="description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的" /><meta name="keywords" content="github action, pipeline, gitlab, nexus3, 技术分享, 前端技术, 计算机网络, devops, kubernetes, jenkins, centos, 技术积累, 个人文档, 个人总结, mysql, 运维, 自动化, python, hugo, k3s, kafka, go lang, helm, traefik, kubeadm, rancher, redis, rke, nginx, apache, 网络安全" />
-
-
-
-
-
-
-<meta name="generator" content="Hugo 0.78.2 with theme even" />
-
-
-<link rel="canonical" href="https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-
-
-
-<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
-<link rel="stylesheet" href="/css/custom.css">
-
-
-<meta property="og:title" content="2021 下半年相关知识点整理" />
-<meta property="og:description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/" />
-<meta property="article:published_time" content="2021-06-29T11:38:41+08:00" />
-<meta property="article:modified_time" content="2021-06-29T11:38:41+08:00" />
-<meta itemprop="name" content="2021 下半年相关知识点整理">
-<meta itemprop="description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的">
-<meta itemprop="datePublished" content="2021-06-29T11:38:41+08:00" />
-<meta itemprop="dateModified" content="2021-06-29T11:38:41+08:00" />
-<meta itemprop="wordCount" content="40689">
-
-
-
-<meta itemprop="keywords" content="" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="2021 下半年相关知识点整理"/>
-<meta name="twitter:description" content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的"/>
-
+<meta charset="utf-8"/>
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<title>2021 下半年相关知识点整理 - 「Yang'zun」PlayGround</title>
+<meta content="webkit" name="renderer"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<meta content="no-transform" http-equiv="Cache-Control"/>
+<meta content="no-siteapp" http-equiv="Cache-Control"/>
+<meta content="#f8f5ec" name="theme-color"/>
+<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Yang'zun" name="author"/><meta content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的" name="description"/><meta content="github action, pipeline, gitlab, nexus3, 技术分享, 前端技术, 计算机网络, devops, kubernetes, jenkins, centos, 技术积累, 个人文档, 个人总结, mysql, 运维, 自动化, python, hugo, k3s, kafka, go lang, helm, traefik, kubeadm, rancher, redis, rke, nginx, apache, 网络安全" name="keywords"/>
+<meta content="Hugo 0.78.2 with theme even" name="generator"/>
+<link href="https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/" rel="canonical"/>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/manifest.json" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
+<link href="/css/custom.css" rel="stylesheet"/>
+<meta content="2021 下半年相关知识点整理" property="og:title"/>
+<meta content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的" property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/" property="og:url"/>
+<meta content="2021-06-29T11:38:41+08:00" property="article:published_time"/>
+<meta content="2021-06-29T11:38:41+08:00" property="article:modified_time"/>
+<meta content="2021 下半年相关知识点整理" itemprop="name"/>
+<meta content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的" itemprop="description"/>
+<meta content="2021-06-29T11:38:41+08:00" itemprop="datePublished"/>
+<meta content="2021-06-29T11:38:41+08:00" itemprop="dateModified"/>
+<meta content="40689" itemprop="wordCount"/>
+<meta content="" itemprop="keywords"/>
+<meta content="summary" name="twitter:card"/>
+<meta content="2021 下半年相关知识点整理" name="twitter:title"/>
+<meta content="概述 此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点 (题目后带 * 为实际碰到过的相关面试问题 ）。题目均来自 互联网 、实际面试题 及 自己对某些知识点的" name="twitter:description"/>
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
 <![endif]-->
-
 <!--[if lt IE 9]>
   <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
   <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
 <![endif]-->
-
-<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
+<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
 </head>
 <body>
-  <header id="header" class="header">
-      <div class="logo-wrapper">
-  <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
+<header class="header" id="header">
+<div class="logo-wrapper">
+<a class="logo" href="/">「Yang'zun」PlayGround</a>
 </div>
-
-
-
-
-
 <nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">主页</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">归档</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/tags/">标签</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/categories/">分类</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/about/">关于</a>
-      </li>
-  </ul><li style="display:inline-block;margin-right:10px;">
-    <input type="search" class="docsearch-input" placeholder="Search" />
-  </li></nav>
-
-  </header>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
+<ul class="menu" id="menu">
+<li class="menu-item">
+<a class="menu-item-link" href="/">主页</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/post/">归档</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/tags/">标签</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/categories/">分类</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/about/">关于</a>
+</li>
+</ul><li style="display:inline-block;margin-right:10px;">
+<input class="docsearch-input" placeholder="Search" type="search"/>
+</li></nav>
+</header>
+<div class="mobile-navbar" id="mobile-navbar">
+<div class="mobile-header-logo">
+<a class="logo" href="/">「Yang'zun」PlayGround</a>
 </div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">主页</li>
-      </a><a href="/post/">
-        <li class="mobile-menu-item">归档</li>
-      </a><a href="/tags/">
-        <li class="mobile-menu-item">标签</li>
-      </a><a href="/categories/">
-        <li class="mobile-menu-item">分类</li>
-      </a><a href="/about/">
-        <li class="mobile-menu-item">关于</li>
-      </a>
-  </ul>
-
-  
-
-
-</nav>
-
-  <div class="container" id="mobile-panel">
-
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
-    
-    <header class="post-header">
-      <h1 class="post-title">2021 下半年相关知识点整理</h1>
-
-      <div class="post-meta">
-        <span class="post-time"> 2021-06-29 </span>
-        
-          <span class="more-meta"> 约 40689 字 </span>
-          <span class="more-meta"> 预计阅读 82 分钟 </span>
-        
-      </div>
-    </header>
-
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">文章目录</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#概述">概述</a></li>
-    <li><a href="#k8s-相关">K8s 相关</a>
-      <ul>
-        <li><a href="#api-server">api-Server</a></li>
-        <li><a href="#kube-scheduler">kube-Scheduler</a></li>
-        <li><a href="#kube-controller-manager">kube-Controller-Manager</a></li>
-        <li><a href="#operator">Operator</a></li>
-        <li><a href="#kubelet">Kubelet</a></li>
-        <li><a href="#kubeproxy">kubeProxy</a></li>
-        <li><a href="#etcd">etcd</a></li>
-        <li><a href="#kubectl">kubeCtl</a></li>
-        <li><a href="#pod">Pod</a></li>
-        <li><a href="#cni-network">CNI network</a></li>
-        <li><a href="#service">Service</a></li>
-        <li><a href="#ingress">Ingress</a></li>
-        <li><a href="#csi-storage">CSI storage</a></li>
-        <li><a href="#configmap--secret">ConfigMap &amp; Secret</a></li>
-        <li><a href="#集群管理">集群管理</a></li>
-      </ul>
-    </li>
-    <li><a href="#devops-相关">DEVOPS 相关</a>
-      <ul>
-        <li><a href="#elk">ELK</a></li>
-        <li><a href="#docker">Docker</a></li>
-      </ul>
-    </li>
-    <li><a href="#应用运维相关">应用运维相关</a>
-      <ul>
-        <li><a href="#linux">Linux</a></li>
-        <li><a href="#prometheus-监控">Prometheus 监控</a></li>
-        <li><a href="#mysql">Mysql</a></li>
-        <li><a href="#ceph">Ceph</a></li>
-        <li><a href="#spring-cloud-alibaba">Spring cloud alibaba</a></li>
-        <li><a href="#网络安全">网络安全</a></li>
-        <li><a href="#架构设计相关">架构设计相关</a></li>
-        <li><a href="#监控系统相关">监控系统相关</a></li>
-        <li><a href="#redis--nosql">Redis &amp; NoSQL</a></li>
-        <li><a href="#kafka">Kafka</a></li>
-      </ul>
-    </li>
-    <li><a href="#个人问题">个人问题</a></li>
-    <li><a href="#提问面试官">提问面试官</a></li>
-  </ul>
-</nav>
-  </div>
+<div class="mobile-navbar-icon">
+<span></span>
+<span></span>
+<span></span>
 </div>
-    <div class="post-content">
-      <h1 id="概述">概述</h1>
+</div>
+<nav class="mobile-menu slideout-menu" id="mobile-menu">
+<ul class="mobile-menu-list">
+<a href="/">
+<li class="mobile-menu-item">主页</li>
+</a><a href="/post/">
+<li class="mobile-menu-item">归档</li>
+</a><a href="/tags/">
+<li class="mobile-menu-item">标签</li>
+</a><a href="/categories/">
+<li class="mobile-menu-item">分类</li>
+</a><a href="/about/">
+<li class="mobile-menu-item">关于</li>
+</a>
+</ul>
+</nav>
+<div class="container" id="mobile-panel">
+<main class="main" id="main">
+<div class="content-wrapper">
+<div class="content" id="content">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title">2021 下半年相关知识点整理</h1>
+<div class="post-meta">
+<span class="post-time"> 2021-06-29 </span>
+<span class="more-meta"> 约 40689 字 </span>
+<span class="more-meta"> 预计阅读 82 分钟 </span>
+</div>
+</header>
+<div class="post-toc" id="post-toc">
+<h2 class="post-toc-title">文章目录</h2>
+<div class="post-toc-content always-active">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#概述">概述</a></li>
+<li><a href="#k8s-相关">K8s 相关</a>
+<ul>
+<li><a href="#api-server">api-Server</a></li>
+<li><a href="#kube-scheduler">kube-Scheduler</a></li>
+<li><a href="#kube-controller-manager">kube-Controller-Manager</a></li>
+<li><a href="#operator">Operator</a></li>
+<li><a href="#kubelet">Kubelet</a></li>
+<li><a href="#kubeproxy">kubeProxy</a></li>
+<li><a href="#etcd">etcd</a></li>
+<li><a href="#kubectl">kubeCtl</a></li>
+<li><a href="#pod">Pod</a></li>
+<li><a href="#cni-network">CNI network</a></li>
+<li><a href="#service">Service</a></li>
+<li><a href="#ingress">Ingress</a></li>
+<li><a href="#csi-storage">CSI storage</a></li>
+<li><a href="#configmap--secret">ConfigMap &amp; Secret</a></li>
+<li><a href="#集群管理">集群管理</a></li>
+</ul>
+</li>
+<li><a href="#devops-相关">DEVOPS 相关</a>
+<ul>
+<li><a href="#elk">ELK</a></li>
+<li><a href="#docker">Docker</a></li>
+</ul>
+</li>
+<li><a href="#应用运维相关">应用运维相关</a>
+<ul>
+<li><a href="#linux">Linux</a></li>
+<li><a href="#prometheus-监控">Prometheus 监控</a></li>
+<li><a href="#mysql">Mysql</a></li>
+<li><a href="#ceph">Ceph</a></li>
+<li><a href="#spring-cloud-alibaba">Spring cloud alibaba</a></li>
+<li><a href="#网络安全">网络安全</a></li>
+<li><a href="#架构设计相关">架构设计相关</a></li>
+<li><a href="#监控系统相关">监控系统相关</a></li>
+<li><a href="#redis--nosql">Redis &amp; NoSQL</a></li>
+<li><a href="#kafka">Kafka</a></li>
+</ul>
+</li>
+<li><a href="#个人问题">个人问题</a></li>
+<li><a href="#提问面试官">提问面试官</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<div class="post-content">
+<h1 id="概述">概述</h1>
 <blockquote>
 <p><strong>此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点</strong>   (题目后带 <strong><code>*</code></strong> 为实际碰到过的相关面试问题 ）。题目均来自 <code>互联网</code> 、实际面试题 及 自己对某些知识点的自问自答整理。</p>
 </blockquote>
@@ -1224,7 +1184,7 @@
 <li>
 <p>简述Kubernetes ingress？</p>
 <blockquote>
-<p>答：Kubernetes的Ingress资源对象，用于将不同URL的访问请求转发到后端不同的Service，以实现HTTP层的业务路由机制。Kubernetes使用了Ingress策略和Ingress Controller，两者结合并实现了一个完整的Ingress负载均衡器。使用Ingress进行负载分发时，Ingress Controller 基于Ingress规则将客户端请求直接转发到Service对应的后端Endpoint（Pod）上，从而跳过kube-proxy的转发功能，kube-proxy不再起作用，全过程为：ingress controller + ingress 规则 &mdash;-&gt; services。同时当Ingress Controller 提供的是对外服务，则实际上实现的是边缘路由器的功能。</p>
+<p>答：Kubernetes的Ingress资源对象，用于将不同URL的访问请求转发到后端不同的Service，以实现HTTP层的业务路由机制。Kubernetes使用了Ingress策略和Ingress Controller，两者结合并实现了一个完整的Ingress负载均衡器。使用Ingress进行负载分发时，Ingress Controller 基于Ingress规则将客户端请求直接转发到Service对应的后端Endpoint（Pod）上，从而跳过kube-proxy的转发功能，kube-proxy不再起作用，全过程为：ingress controller + ingress 规则 —-&gt; services。同时当Ingress Controller 提供的是对外服务，则实际上实现的是边缘路由器的功能。</p>
 </blockquote>
 </li>
 </ul>
@@ -1729,7 +1689,7 @@
 <p>开发环境:</p>
 <ul>
 <li>开发人员在主干分支进行开发功能</li>
-<li>使用 Gitlab Webhook 触发 Jenkins Pipeline，Pipeline 中集成了 代码构建、单元测试、代码质量检查(sonarqube)、镜像私服(NXRM3)、Jira(commit 不关联 jira id 无法提交代码)。将镜像打包成 Docker 镜像 push 至私服中。生成 helm charts app 上传到 Helm 私服，最终使用 &ldquo;helm upgrade &ndash;install&rdquo; 进行安装</li>
+<li>使用 Gitlab Webhook 触发 Jenkins Pipeline，Pipeline 中集成了 代码构建、单元测试、代码质量检查(sonarqube)、镜像私服(NXRM3)、Jira(commit 不关联 jira id 无法提交代码)。将镜像打包成 Docker 镜像 push 至私服中。生成 helm charts app 上传到 Helm 私服，最终使用 “helm upgrade –install” 进行安装</li>
 <li>流水线构建完成后 钉钉通知。使用 api 更新 Gitlab Pipeline status。</li>
 </ul>
 </li>
@@ -1745,14 +1705,14 @@
 <p>测试环境：</p>
 <ul>
 <li>开发人员在测试分支提交 fix 代码 (commit 不关联 jira id 无法提交代码)</li>
-<li>使用 gitlab webhook 触发对应模块的 Jenkins Pipeline，pipeline 中集成了 代码构建、单元测试、代码质量检查(sonarqube)、镜像私服(NXRM3)，将镜像打包成 docker 镜像 push 至私服中。生成 helm charts app 上传到 helm 私服，最终使用 &ldquo;helm upgrade &ndash;install&rdquo; 进行安装</li>
+<li>使用 gitlab webhook 触发对应模块的 Jenkins Pipeline，pipeline 中集成了 代码构建、单元测试、代码质量检查(sonarqube)、镜像私服(NXRM3)，将镜像打包成 docker 镜像 push 至私服中。生成 helm charts app 上传到 helm 私服，最终使用 “helm upgrade –install” 进行安装</li>
 <li>流水线构建完成后 钉钉通知，使用 api 更新 Gitlab Pipeline status。</li>
 <li>开发人员自验证，验证通过后，在 Jira 中对应的 issue id 中 更改工作流状态，此时 jira 会将 问题已更新这条记录，已邮件通知方式通知测试人员，测试人员收到这条邮件后，去往 测试环境进行验证。</li>
 <li>验证通过</li>
 <li>测试人员 更新 Jira 工作流状态</li>
 <li>此时使用 Jira webhook 触发 jenkins 管理流水线，管理流水线工作，基于此仓库 测试环境代码分支 进行合并至主干 (使用 Gitlab api 创建 merge request，受理人是：<code>对应开发</code> )，完成 一个 bug 的生命周期管理。</li>
 </ul>
-<p><img src="https://cdn.treesir.pub/img/upgrade-v1-pipeline.png" alt="upgrade-v1-pipeline"></p>
+<p><img alt="upgrade-v1-pipeline" src="https://cdn.treesir.pub/img/upgrade-v1-pipeline.png"/></p>
 </li>
 </ul>
 </blockquote>
@@ -2100,7 +2060,7 @@
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">FROM golang:1.16.5-stretch as builder
 ENV <span class="nv">GO111MODULE</span><span class="o">=</span>on <span class="se">\
-</span><span class="se"></span>    <span class="nv">GOPROXY</span><span class="o">=</span><span class="s2">&#34;http://repo.ac.com/repository/go-hub/&#34;</span> <span class="se">\
+</span><span class="se"></span>    <span class="nv">GOPROXY</span><span class="o">=</span><span class="s2">"http://repo.ac.com/repository/go-hub/"</span> <span class="se">\
 </span><span class="se"></span>    <span class="nv">GOOS</span><span class="o">=</span>linux <span class="se">\
 </span><span class="se"></span>    <span class="nv">GOARCH</span><span class="o">=</span>amd64 <span class="se">\
 </span><span class="se"></span>    <span class="nv">CGO_ENABLED</span><span class="o">=</span><span class="m">0</span>
@@ -2114,7 +2074,7 @@ FROM gcr.io/distroless/base
 ENV <span class="nv">TZ</span><span class="o">=</span>Asia/Shanghai
 EXPOSE <span class="m">8888</span>
 COPY --from<span class="o">=</span>builder /work/app /
-ENTRYPOINT <span class="o">[</span><span class="s2">&#34;/app&#34;</span><span class="o">]</span>
+ENTRYPOINT <span class="o">[</span><span class="s2">"/app"</span><span class="o">]</span>
 </code></pre></td></tr></table>
 </div>
 </div></blockquote>
@@ -2283,7 +2243,7 @@ docker system prune -a --volumes  -f  <span class="c1"># 方法二</span>
 </blockquote>
 </li>
 <li>
-<p>使用 docker port 命令映射容器的端口时，系统报错Error: No public port &lsquo;80&rsquo; published for …，是什么意思？</p>
+<p>使用 docker port 命令映射容器的端口时，系统报错Error: No public port ‘80’ published for …，是什么意思？</p>
 <blockquote>
 <p>答：创建镜像时Dockerfile要指定正确的EXPOSE的端口，容器启动时指定 <code>PublishAllport=true</code></p>
 </blockquote>
@@ -2309,7 +2269,7 @@ docker system prune -a --volumes  -f  <span class="c1"># 方法二</span>
 <li>
 <p>从非官方仓库（如：http://dl.dockerpool.com）下载镜像的时候，有时候会提示“Error：Invaild registry endpoint <a href="https://dl.docker.com">https://dl.docker.com</a>:5000/v1/…”?</p>
 <blockquote>
-<p>答：Docker 自1.3.0版本往后以来，加强了对镜像安全性的验证，需要手动添加对非官方仓库的信任。DOCKER_OPTS=&quot;–insecure-registry dl.dockerpool.com:5000&quot;，更改后重启docker服务生效。</p>
+<p>答：Docker 自1.3.0版本往后以来，加强了对镜像安全性的验证，需要手动添加对非官方仓库的信任。DOCKER_OPTS="–insecure-registry dl.dockerpool.com:5000"，更改后重启docker服务生效。</p>
 </blockquote>
 </li>
 <li>
@@ -2399,7 +2359,7 @@ docker system prune -a --volumes  -f  <span class="c1"># 方法二</span>
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash"> awk <span class="s1">&#39;{print $1}&#39;</span> nginx.log<span class="p">|</span>sort <span class="p">|</span>uniq -c<span class="p">|</span>sort -rn<span class="p">|</span>head -n <span class="m">10</span>
+<pre class="chroma"><code class="language-bash" data-lang="bash"> awk <span class="s1">'{print $1}'</span> nginx.log<span class="p">|</span>sort <span class="p">|</span>uniq -c<span class="p">|</span>sort -rn<span class="p">|</span>head -n <span class="m">10</span>
 </code></pre></td></tr></table>
 </div>
 </div></blockquote>
@@ -2446,7 +2406,7 @@ docker system prune -a --volumes  -f  <span class="c1"># 方法二</span>
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">find /var/log/ -mtime +30 -name <span class="s2">&#34;*.log&#34;</span> -exec rm -rf <span class="o">{}</span> <span class="se">\;</span>
+<pre class="chroma"><code class="language-bash" data-lang="bash">find /var/log/ -mtime +30 -name <span class="s2">"*.log"</span> -exec rm -rf <span class="o">{}</span> <span class="se">\;</span>
 </code></pre></td></tr></table>
 </div>
 </div></blockquote>
@@ -2475,7 +2435,7 @@ docker system prune -a --volumes  -f  <span class="c1"># 方法二</span>
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">find / -path <span class="s2">&#34;/&#34;</span> -prune -o -type f -a -size +20M -print<span class="p">|</span>xargs ls -lh
+<pre class="chroma"><code class="language-bash" data-lang="bash">find / -path <span class="s2">"/"</span> -prune -o -type f -a -size +20M -print<span class="p">|</span>xargs ls -lh
 </code></pre></td></tr></table>
 </div>
 </div></li>
@@ -2720,51 +2680,44 @@ docker system prune -a --volumes  -f  <span class="c1"># 方法二</span>
 <li>集群与服务规模？</li>
 <li>当前架构/业务与未来演进方向？</li>
 </ul>
-
-    </div>
-
-    <div class="post-copyright">
-  <p class="copyright-item">
-    <span class="item-title">文章作者</span>
-    <span class="item-content">Yang'zun</span>
-  </p>
-  <p class="copyright-item">
-    <span class="item-title">上次更新</span>
-    <span class="item-content">
+</div>
+<div class="post-copyright">
+<p class="copyright-item">
+<span class="item-title">文章作者</span>
+<span class="item-content">Yang'zun</span>
+</p>
+<p class="copyright-item">
+<span class="item-title">上次更新</span>
+<span class="item-content">
         2021-06-29
         
     </span>
-  </p>
-  
-  <p class="copyright-item">
-    <span class="item-title">许可协议</span>
-    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
-  </p>
+</p>
+<p class="copyright-item">
+<span class="item-title">许可协议</span>
+<span class="item-content"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a></span>
+</p>
 </div>
 <footer class="post-footer">
-      
-      <nav class="post-nav">
-        <a class="prev" href="/post/k8s-vpa/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">初探 K8s VPA 垂直更改 Pod 资源请求</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        <a class="next" href="/post/kube-vip-deploy-ha-k8s-cluster/">
-            <span class="next-text nav-default">使用 Kube-Vip 部署 高可用的 Kubernetes 集群</span>
-            <span class="next-text nav-mobile">下一篇</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-        </div>
-        
-
-  
-  <div id="vcomments"></div>
-  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
-  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
-  <script type="text/javascript">
+<nav class="post-nav">
+<a class="prev" href="/post/k8s-vpa/">
+<i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">初探 K8s VPA 垂直更改 Pod 资源请求</span>
+<span class="prev-text nav-mobile">上一篇</span>
+</a>
+<a class="next" href="/post/kube-vip-deploy-ha-k8s-cluster/">
+<span class="next-text nav-default">使用 Kube-Vip 部署 高可用的 Kubernetes 集群</span>
+<span class="next-text nav-mobile">下一篇</span>
+<i class="iconfont icon-right"></i>
+</a>
+</nav>
+</footer>
+</article>
+</div>
+<div id="vcomments"></div>
+<script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+<script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+<script type="text/javascript">
     new Valine({
         el: '#vcomments' ,
         appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
@@ -2776,64 +2729,39 @@ docker system prune -a --volumes  -f  <span class="c1"># 方法二</span>
         visitor:  false 
     });
   </script>
-
-  
-
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="social-links">
-      <a href="mailto:yangzun@treesir.pub" class="iconfont icon-email" title="email"></a>
-      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
-  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-
+</main>
+<footer class="footer" id="footer">
+<div class="social-links">
+<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
+<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
+<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
+</div>
 <div class="copyright">
-  <span class="power-by">
+<span class="power-by">
     由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
   </span>
-  <span class="division">|</span>
-  <span class="theme-info">
+<span class="division">|</span>
+<span class="theme-info">
     主题 - 
     <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
-  </span>
-
-  
-
-  
-
-  <span class="copyright-year">
-    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
-    &copy; 
+</span>
+<span class="copyright-year">
+<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘 ICP 备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
+    © 
     2019 - 
     2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
-    </span>
-
+</span>
 </div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
-    </div>
-  </div>
-  
-  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
-
-
-
-<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
-
-
-
-
-
-
-
-
+</footer>
+<div class="back-to-top" id="back-to-top">
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
+<script src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js" type="text/javascript"></script>
 <script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
 <script>
     docsearch({
