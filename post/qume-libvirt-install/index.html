@@ -1,199 +1,160 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Centos7 编译安装 Qemu 及安装 libvirt 管理工具 - 「Yang&#39;zun」PlayGround</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
-
-
-<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用 Centos7 源码编译安装 Qemu，安装 libvirt 管理工具 和 kvm 管理工具。" /><meta name="keywords" content="Centos7, Qemu, libvirt, 编译安装, kvm" />
-
-
-
-
-
-
-<meta name="generator" content="Hugo 0.78.2 with theme even" />
-
-
-<link rel="canonical" href="https://cdryzun.github.io/post/qume-libvirt-install/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-
-
-
-<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
-<link rel="stylesheet" href="/css/custom.css">
-
-
-<meta property="og:title" content="Centos7 编译安装 Qemu 及安装 libvirt 管理工具" />
-<meta property="og:description" content="使用 Centos7 源码编译安装 Qemu，安装 libvirt 管理工具 和 kvm 管理工具。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://cdryzun.github.io/post/qume-libvirt-install/" />
-<meta property="article:published_time" content="2021-02-25T09:07:25+08:00" />
-<meta property="article:modified_time" content="2021-02-25T09:07:25+08:00" />
-<meta itemprop="name" content="Centos7 编译安装 Qemu 及安装 libvirt 管理工具">
-<meta itemprop="description" content="使用 Centos7 源码编译安装 Qemu，安装 libvirt 管理工具 和 kvm 管理工具。">
-<meta itemprop="datePublished" content="2021-02-25T09:07:25+08:00" />
-<meta itemprop="dateModified" content="2021-02-25T09:07:25+08:00" />
-<meta itemprop="wordCount" content="1150">
-
-
-
-<meta itemprop="keywords" content="kvm,Centos7," />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Centos7 编译安装 Qemu 及安装 libvirt 管理工具"/>
-<meta name="twitter:description" content="使用 Centos7 源码编译安装 Qemu，安装 libvirt 管理工具 和 kvm 管理工具。"/>
-
+<meta charset="utf-8"/>
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<title>Centos7 编译安装 Qemu 及安装 libvirt 管理工具 - 「Yang'zun」PlayGround</title>
+<meta content="webkit" name="renderer"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<meta content="no-transform" http-equiv="Cache-Control"/>
+<meta content="no-siteapp" http-equiv="Cache-Control"/>
+<meta content="#f8f5ec" name="theme-color"/>
+<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Yang'zun" name="author"/><meta content="使用 Centos7 源码编译安装 Qemu，安装 libvirt 管理工具 和 kvm 管理工具。" name="description"/><meta content="Centos7, Qemu, libvirt, 编译安装, kvm" name="keywords"/>
+<meta content="Hugo 0.78.2 with theme even" name="generator"/>
+<link href="https://cdryzun.github.io/post/qume-libvirt-install/" rel="canonical"/>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/manifest.json" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
+<link href="/css/custom.css" rel="stylesheet"/>
+<meta content="Centos7 编译安装 Qemu 及安装 libvirt 管理工具" property="og:title"/>
+<meta content="使用 Centos7 源码编译安装 Qemu，安装 libvirt 管理工具 和 kvm 管理工具。" property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://cdryzun.github.io/post/qume-libvirt-install/" property="og:url"/>
+<meta content="2021-02-25T09:07:25+08:00" property="article:published_time"/>
+<meta content="2021-02-25T09:07:25+08:00" property="article:modified_time"/>
+<meta content="Centos7 编译安装 Qemu 及安装 libvirt 管理工具" itemprop="name"/>
+<meta content="使用 Centos7 源码编译安装 Qemu，安装 libvirt 管理工具 和 kvm 管理工具。" itemprop="description"/>
+<meta content="2021-02-25T09:07:25+08:00" itemprop="datePublished"/>
+<meta content="2021-02-25T09:07:25+08:00" itemprop="dateModified"/>
+<meta content="1150" itemprop="wordCount"/>
+<meta content="kvm,Centos7," itemprop="keywords"/>
+<meta content="summary" name="twitter:card"/>
+<meta content="Centos7 编译安装 Qemu 及安装 libvirt 管理工具" name="twitter:title"/>
+<meta content="使用 Centos7 源码编译安装 Qemu，安装 libvirt 管理工具 和 kvm 管理工具。" name="twitter:description"/>
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
 <![endif]-->
-
 <!--[if lt IE 9]>
   <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
   <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
 <![endif]-->
-
-<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
+<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
 </head>
 <body>
-  <header id="header" class="header">
-      <div class="logo-wrapper">
-  <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
+<header class="header" id="header">
+<div class="logo-wrapper">
+<a class="logo" href="/">「Yang'zun」PlayGround</a>
 </div>
-
-
-
-
-
 <nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">主页</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">归档</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/tags/">标签</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/categories/">分类</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/about/">关于</a>
-      </li>
-  </ul><li style="display:inline-block;margin-right:10px;">
-    <input type="search" class="docsearch-input" placeholder="Search" />
-  </li></nav>
-
-  </header>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
+<ul class="menu" id="menu">
+<li class="menu-item">
+<a class="menu-item-link" href="/">主页</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/post/">归档</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/tags/">标签</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/categories/">分类</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/about/">关于</a>
+</li>
+</ul><li style="display:inline-block;margin-right:10px;">
+<input class="docsearch-input" placeholder="Search" type="search"/>
+</li></nav>
+</header>
+<div class="mobile-navbar" id="mobile-navbar">
+<div class="mobile-header-logo">
+<a class="logo" href="/">「Yang'zun」PlayGround</a>
 </div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">主页</li>
-      </a><a href="/post/">
-        <li class="mobile-menu-item">归档</li>
-      </a><a href="/tags/">
-        <li class="mobile-menu-item">标签</li>
-      </a><a href="/categories/">
-        <li class="mobile-menu-item">分类</li>
-      </a><a href="/about/">
-        <li class="mobile-menu-item">关于</li>
-      </a>
-  </ul>
-
-  
-
-
-</nav>
-
-  <div class="container" id="mobile-panel">
-
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
-    
-    <header class="post-header">
-      <h1 class="post-title">Centos7 编译安装 Qemu 及安装 libvirt 管理工具</h1>
-
-      <div class="post-meta">
-        <span class="post-time"> 2021-02-25 </span>
-        <div class="post-category">
-            <a href="/categories/vm/"> vm </a>
-            </div>
-          <span class="more-meta"> 约 1150 字 </span>
-          <span class="more-meta"> 预计阅读 3 分钟 </span>
-        
-      </div>
-    </header>
-
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">文章目录</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#环境说明"> 环境说明</a></li>
-    <li><a href="#编译安装-qemu">编译安装 Qemu</a>
-      <ul>
-        <li><a href="#获取源码">获取源码</a></li>
-        <li><a href="#安装依赖">安装依赖</a>
-          <ul>
-            <li><a href="#yum-安装软件依赖">Yum 安装软件依赖</a></li>
-            <li><a href="#安装-ninja">安装 ninja</a></li>
-          </ul>
-        </li>
-        <li><a href="#创建-build-目录-及-设置编译参数">创建 build 目录 及 设置编译参数</a></li>
-        <li><a href="#make-编译安装">make 编译安装</a></li>
-        <li><a href="#创建软链接">创建软链接</a></li>
-        <li><a href="#测试检查">测试检查</a></li>
-      </ul>
-    </li>
-    <li><a href="#编译安装-qemu-管理工具-libvirt">编译安装 Qemu 管理工具 libvirt</a>
-      <ul>
-        <li><a href="#yum--pip-安装构建时-需要的依赖">Yum &amp; pip 安装构建时 需要的依赖</a></li>
-        <li><a href="#meson-工具安装">Meson 工具安装</a></li>
-        <li><a href="#下载源码">下载源码</a></li>
-        <li><a href="#编译安装">编译安装</a></li>
-        <li><a href="#安装管理工具包">安装管理工具包</a></li>
-        <li><a href="#版本检查-查看">版本检查 查看</a></li>
-        <li><a href="#启动服务-并-设置开机自启">启动服务 并 设置开机自启</a></li>
-        <li><a href="#创建-br0-网卡网桥">创建 br0 网卡网桥</a></li>
-      </ul>
-    </li>
-    <li><a href="#验证-安装是否正确">验证 安装是否正确</a>
-      <ul>
-        <li><a href="#方法一在另外一台机器上导出-虚拟机定义文件并-cp-至需测试的机器上">方法一，在另外一台机器上导出 虚拟机定义文件，并 cp 至需测试的机器上。</a></li>
-        <li><a href="#方法二测试创建虚拟机">方法二，测试创建虚拟机</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-  </div>
+<div class="mobile-navbar-icon">
+<span></span>
+<span></span>
+<span></span>
 </div>
-    <div class="post-content">
-      <h1 id="环境说明"> 环境说明</h1>
+</div>
+<nav class="mobile-menu slideout-menu" id="mobile-menu">
+<ul class="mobile-menu-list">
+<a href="/">
+<li class="mobile-menu-item">主页</li>
+</a><a href="/post/">
+<li class="mobile-menu-item">归档</li>
+</a><a href="/tags/">
+<li class="mobile-menu-item">标签</li>
+</a><a href="/categories/">
+<li class="mobile-menu-item">分类</li>
+</a><a href="/about/">
+<li class="mobile-menu-item">关于</li>
+</a>
+</ul>
+</nav>
+<div class="container" id="mobile-panel">
+<main class="main" id="main">
+<div class="content-wrapper">
+<div class="content" id="content">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title">Centos7 编译安装 Qemu 及安装 libvirt 管理工具</h1>
+<div class="post-meta">
+<span class="post-time"> 2021-02-25 </span>
+<div class="post-category">
+<a href="/categories/vm/"> vm </a>
+</div>
+<span class="more-meta"> 约 1150 字 </span>
+<span class="more-meta"> 预计阅读 3 分钟 </span>
+</div>
+</header>
+<div class="post-toc" id="post-toc">
+<h2 class="post-toc-title">文章目录</h2>
+<div class="post-toc-content always-active">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#环境说明"> 环境说明</a></li>
+<li><a href="#编译安装-qemu">编译安装 Qemu</a>
+<ul>
+<li><a href="#获取源码">获取源码</a></li>
+<li><a href="#安装依赖">安装依赖</a>
+<ul>
+<li><a href="#yum-安装软件依赖">Yum 安装软件依赖</a></li>
+<li><a href="#安装-ninja">安装 ninja</a></li>
+</ul>
+</li>
+<li><a href="#创建-build-目录-及-设置编译参数">创建 build 目录 及 设置编译参数</a></li>
+<li><a href="#make-编译安装">make 编译安装</a></li>
+<li><a href="#创建软链接">创建软链接</a></li>
+<li><a href="#测试检查">测试检查</a></li>
+</ul>
+</li>
+<li><a href="#编译安装-qemu-管理工具-libvirt">编译安装 Qemu 管理工具 libvirt</a>
+<ul>
+<li><a href="#yum--pip-安装构建时-需要的依赖">Yum &amp; pip 安装构建时 需要的依赖</a></li>
+<li><a href="#meson-工具安装">Meson 工具安装</a></li>
+<li><a href="#下载源码">下载源码</a></li>
+<li><a href="#编译安装">编译安装</a></li>
+<li><a href="#安装管理工具包">安装管理工具包</a></li>
+<li><a href="#版本检查-查看">版本检查 查看</a></li>
+<li><a href="#启动服务-并-设置开机自启">启动服务 并 设置开机自启</a></li>
+<li><a href="#创建-br0-网卡网桥">创建 br0 网卡网桥</a></li>
+</ul>
+</li>
+<li><a href="#验证-安装是否正确">验证 安装是否正确</a>
+<ul>
+<li><a href="#方法一在另外一台机器上导出-虚拟机定义文件并-cp-至需测试的机器上">方法一，在另外一台机器上导出 虚拟机定义文件，并 cp 至需测试的机器上。</a></li>
+<li><a href="#方法二测试创建虚拟机">方法二，测试创建虚拟机</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<div class="post-content">
+<h1 id="环境说明"> 环境说明</h1>
 <ul>
 <li>
 <p>操作系统:  CentOS 7.9.2009</p>
@@ -278,12 +239,12 @@ ninja --version
 
 mkdir qemu-build <span class="o">&amp;&amp;</span> <span class="nb">cd</span> qemu-build
 
-../qemu-5.2.0/configure --enable-kvm --target-list<span class="o">=</span><span class="s2">&#34;arm-softmmu i386-softmmu x86_64-softmmu arm-linux-user i386-linux-user x86_64-linux-user&#34;</span> --enable-debug  --cpu<span class="o">=</span>x86_64
+../qemu-5.2.0/configure --enable-kvm --target-list<span class="o">=</span><span class="s2">"arm-softmmu i386-softmmu x86_64-softmmu arm-linux-user i386-linux-user x86_64-linux-user"</span> --enable-debug  --cpu<span class="o">=</span>x86_64
 </code></pre></td></tr></table>
 </div>
 </div><ul>
 <li><code>--enable-kvm </code>  让 Qemu 支持 kvm</li>
-<li><code>--target-list=&lt;架构名&gt;</code> 准备编译哪一种CPU架构的 Qemu，&lsquo;x86_64-softmmu&rsquo; 表示目标为 x86 64位的CPU</li>
+<li><code>--target-list=&lt;架构名&gt;</code> 准备编译哪一种CPU架构的 Qemu，‘x86_64-softmmu’ 表示目标为 x86 64位的CPU</li>
 <li><code>--enable-debug</code> 开启 debug 功能</li>
 <li><code>--cpu</code> 指定本机 cpu 架构</li>
 </ul>
@@ -493,21 +454,21 @@ cat &gt; /etc/sysconfig/network-scripts/ifcfg-ens27f0 <span class="s">&lt;&lt; E
 </span><span class="s">EOF</span>
 
 cat &gt; /etc/sysconfig/network-scripts/ifcfg-br0 <span class="s">&lt;&lt; EOF
-</span><span class="s">DEVICE=&#34;br0&#34;
-</span><span class="s">BOOTPROTO=&#34;static&#34;
-</span><span class="s">IPADDR=&#34;192.168.1.43&#34;
-</span><span class="s">NETMASK=&#34;255.255.255.0&#34;
-</span><span class="s">GATEWAY=&#34;192.168.1.1&#34;
-</span><span class="s">DNS1=&#34;192.168.1.112&#34;
-</span><span class="s">ONBOOT=&#34;yes&#34;
-</span><span class="s">TYPE=&#34;Bridge&#34;
-</span><span class="s">NM_CONTROLLED=&#34;no&#34;
+</span><span class="s">DEVICE="br0"
+</span><span class="s">BOOTPROTO="static"
+</span><span class="s">IPADDR="192.168.1.43"
+</span><span class="s">NETMASK="255.255.255.0"
+</span><span class="s">GATEWAY="192.168.1.1"
+</span><span class="s">DNS1="192.168.1.112"
+</span><span class="s">ONBOOT="yes"
+</span><span class="s">TYPE="Bridge"
+</span><span class="s">NM_CONTROLLED="no"
 </span><span class="s">EOF</span>
 
 service network restart  <span class="c1"># 重启网卡。 注意此操作为危险操作。请将配置文件检查正确无误后再谨慎操作，可导致服务器无法正常远程。</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://cdn.treesir.pub/img/image-20210225100545161.png" alt="image-20210225100545161"></p>
+</div><p><img alt="image-20210225100545161" src="https://cdn.treesir.pub/img/image-20210225100545161.png"/></p>
 <h1 id="验证-安装是否正确">验证 安装是否正确</h1>
 <blockquote>
 <p>这里使用 其他机器上的 模板虚拟机 进行测试。</p>
@@ -546,7 +507,7 @@ virsh start template
 </code></pre></td></tr></table>
 </div>
 </div><h2 id="方法二测试创建虚拟机">方法二，测试创建虚拟机</h2>
-<p><img src="https://cdn.treesir.pub/img/image-20210225102220521.png" alt="image-20210225102220521"></p>
+<p><img alt="image-20210225102220521" src="https://cdn.treesir.pub/img/image-20210225102220521.png"/></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -585,60 +546,54 @@ virt-install --name centos7 <span class="se">\
 </span><span class="se"></span>--noautoconsole
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://cdn.treesir.pub/img/image-20210319174036305.png" alt="image-20210319174036305"></p>
+</div><p><img alt="image-20210319174036305" src="https://cdn.treesir.pub/img/image-20210319174036305.png"/></p>
 <p><strong>使用 vnc 远程工具 远程</strong></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210319174617825.png" alt="image-20210319174617825"></p>
+<p><img alt="image-20210319174617825" src="https://cdn.treesir.pub/img/image-20210319174617825.png"/></p>
 <blockquote>
 <p>默认没有 <code>账号</code> 和 <code>密码</code>，回车即可远程连接上。</p>
 </blockquote>
-
-    </div>
-
-    <div class="post-copyright">
-  <p class="copyright-item">
-    <span class="item-title">文章作者</span>
-    <span class="item-content">Yang'zun</span>
-  </p>
-  <p class="copyright-item">
-    <span class="item-title">上次更新</span>
-    <span class="item-content">
+</div>
+<div class="post-copyright">
+<p class="copyright-item">
+<span class="item-title">文章作者</span>
+<span class="item-content">Yang'zun</span>
+</p>
+<p class="copyright-item">
+<span class="item-title">上次更新</span>
+<span class="item-content">
         2021-02-25
         
     </span>
-  </p>
-  
-  <p class="copyright-item">
-    <span class="item-title">许可协议</span>
-    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
-  </p>
+</p>
+<p class="copyright-item">
+<span class="item-title">许可协议</span>
+<span class="item-content"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a></span>
+</p>
 </div>
 <footer class="post-footer">
-      <div class="post-tags">
-          <a href="/tags/kvm/">kvm</a>
-          <a href="/tags/centos7/">Centos7</a>
-          </div>
-      <nav class="post-nav">
-        <a class="prev" href="/post/jenkins-install/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">Centos 7 Yum 安装 Jenkins 及常用配置的说明</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        <a class="next" href="/post/raid-megacli/">
-            <span class="next-text nav-default">Raid 阵列卡 Megacli 管理工具的使用记录</span>
-            <span class="next-text nav-mobile">下一篇</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-        </div>
-        
-
-  
-  <div id="vcomments"></div>
-  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
-  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
-  <script type="text/javascript">
+<div class="post-tags">
+<a href="/tags/kvm/">kvm</a>
+<a href="/tags/centos7/">Centos7</a>
+</div>
+<nav class="post-nav">
+<a class="prev" href="/post/jenkins-install/">
+<i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">Centos 7 Yum 安装 Jenkins 及常用配置的说明</span>
+<span class="prev-text nav-mobile">上一篇</span>
+</a>
+<a class="next" href="/post/raid-megacli/">
+<span class="next-text nav-default">Raid 阵列卡 Megacli 管理工具的使用记录</span>
+<span class="next-text nav-mobile">下一篇</span>
+<i class="iconfont icon-right"></i>
+</a>
+</nav>
+</footer>
+</article>
+</div>
+<div id="vcomments"></div>
+<script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+<script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+<script type="text/javascript">
     new Valine({
         el: '#vcomments' ,
         appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
@@ -650,64 +605,39 @@ virt-install --name centos7 <span class="se">\
         visitor:  false 
     });
   </script>
-
-  
-
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="social-links">
-      <a href="mailto:yangzun@treesir.pub" class="iconfont icon-email" title="email"></a>
-      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
-  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-
+</main>
+<footer class="footer" id="footer">
+<div class="social-links">
+<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
+<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
+<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
+</div>
 <div class="copyright">
-  <span class="power-by">
+<span class="power-by">
     由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
   </span>
-  <span class="division">|</span>
-  <span class="theme-info">
+<span class="division">|</span>
+<span class="theme-info">
     主题 - 
     <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
-  </span>
-
-  
-
-  
-
-  <span class="copyright-year">
-    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
-    &copy; 
+</span>
+<span class="copyright-year">
+<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘 ICP 备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
+    © 
     2019 - 
     2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
-    </span>
-
+</span>
 </div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
-    </div>
-  </div>
-  
-  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
-
-
-
-<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
-
-
-
-
-
-
-
-
+</footer>
+<div class="back-to-top" id="back-to-top">
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
+<script src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js" type="text/javascript"></script>
 <script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
 <script>
     docsearch({

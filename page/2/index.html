@@ -1,390 +1,316 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>「Yang&#39;zun」PlayGround</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
-
-
-<meta name="author" content="Yang&#39;zun" /><meta name="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" /><meta name="keywords" content="github action, pipeline, gitlab, nexus3, 技术分享, 前端技术, 计算机网络, devops, kubernetes, jenkins, centos, 技术积累, 个人文档, 个人总结, mysql, 运维, 自动化, python, hugo, k3s, kafka, go lang, helm, traefik, kubeadm, rancher, redis, rke, nginx, apache, 网络安全" />
-
-
-
-
-
-
-<meta name="generator" content="Hugo 0.78.2 with theme even" />
-
-
-<link rel="canonical" href="https://cdryzun.github.io/" />
-  <link href="https://cdryzun.github.io/index.xml" rel="alternate" type="application/rss+xml" title="「Yang&#39;zun」PlayGround" />
-  <link href="https://cdryzun.github.io/index.xml" rel="feed" type="application/rss+xml" title="「Yang&#39;zun」PlayGround" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-
-
-
-<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
-<link rel="stylesheet" href="/css/custom.css">
-
-
-<meta property="og:title" content="「Yang&#39;zun」PlayGround" />
-<meta property="og:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://cdryzun.github.io/" />
-<meta property="og:updated_time" content="2021-08-09T20:02:30+08:00" />
-<meta itemprop="name" content="「Yang&#39;zun」PlayGround">
-<meta itemprop="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历">
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="「Yang&#39;zun」PlayGround"/>
-<meta name="twitter:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历"/>
-
+<meta charset="utf-8"/>
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<title>「Yang'zun」PlayGround</title>
+<meta content="webkit" name="renderer"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<meta content="no-transform" http-equiv="Cache-Control"/>
+<meta content="no-siteapp" http-equiv="Cache-Control"/>
+<meta content="#f8f5ec" name="theme-color"/>
+<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Yang'zun" name="author"/><meta content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" name="description"/><meta content="github action, pipeline, gitlab, nexus3, 技术分享, 前端技术, 计算机网络, devops, kubernetes, jenkins, centos, 技术积累, 个人文档, 个人总结, mysql, 运维, 自动化, python, hugo, k3s, kafka, go lang, helm, traefik, kubeadm, rancher, redis, rke, nginx, apache, 网络安全" name="keywords"/>
+<meta content="Hugo 0.78.2 with theme even" name="generator"/>
+<link href="https://cdryzun.github.io/" rel="canonical"/>
+<link href="https://cdryzun.github.io/index.xml" rel="alternate" title="「Yang'zun」PlayGround" type="application/rss+xml"/>
+<link href="https://cdryzun.github.io/index.xml" rel="feed" title="「Yang'zun」PlayGround" type="application/rss+xml"/>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/manifest.json" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
+<link href="/css/custom.css" rel="stylesheet"/>
+<meta content="「Yang'zun」PlayGround" property="og:title"/>
+<meta content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://cdryzun.github.io/" property="og:url"/>
+<meta content="2021-08-09T20:02:30+08:00" property="og:updated_time"/>
+<meta content="「Yang'zun」PlayGround" itemprop="name"/>
+<meta content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" itemprop="description"/>
+<meta content="summary" name="twitter:card"/>
+<meta content="「Yang'zun」PlayGround" name="twitter:title"/>
+<meta content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" name="twitter:description"/>
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
 <![endif]-->
-
 <!--[if lt IE 9]>
   <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
   <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
 <![endif]-->
-
-<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
+<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
 </head>
 <body>
-  <header id="header" class="header">
-      <div class="logo-wrapper">
-  <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
+<header class="header" id="header">
+<div class="logo-wrapper">
+<a class="logo" href="/">「Yang'zun」PlayGround</a>
 </div>
-
-
-
-
-
 <nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">主页</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">归档</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/tags/">标签</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/categories/">分类</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/about/">关于</a>
-      </li>
-  </ul><li style="display:inline-block;margin-right:10px;">
-    <input type="search" class="docsearch-input" placeholder="Search" />
-  </li></nav>
-
-  </header>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
+<ul class="menu" id="menu">
+<li class="menu-item">
+<a class="menu-item-link" href="/">主页</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/post/">归档</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/tags/">标签</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/categories/">分类</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/about/">关于</a>
+</li>
+</ul><li style="display:inline-block;margin-right:10px;">
+<input class="docsearch-input" placeholder="Search" type="search"/>
+</li></nav>
+</header>
+<div class="mobile-navbar" id="mobile-navbar">
+<div class="mobile-header-logo">
+<a class="logo" href="/">「Yang'zun」PlayGround</a>
 </div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">主页</li>
-      </a><a href="/post/">
-        <li class="mobile-menu-item">归档</li>
-      </a><a href="/tags/">
-        <li class="mobile-menu-item">标签</li>
-      </a><a href="/categories/">
-        <li class="mobile-menu-item">分类</li>
-      </a><a href="/about/">
-        <li class="mobile-menu-item">关于</li>
-      </a>
-  </ul>
-
-  
-
-
+<div class="mobile-navbar-icon">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+<nav class="mobile-menu slideout-menu" id="mobile-menu">
+<ul class="mobile-menu-list">
+<a href="/">
+<li class="mobile-menu-item">主页</li>
+</a><a href="/post/">
+<li class="mobile-menu-item">归档</li>
+</a><a href="/tags/">
+<li class="mobile-menu-item">标签</li>
+</a><a href="/categories/">
+<li class="mobile-menu-item">分类</li>
+</a><a href="/about/">
+<li class="mobile-menu-item">关于</li>
+</a>
+</ul>
 </nav>
-
-  <div class="container" id="mobile-panel">
-
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <section id="posts" class="posts">
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/kube-vip-deploy-ha-k8s-cluster/">使用 Kube-Vip 部署 高可用的 Kubernetes 集群</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-06-24 </span>
-      <div class="post-category">
-          <a href="/categories/k8s/"> k8s </a>
-          </div>
-        <span class="more-meta"> 约 1694 字 </span>
-        <span class="more-meta"> 预计阅读 4 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
+<div class="container" id="mobile-panel">
+<main class="main" id="main">
+<div class="content-wrapper">
+<div class="content" id="content">
+<section class="posts" id="posts">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/kube-vip-deploy-ha-k8s-cluster/">使用 Kube-Vip 部署 高可用的 Kubernetes 集群</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-06-24 </span>
+<div class="post-category">
+<a href="/categories/k8s/"> k8s </a>
+</div>
+<span class="more-meta"> 约 1694 字 </span>
+<span class="more-meta"> 预计阅读 4 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
       前言 在以前我们在私有环境下创建 Kubernetes 集群时，我们需要准备一个硬件/软件的 负载均衡器 来创建多控制平面集群，更多的情况下我们会选择使用 HAProxy + Keepalived 来实现这
     </div>
-    <div class="read-more">
-      <a href="/post/kube-vip-deploy-ha-k8s-cluster/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/kube-vip-deploy-ha-k8s-cluster/">阅读更多</a>
+</div>
+</div>
 </article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/kaniko-image-build/">Kaniko Docker 镜像构建 初体验</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-06-15 </span>
-      <div class="post-category">
-          <a href="/categories/k8s/"> k8s </a>
-          </div>
-        <span class="more-meta"> 约 576 字 </span>
-        <span class="more-meta"> 预计阅读 2 分钟 </span>
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/kaniko-image-build/">Kaniko Docker 镜像构建 初体验</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-06-15 </span>
+<div class="post-category">
+<a href="/categories/k8s/"> k8s </a>
+</div>
+<span class="more-meta"> 约 576 字 </span>
+<span class="more-meta"> 预计阅读 2 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      使用 docker 命令直接进行构建 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 echo -n yangzun:123456 | base64 eWFuZ3p1bjoxMjM0NTY= cat &gt;&gt; config.json &lt;&lt; EOF { "auths": { "https://idocker.io/v2/": { "auth": "eWFuZ3p1bjoxMjM0NTY=" } } } EOF [root@node1 kaniko]# ls -lh 总用量 4.0K -rw-r--r-- 1 root root
     </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      使用 docker 命令直接进行构建 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 echo -n yangzun:123456 | base64 eWFuZ3p1bjoxMjM0NTY= cat &gt;&gt; config.json &lt;&lt; EOF { &#34;auths&#34;: { &#34;https://idocker.io/v2/&#34;: { &#34;auth&#34;: &#34;eWFuZ3p1bjoxMjM0NTY=&#34; } } } EOF [root@node1 kaniko]# ls -lh 总用量 4.0K -rw-r--r-- 1 root root
-    </div>
-    <div class="read-more">
-      <a href="/post/kaniko-image-build/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/kaniko-image-build/">阅读更多</a>
+</div>
+</div>
 </article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/nexus-use-traefik-proxy/">Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-06-10 </span>
-      <div class="post-category">
-          <a href="/categories/devops/"> devops </a>
-          <a href="/categories/docker-compose/"> docker-compose </a>
-          <a href="/categories/proxy/"> proxy </a>
-          </div>
-        <span class="more-meta"> 约 1333 字 </span>
-        <span class="more-meta"> 预计阅读 3 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/nexus-use-traefik-proxy/">Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-06-10 </span>
+<div class="post-category">
+<a href="/categories/devops/"> devops </a>
+<a href="/categories/docker-compose/"> docker-compose </a>
+<a href="/categories/proxy/"> proxy </a>
+</div>
+<span class="more-meta"> 约 1333 字 </span>
+<span class="more-meta"> 预计阅读 3 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
       环境说明 软件版本说明 操作系统: CentOS 7.9.2009 Docker version: 20.10.7 Docker-compsoe version: 1.18.0 Mkcert version: v1.4.3 端口使用规划 nexus 私服端口 使用规划 私服名称 私服作用 私服类型 私服端口 docker-custom 存放，自定义 push的 镜
     </div>
-    <div class="read-more">
-      <a href="/post/nexus-use-traefik-proxy/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/nexus-use-traefik-proxy/">阅读更多</a>
+</div>
+</div>
 </article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/rancher-import-cluster-fix/">Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-06-08 </span>
-      <div class="post-category">
-          <a href="/categories/k8s/"> k8s </a>
-          </div>
-        <span class="more-meta"> 约 994 字 </span>
-        <span class="more-meta"> 预计阅读 2 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/rancher-import-cluster-fix/">Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-06-08 </span>
+<div class="post-category">
+<a href="/categories/k8s/"> k8s </a>
+</div>
+<span class="more-meta"> 约 994 字 </span>
+<span class="more-meta"> 预计阅读 2 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
       环境说明 Kubernetes Version: v1.20.4 (kubekey 部署) 操作系统: CentOS 7.9.2009 Rancher Version: v2.4.15 准备 k8s 模拟环境 此次将使用 kubekey 进行一键部署，kubekey 底层 集群部署 基于 kubeadm， 感兴趣的话，
     </div>
-    <div class="read-more">
-      <a href="/post/rancher-import-cluster-fix/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/rancher-import-cluster-fix/">阅读更多</a>
+</div>
+</div>
 </article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/kubernetes-deploy-gitlab/">在 Kubernetes 中使用 localPv 部署 Gitlab</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-06-01 </span>
-      <div class="post-category">
-          <a href="/categories/k8s/"> k8s </a>
-          <a href="/categories/devops/"> devops </a>
-          <a href="/categories/ingress/"> ingress </a>
-          </div>
-        <span class="more-meta"> 约 921 字 </span>
-        <span class="more-meta"> 预计阅读 2 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/kubernetes-deploy-gitlab/">在 Kubernetes 中使用 localPv 部署 Gitlab</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-06-01 </span>
+<div class="post-category">
+<a href="/categories/k8s/"> k8s </a>
+<a href="/categories/devops/"> devops </a>
+<a href="/categories/ingress/"> ingress </a>
+</div>
+<span class="more-meta"> 约 921 字 </span>
+<span class="more-meta"> 预计阅读 2 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
       环境说明 Kubernetes Version: v1.20.4 Postgres Version: 12.7 Redis Version: 5.0.9 因在官方提供的 gitlab-ce 镜像中，内置了 Postgres &amp; Redis 的安装，在实际生产使用过程中，想让其连接使用外部统一的服务进行使用，来合理统一
     </div>
-    <div class="read-more">
-      <a href="/post/kubernetes-deploy-gitlab/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/kubernetes-deploy-gitlab/">阅读更多</a>
+</div>
+</div>
 </article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/quick-delete-rancher-failed-pod/">快速删除 Rancher 中 失败的 pod资源 </a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-05-27 </span>
-      
-        <span class="more-meta"> 约 124 字 </span>
-        <span class="more-meta"> 预计阅读 1 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/quick-delete-rancher-failed-pod/">快速删除 Rancher 中 失败的 pod资源 </a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-05-27 </span>
+<span class="more-meta"> 约 124 字 </span>
+<span class="more-meta"> 预计阅读 1 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
       在 Rancher 管理的集群中，有的时候会出现对应 副本集 出现 pod 部署失败的情况，比如像下面的图片所示，在多的时候可达上千，又不想手动的去一一点击删除，这里介
     </div>
-    <div class="read-more">
-      <a href="/post/quick-delete-rancher-failed-pod/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/quick-delete-rancher-failed-pod/">阅读更多</a>
+</div>
+</div>
 </article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/gocron-install/">Gocron 实践安装，实现统一定时任务管理平台</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-05-26 </span>
-      <div class="post-category">
-          <a href="/categories/centos/"> centos </a>
-          <a href="/categories/linux/"> linux </a>
-          </div>
-        <span class="more-meta"> 约 652 字 </span>
-        <span class="more-meta"> 预计阅读 2 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/gocron-install/">Gocron 实践安装，实现统一定时任务管理平台</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-05-26 </span>
+<div class="post-category">
+<a href="/categories/centos/"> centos </a>
+<a href="/categories/linux/"> linux </a>
+</div>
+<span class="more-meta"> 约 652 字 </span>
+<span class="more-meta"> 预计阅读 2 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
       部署环境说明 操作系统: CentOS release 7.8.2003 Gocron Version: v1.5.3 Mysql Version: 5.5 Gocron 说明 gocron 是使用 go 语言开发的轻量级定时任务集中调度和管理系统, 可以用于替代 linux-crontab。
     </div>
-    <div class="read-more">
-      <a href="/post/gocron-install/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/gocron-install/">阅读更多</a>
+</div>
+</div>
 </article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/helm-k8s-deploy-mariadb/">使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-05-25 </span>
-      <div class="post-category">
-          <a href="/categories/k8s/"> k8s </a>
-          </div>
-        <span class="more-meta"> 约 1941 字 </span>
-        <span class="more-meta"> 预计阅读 4 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/helm-k8s-deploy-mariadb/">使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-05-25 </span>
+<div class="post-category">
+<a href="/categories/k8s/"> k8s </a>
+</div>
+<span class="more-meta"> 约 1941 字 </span>
+<span class="more-meta"> 预计阅读 4 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
       环境说明 helm version: v3.3.1 kubernetes: v1.17.9 使用 helm chart: bitnami/mariadb 操作系统: CentOS 7.8.2003 helm 部署 mariadb 前的准备 添加 helm 私服 1 2 3 4 5 6 helm repo add bitnami https://charts.bitnami.com/bitnami helm repo update # 更新仓库索引 helm search repo mariadb bitnami/mariadb 9.3.12 10.5.10 Fast, reliable, scalable, and easy to use open-...
     </div>
-    <div class="read-more">
-      <a href="/post/helm-k8s-deploy-mariadb/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    </section>
-  
-  <nav class="pagination">
-    <a class="prev" href="/">
-        <i class="iconfont icon-left"></i>
-        <span class="prev-text">上一页</span>
-      </a>
-    <a class="next" href="/page/3/">
-        <span class="next-text">下一页</span>
-        <i class="iconfont icon-right"></i>
-      </a>
-  </nav>
-        </div>
-        
-
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="social-links">
-      <a href="mailto:yangzun@treesir.pub" class="iconfont icon-email" title="email"></a>
-      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
-  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+<div class="read-more">
+<a class="read-more-link" href="/post/helm-k8s-deploy-mariadb/">阅读更多</a>
 </div>
-
+</div>
+</article>
+</section>
+<nav class="pagination">
+<a class="prev" href="/">
+<i class="iconfont icon-left"></i>
+<span class="prev-text">上一页</span>
+</a>
+<a class="next" href="/page/3/">
+<span class="next-text">下一页</span>
+<i class="iconfont icon-right"></i>
+</a>
+</nav>
+</div>
+</div>
+</main>
+<footer class="footer" id="footer">
+<div class="social-links">
+<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
+<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
+<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
+</div>
 <div class="copyright">
-  <span class="power-by">
+<span class="power-by">
     由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
   </span>
-  <span class="division">|</span>
-  <span class="theme-info">
+<span class="division">|</span>
+<span class="theme-info">
     主题 - 
     <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
-  </span>
-
-  
-
-  
-
-  <span class="copyright-year">
-    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
-    &copy; 
+</span>
+<span class="copyright-year">
+<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘 ICP 备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
+    © 
     2019 - 
     2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
-    </span>
-
+</span>
 </div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
-    </div>
-  </div>
-  
-  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
-
-
-
-<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
-
-
-
-
-
-
-
-
+</footer>
+<div class="back-to-top" id="back-to-top">
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
+<script src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js" type="text/javascript"></script>
 <script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
 <script>
     docsearch({

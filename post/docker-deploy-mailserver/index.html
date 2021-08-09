@@ -1,204 +1,165 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>使用 Docker Compose 5分钟 部署 一台邮件服务器 - 「Yang&#39;zun」PlayGround</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
-
-
-<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用 Docker Compose docker-mailserver docker 镜像，一键部署一台 邮件服务器。" /><meta name="keywords" content="centos7, email, install, devops, docker-compose" />
-
-
-
-
-
-
-<meta name="generator" content="Hugo 0.78.2 with theme even" />
-
-
-<link rel="canonical" href="https://cdryzun.github.io/post/docker-deploy-mailserver/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-
-
-
-<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
-<link rel="stylesheet" href="/css/custom.css">
-
-
-<meta property="og:title" content="使用 Docker Compose 5分钟 部署 一台邮件服务器" />
-<meta property="og:description" content="使用 Docker Compose docker-mailserver docker 镜像，一键部署一台 邮件服务器。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://cdryzun.github.io/post/docker-deploy-mailserver/" />
-<meta property="article:published_time" content="2021-08-03T11:37:38+08:00" />
-<meta property="article:modified_time" content="2021-08-03T11:37:38+08:00" />
-<meta itemprop="name" content="使用 Docker Compose 5分钟 部署 一台邮件服务器">
-<meta itemprop="description" content="使用 Docker Compose docker-mailserver docker 镜像，一键部署一台 邮件服务器。">
-<meta itemprop="datePublished" content="2021-08-03T11:37:38+08:00" />
-<meta itemprop="dateModified" content="2021-08-03T11:37:38+08:00" />
-<meta itemprop="wordCount" content="2674">
-
-
-
-<meta itemprop="keywords" content="email,install,dokcer-compose," />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="使用 Docker Compose 5分钟 部署 一台邮件服务器"/>
-<meta name="twitter:description" content="使用 Docker Compose docker-mailserver docker 镜像，一键部署一台 邮件服务器。"/>
-
+<meta charset="utf-8"/>
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<title>使用 Docker Compose 5分钟 部署 一台邮件服务器 - 「Yang'zun」PlayGround</title>
+<meta content="webkit" name="renderer"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<meta content="no-transform" http-equiv="Cache-Control"/>
+<meta content="no-siteapp" http-equiv="Cache-Control"/>
+<meta content="#f8f5ec" name="theme-color"/>
+<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Yang'zun" name="author"/><meta content="使用 Docker Compose docker-mailserver docker 镜像，一键部署一台 邮件服务器。" name="description"/><meta content="centos7, email, install, devops, docker-compose" name="keywords"/>
+<meta content="Hugo 0.78.2 with theme even" name="generator"/>
+<link href="https://cdryzun.github.io/post/docker-deploy-mailserver/" rel="canonical"/>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/manifest.json" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
+<link href="/css/custom.css" rel="stylesheet"/>
+<meta content="使用 Docker Compose 5分钟 部署 一台邮件服务器" property="og:title"/>
+<meta content="使用 Docker Compose docker-mailserver docker 镜像，一键部署一台 邮件服务器。" property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://cdryzun.github.io/post/docker-deploy-mailserver/" property="og:url"/>
+<meta content="2021-08-03T11:37:38+08:00" property="article:published_time"/>
+<meta content="2021-08-03T11:37:38+08:00" property="article:modified_time"/>
+<meta content="使用 Docker Compose 5分钟 部署 一台邮件服务器" itemprop="name"/>
+<meta content="使用 Docker Compose docker-mailserver docker 镜像，一键部署一台 邮件服务器。" itemprop="description"/>
+<meta content="2021-08-03T11:37:38+08:00" itemprop="datePublished"/>
+<meta content="2021-08-03T11:37:38+08:00" itemprop="dateModified"/>
+<meta content="2674" itemprop="wordCount"/>
+<meta content="email,install,dokcer-compose," itemprop="keywords"/>
+<meta content="summary" name="twitter:card"/>
+<meta content="使用 Docker Compose 5分钟 部署 一台邮件服务器" name="twitter:title"/>
+<meta content="使用 Docker Compose docker-mailserver docker 镜像，一键部署一台 邮件服务器。" name="twitter:description"/>
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
 <![endif]-->
-
 <!--[if lt IE 9]>
   <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
   <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
 <![endif]-->
-
-<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
+<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
 </head>
 <body>
-  <header id="header" class="header">
-      <div class="logo-wrapper">
-  <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
+<header class="header" id="header">
+<div class="logo-wrapper">
+<a class="logo" href="/">「Yang'zun」PlayGround</a>
 </div>
-
-
-
-
-
 <nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">主页</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">归档</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/tags/">标签</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/categories/">分类</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/about/">关于</a>
-      </li>
-  </ul><li style="display:inline-block;margin-right:10px;">
-    <input type="search" class="docsearch-input" placeholder="Search" />
-  </li></nav>
-
-  </header>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
+<ul class="menu" id="menu">
+<li class="menu-item">
+<a class="menu-item-link" href="/">主页</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/post/">归档</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/tags/">标签</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/categories/">分类</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/about/">关于</a>
+</li>
+</ul><li style="display:inline-block;margin-right:10px;">
+<input class="docsearch-input" placeholder="Search" type="search"/>
+</li></nav>
+</header>
+<div class="mobile-navbar" id="mobile-navbar">
+<div class="mobile-header-logo">
+<a class="logo" href="/">「Yang'zun」PlayGround</a>
 </div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">主页</li>
-      </a><a href="/post/">
-        <li class="mobile-menu-item">归档</li>
-      </a><a href="/tags/">
-        <li class="mobile-menu-item">标签</li>
-      </a><a href="/categories/">
-        <li class="mobile-menu-item">分类</li>
-      </a><a href="/about/">
-        <li class="mobile-menu-item">关于</li>
-      </a>
-  </ul>
-
-  
-
-
-</nav>
-
-  <div class="container" id="mobile-panel">
-
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
-    
-    <header class="post-header">
-      <h1 class="post-title">使用 Docker Compose 5分钟 部署 一台邮件服务器</h1>
-
-      <div class="post-meta">
-        <span class="post-time"> 2021-08-03 </span>
-        <div class="post-category">
-            <a href="/categories/docker/"> docker </a>
-            </div>
-          <span class="more-meta"> 约 2674 字 </span>
-          <span class="more-meta"> 预计阅读 6 分钟 </span>
-        
-      </div>
-    </header>
-
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">文章目录</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#背景">背景</a>
-      <ul>
-        <li><a href="#环境说明">环境说明</a></li>
-        <li><a href="#基础介绍">基础介绍</a>
-          <ul>
-            <li><a href="#常见邮件服务端口--协议-介绍">常见邮件服务端口 &amp; 协议 介绍</a></li>
-            <li><a href="#常见-邮件软件-和-安全软件-介绍">常见 邮件软件 和 安全软件 介绍</a></li>
-            <li><a href="#反垃圾邮件技术-介绍">反垃圾邮件技术 介绍</a></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-    <li><a href="#安装部署">安装部署</a>
-      <ul>
-        <li><a href="#安装前准备工作">安装前准备工作</a></li>
-        <li><a href="#部署-docker-mailserver-容器镜像">部署 <code>docker-mailserver</code> 容器镜像</a>
-          <ul>
-            <li><a href="#clone-仓库地址">clone 仓库地址</a></li>
-            <li><a href="#更改后的配置展示">更改后的配置展示</a></li>
-          </ul>
-        </li>
-        <li><a href="#启动容器--后续配置工作">启动容器 &amp; 后续配置工作</a>
-          <ul>
-            <li><a href="#添加-email-user">添加 email user</a></li>
-            <li><a href="#生成-dkim-签名记录">生成 <code>DKIM</code> 签名记录</a></li>
-            <li><a href="#添加-dkim-记录值至-aliyun">添加 DKIM 记录值至 aliyun</a></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-    <li><a href="#验证测试">验证测试</a>
-      <ul>
-        <li><a href="#证书验证测试">证书验证测试</a></li>
-        <li><a href="#macos--windows-添加邮件记录">MacOS &amp; Windows 添加邮件记录</a></li>
-        <li><a href="#测试邮件发送">测试邮件发送</a></li>
-      </ul>
-    </li>
-    <li><a href="#参考文档">参考文档</a></li>
-    <li><a href="#总结">总结</a></li>
-  </ul>
-</nav>
-  </div>
+<div class="mobile-navbar-icon">
+<span></span>
+<span></span>
+<span></span>
 </div>
-    <div class="post-content">
-      <h1 id="背景">背景</h1>
+</div>
+<nav class="mobile-menu slideout-menu" id="mobile-menu">
+<ul class="mobile-menu-list">
+<a href="/">
+<li class="mobile-menu-item">主页</li>
+</a><a href="/post/">
+<li class="mobile-menu-item">归档</li>
+</a><a href="/tags/">
+<li class="mobile-menu-item">标签</li>
+</a><a href="/categories/">
+<li class="mobile-menu-item">分类</li>
+</a><a href="/about/">
+<li class="mobile-menu-item">关于</li>
+</a>
+</ul>
+</nav>
+<div class="container" id="mobile-panel">
+<main class="main" id="main">
+<div class="content-wrapper">
+<div class="content" id="content">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title">使用 Docker Compose 5分钟 部署 一台邮件服务器</h1>
+<div class="post-meta">
+<span class="post-time"> 2021-08-03 </span>
+<div class="post-category">
+<a href="/categories/docker/"> docker </a>
+</div>
+<span class="more-meta"> 约 2674 字 </span>
+<span class="more-meta"> 预计阅读 6 分钟 </span>
+</div>
+</header>
+<div class="post-toc" id="post-toc">
+<h2 class="post-toc-title">文章目录</h2>
+<div class="post-toc-content always-active">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#背景">背景</a>
+<ul>
+<li><a href="#环境说明">环境说明</a></li>
+<li><a href="#基础介绍">基础介绍</a>
+<ul>
+<li><a href="#常见邮件服务端口--协议-介绍">常见邮件服务端口 &amp; 协议 介绍</a></li>
+<li><a href="#常见-邮件软件-和-安全软件-介绍">常见 邮件软件 和 安全软件 介绍</a></li>
+<li><a href="#反垃圾邮件技术-介绍">反垃圾邮件技术 介绍</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#安装部署">安装部署</a>
+<ul>
+<li><a href="#安装前准备工作">安装前准备工作</a></li>
+<li><a href="#部署-docker-mailserver-容器镜像">部署 <code>docker-mailserver</code> 容器镜像</a>
+<ul>
+<li><a href="#clone-仓库地址">clone 仓库地址</a></li>
+<li><a href="#更改后的配置展示">更改后的配置展示</a></li>
+</ul>
+</li>
+<li><a href="#启动容器--后续配置工作">启动容器 &amp; 后续配置工作</a>
+<ul>
+<li><a href="#添加-email-user">添加 email user</a></li>
+<li><a href="#生成-dkim-签名记录">生成 <code>DKIM</code> 签名记录</a></li>
+<li><a href="#添加-dkim-记录值至-aliyun">添加 DKIM 记录值至 aliyun</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#验证测试">验证测试</a>
+<ul>
+<li><a href="#证书验证测试">证书验证测试</a></li>
+<li><a href="#macos--windows-添加邮件记录">MacOS &amp; Windows 添加邮件记录</a></li>
+<li><a href="#测试邮件发送">测试邮件发送</a></li>
+</ul>
+</li>
+<li><a href="#参考文档">参考文档</a></li>
+<li><a href="#总结">总结</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<div class="post-content">
+<h1 id="背景">背景</h1>
 <blockquote>
 <p>由于 <code>Gmail</code> 邮箱在国内无法使用 且 <code>国内手机</code> 号码无法继续注册账号原因，最近想着折腾一下 自建一台 <code>邮件服务器</code> 玩玩。正好在国外有台 vps (搬瓦工的)，比较空闲，目前且用来做扶墙使用，有点浪费，决定使用此台服务器搭建 <code>邮件服务器</code> 。选择的部署方案选择了较为轻便的 <code>docker</code>，在了解网上主流的实现镜像后 <code>analogic/poste.io</code> &amp; <code>mailserver/docker-mailserver</code>，由于目前 vps 资源为 <code>2c 1g</code> 的低配置，试着跑了一下前者，资源占用非常大(可能 默认开了什么功能什么的)，当前配置下完全跑不动。了解后者这个 <a href="https://github.com/docker-mailserver/docker-mailserver/">项目</a> 后，可以在最低 <code>1c 512m</code> 下运行，决定选用后者 <code>docker-mailserver</code> 作为部署。</p>
 </blockquote>
@@ -270,7 +231,7 @@
 </tr>
 <tr>
 <td><strong>postfix</strong></td>
-<td><a href="http://www.postfix.org/">Wietse Venema</a> 觉得 sendmail 配置太麻烦了，就开发了一个 &ldquo;简化配置版 sendmail&rdquo;，即postfix。支持smtp协议。</td>
+<td><a href="http://www.postfix.org/">Wietse Venema</a> 觉得 sendmail 配置太麻烦了，就开发了一个 “简化配置版 sendmail”，即postfix。支持smtp协议。</td>
 </tr>
 <tr>
 <td><strong>dovecot</strong></td>
@@ -344,18 +305,18 @@ sudo sh get-docker.sh
   
 cat &gt; /etc/docker/daemon.json <span class="s">&lt;&lt; EOF `# 配置优化`
 </span><span class="s">{
-</span><span class="s">    &#34;oom-score-adjust&#34;: -1000,
-</span><span class="s">    &#34;log-driver&#34;: &#34;json-file&#34;,
-</span><span class="s">    &#34;log-opts&#34;: {
-</span><span class="s">    &#34;max-size&#34;: &#34;100m&#34;,
-</span><span class="s">    &#34;max-file&#34;: &#34;3&#34;
+</span><span class="s">    "oom-score-adjust": -1000,
+</span><span class="s">    "log-driver": "json-file",
+</span><span class="s">    "log-opts": {
+</span><span class="s">    "max-size": "100m",
+</span><span class="s">    "max-file": "3"
 </span><span class="s">    },
-</span><span class="s">    &#34;max-concurrent-downloads&#34;: 10,
-</span><span class="s">    &#34;exec-opts&#34;: [&#34;native.cgroupdriver=systemd&#34;],
-</span><span class="s">    &#34;max-concurrent-uploads&#34;: 10,
-</span><span class="s">    &#34;storage-driver&#34;: &#34;overlay2&#34;,
-</span><span class="s">    &#34;storage-opts&#34;: [
-</span><span class="s">    &#34;overlay2.override_kernel_check=true&#34;
+</span><span class="s">    "max-concurrent-downloads": 10,
+</span><span class="s">    "exec-opts": ["native.cgroupdriver=systemd"],
+</span><span class="s">    "max-concurrent-uploads": 10,
+</span><span class="s">    "storage-driver": "overlay2",
+</span><span class="s">    "storage-opts": [
+</span><span class="s">    "overlay2.override_kernel_check=true"
 </span><span class="s">    ]
 </span><span class="s">}
 </span><span class="s">EOF</span>
@@ -376,7 +337,7 @@ systemctl start docker <span class="se">\ </span> <span class="sb">`</span><span
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">curl -L <span class="s2">&#34;https://github.com/docker/compose/releases/download/1.29.2/docker-compose-</span><span class="k">$(</span>uname -s<span class="k">)</span><span class="s2">-</span><span class="k">$(</span>uname -m<span class="k">)</span><span class="s2">&#34;</span> -o /usr/local/bin/docker-compose <span class="se">\
+<pre class="chroma"><code class="language-bash" data-lang="bash">curl -L <span class="s2">"https://github.com/docker/compose/releases/download/1.29.2/docker-compose-</span><span class="k">$(</span>uname -s<span class="k">)</span><span class="s2">-</span><span class="k">$(</span>uname -m<span class="k">)</span><span class="s2">"</span> -o /usr/local/bin/docker-compose <span class="se">\
 </span><span class="se"></span><span class="o">&amp;&amp;</span> chmod +x /usr/local/bin/docker-compose <span class="se">\
 </span><span class="se"></span><span class="o">&amp;&amp;</span> ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose <span class="se">\
 </span><span class="se"></span><span class="o">&amp;&amp;</span> docker-compose --version
@@ -430,7 +391,7 @@ systemctl start docker <span class="se">\ </span> <span class="sb">`</span><span
 </li>
 <li>
 <p>VPS 服务器设置 反向解析 <code>PTR</code> (rdns) 记录</p>
-<p><img src="https://cdn.treesir.pub/img/image-20210803123544465.png" alt="image-20210803123544465"></p>
+<p><img alt="image-20210803123544465" src="https://cdn.treesir.pub/img/image-20210803123544465.png"/></p>
 </li>
 <li>
 <p>使用 <code>certbot</code> 生成 <code>letsencrypt</code> 证书</p>
@@ -446,7 +407,7 @@ systemctl start docker <span class="se">\ </span> <span class="sb">`</span><span
 certbot certonly --manual --preferred-challenge dns -d  mail.treesir.pub <span class="c1"># `此 命令会生成 一条 TXT 记录记录用于验证`</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://cdn.treesir.pub/img/image-20210803140906174.png" alt="image-20210803140906174"></p>
+</div><p><img alt="image-20210803140906174" src="https://cdn.treesir.pub/img/image-20210803140906174.png"/></p>
 <blockquote>
 <p>将生成的 TXT 记录添加至 DNS 解析，添加后 使用 <code>dig</code> 进行检查解析是否生效后。<code>生效</code> 没有问题后 <code>回车</code> 继续。注意此条记录 <code>不要删除</code>，后续 <code>续签证书</code>时 还需要用到，正常情况下会在 <code>/etc/letsencrypt/archive/xxx/</code>  下生成对应域名的证书。</p>
 <div class="highlight"><div class="chroma">
@@ -461,7 +422,7 @@ certbot certonly --manual --preferred-challenge dns -d  mail.treesir.pub <span c
 dig TXT _acme-challenge.mail.treesir.pub <span class="sb">`</span><span class="c1"># 检查 解析`</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://cdn.treesir.pub/img/image-20210803141426633.png" alt="image-20210803141426633"></p>
+</div><p><img alt="image-20210803141426633" src="https://cdn.treesir.pub/img/image-20210803141426633.png"/></p>
 </blockquote>
 <p><strong>配置定时续签证书</strong></p>
 <blockquote>
@@ -529,7 +490,7 @@ service crond status <span class="sb">`</span><span class="c1"># 检查服务是
 </span><span class="lnt">28
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">version: <span class="s1">&#39;3.8&#39;</span>
+<pre class="chroma"><code class="language-bash" data-lang="bash">version: <span class="s1">'3.8'</span>
 
 services:
   mailserver:
@@ -540,12 +501,12 @@ services:
     env_file: mailserver.env
     dns: 223.5.5.5
     ports:
-      - <span class="s2">&#34;25:25&#34;</span>
-      - <span class="s2">&#34;143:143&#34;</span>
-      - <span class="s2">&#34;587:587&#34;</span>
-      - <span class="s2">&#34;993:993&#34;</span>
-      - <span class="s2">&#34;110:110&#34;</span>
-      - <span class="s2">&#34;995:995&#34;</span>
+      - <span class="s2">"25:25"</span>
+      - <span class="s2">"143:143"</span>
+      - <span class="s2">"587:587"</span>
+      - <span class="s2">"993:993"</span>
+      - <span class="s2">"110:110"</span>
+      - <span class="s2">"995:995"</span>
     volumes:
       - ./data/maildata:/var/mail
       - ./data/mailstate:/var/mail-state
@@ -555,7 +516,7 @@ services:
       - /etc/letsencrypt/archive/mail.treesir.pub:/tmp/ssl:ro
     restart: always
     stop_grace_period: 1m
-    cap_add: <span class="o">[</span> <span class="s2">&#34;NET_ADMIN&#34;</span>, <span class="s2">&#34;SYS_PTRACE&#34;</span> <span class="o">]</span>
+    cap_add: <span class="o">[</span> <span class="s2">"NET_ADMIN"</span>, <span class="s2">"SYS_PTRACE"</span> <span class="o">]</span>
 
 </code></pre></td></tr></table>
 </div>
@@ -663,7 +624,7 @@ services:
 </span><span class="lnt">96
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">cat mailserver.env <span class="p">|</span>egrep -v <span class="s1">&#39;^$|^#&#39;</span>
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat mailserver.env <span class="p">|</span>egrep -v <span class="s1">'^$|^#'</span>
 
 <span class="nv">OVERRIDE_HOSTNAME</span><span class="o">=</span>
 <span class="nv">DMS_DEBUG</span><span class="o">=</span><span class="m">1</span>
@@ -788,9 +749,9 @@ docker-compose logs -f <span class="sb">`</span><span class="c1"># 观察容器 
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">./setup.sh email add yangzun@treesir.pub <span class="s2">&#34;xxx&#34;</span> <span class="sb">`</span><span class="c1"># 添加 邮件账号及密码`</span>
+<pre class="chroma"><code class="language-bash" data-lang="bash">./setup.sh email add yangzun@treesir.pub <span class="s2">"xxx"</span> <span class="sb">`</span><span class="c1"># 添加 邮件账号及密码`</span>
 
-./setup.sh email update yangzun@treesir.pub <span class="s2">&#34;xxx&#34;</span> <span class="sb">`</span><span class="c1"># 更新 邮件账号及密码`</span>
+./setup.sh email update yangzun@treesir.pub <span class="s2">"xxx"</span> <span class="sb">`</span><span class="c1"># 更新 邮件账号及密码`</span>
 </code></pre></td></tr></table>
 </div>
 </div><h3 id="生成-dkim-签名记录">生成 <code>DKIM</code> 签名记录</h3>
@@ -810,16 +771,16 @@ docker-compose logs -f <span class="sb">`</span><span class="c1"># 观察容器 
 <pre class="chroma"><code class="language-bash" data-lang="bash">./setup.sh config dkim keysize <span class="m">2048</span>
 
 cat config/opendkim/keys/treesir.pub/mail.txt  <span class="sb">`</span><span class="c1"># 查看 DKIM 签名记录`</span>
-mail._domainkey IN      TXT     <span class="o">(</span> <span class="s2">&#34;v=DKIM1; h=sha256; k=rsa; &#34;</span>
-          <span class="s2">&#34;p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0ojqOcyeDlOn6TcpXCsU92xul6d54wlx/UwPTuE0aywFc+ihyKGAm9D8nmroneN7gf82qTtDbJiHghzRlf6JdpR3kM4ipWKaNRSlUL/64HQqrMeEWx5ErpcgwrXxKWI/rcQ7Rjg2BliP6ayJiEflH0FOtxfgLHnYEcSKupmCV8znM4rZ/LHx9RDwc7o8jWujey6h9zrYPXyqim&#34;</span>
-          <span class="s2">&#34;obGSB0PZGNQhe7mWRefMraFGgnNq+PrtEnmaOFxH2rG1Qh2hhMkeqJsH56yx9f1mxWYTX7r9FtvweGRb+GJNfi6a4vpDrTCffxx6XvGrq032i7VqHpmiaUUuM3j2x1DwHrIbpWTQIDAQAB&#34;</span> <span class="o">)</span>  <span class="p">;</span> ----- DKIM key mail <span class="k">for</span> treesir.pub
+mail._domainkey IN      TXT     <span class="o">(</span> <span class="s2">"v=DKIM1; h=sha256; k=rsa; "</span>
+          <span class="s2">"p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0ojqOcyeDlOn6TcpXCsU92xul6d54wlx/UwPTuE0aywFc+ihyKGAm9D8nmroneN7gf82qTtDbJiHghzRlf6JdpR3kM4ipWKaNRSlUL/64HQqrMeEWx5ErpcgwrXxKWI/rcQ7Rjg2BliP6ayJiEflH0FOtxfgLHnYEcSKupmCV8znM4rZ/LHx9RDwc7o8jWujey6h9zrYPXyqim"</span>
+          <span class="s2">"obGSB0PZGNQhe7mWRefMraFGgnNq+PrtEnmaOFxH2rG1Qh2hhMkeqJsH56yx9f1mxWYTX7r9FtvweGRb+GJNfi6a4vpDrTCffxx6XvGrq032i7VqHpmiaUUuM3j2x1DwHrIbpWTQIDAQAB"</span> <span class="o">)</span>  <span class="p">;</span> ----- DKIM key mail <span class="k">for</span> treesir.pub
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://cdn.treesir.pub/img/image-20210803143040167.png" alt="image-20210803143040167"></p>
+</div><p><img alt="image-20210803143040167" src="https://cdn.treesir.pub/img/image-20210803143040167.png"/></p>
 <blockquote>
 <p>注意生成的记录，需要进行合并起来 才能使用。</p>
 </blockquote>
-<p><img src="https://cdn.treesir.pub/img/image-20210803143222296.png" alt="image-20210803143222296"></p>
+<p><img alt="image-20210803143222296" src="https://cdn.treesir.pub/img/image-20210803143222296.png"/></p>
 <h3 id="添加-dkim-记录值至-aliyun">添加 DKIM 记录值至 aliyun</h3>
 <table>
 <thead>
@@ -839,7 +800,7 @@ mail._domainkey IN      TXT     <span class="o">(</span> <span class="s2">&#34;v
 </tr>
 </tbody>
 </table>
-<p><img src="https://cdn.treesir.pub/img/image-20210803143453332.png" alt="image-20210803143453332"></p>
+<p><img alt="image-20210803143453332" src="https://cdn.treesir.pub/img/image-20210803143453332.png"/></p>
 <h1 id="验证测试">验证测试</h1>
 <blockquote>
 <p>测试的平台为 <code>MacOS</code> &amp; <code>Windows</code> 两个平台 ，由于先前测试使用的工具为 <code>Foxmail</code> 会出现无法发送邮件问题 ，所以这里 MacOS 中使用的 邮件工具为 自带应用 <code>Mail</code> ，Windows 邮件工具使用 <code>eM Clien</code>。</p>
@@ -848,40 +809,40 @@ mail._domainkey IN      TXT     <span class="o">(</span> <span class="s2">&#34;v
 <blockquote>
 <p>在进行邮件测试前，可以使用 <a href="https://www.checktls.com/">此链接</a> 中的工具，测试 是否支持 <code>tls</code> 验证。</p>
 </blockquote>
-<p><img src="https://cdn.treesir.pub/img/image-20210803144655191.png" alt="image-20210803144655191"></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210803145009819.png" alt="image-20210803145009819"></p>
+<p><img alt="image-20210803144655191" src="https://cdn.treesir.pub/img/image-20210803144655191.png"/></p>
+<p><img alt="image-20210803145009819" src="https://cdn.treesir.pub/img/image-20210803145009819.png"/></p>
 <h2 id="macos--windows-添加邮件记录">MacOS &amp; Windows 添加邮件记录</h2>
 <ul>
 <li>
 <p>macos</p>
-<p><img src="https://cdn.treesir.pub/img/image-20210803145301936.png" alt="image-20210803145301936" style="zoom:67%;" />    <img src="https://cdn.treesir.pub/img/image-20210803145510252.png" alt="image-20210803145510252" style="zoom:67%;" /></p>
+<p><img alt="image-20210803145301936" src="https://cdn.treesir.pub/img/image-20210803145301936.png" style="zoom:67%;"/> <img alt="image-20210803145510252" src="https://cdn.treesir.pub/img/image-20210803145510252.png" style="zoom:67%;"/></p>
 </li>
 <li>
 <p>window</p>
 <blockquote>
 <p><code>eM Clien</code> 工具会自动为我们配置 <code>IMAP</code> &amp; <code>SMTP</code> 地址信息。</p>
 </blockquote>
-<p><img src="https://cdn.treesir.pub/img/image-20210803150203282.png" alt="image-20210803150203282" style="zoom: 33%;" /> <img src="https://cdn.treesir.pub/img/image-20210803150231988.png" alt="image-20210803150231988" style="zoom: 33%;" /></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210803150531520.png" alt="image-20210803150531520" style="zoom: 67%;" /> <img src="https://cdn.treesir.pub/img/image-20210803150604468.png" alt="image-20210803150604468" style="zoom:50%;" /></p>
+<p><img alt="image-20210803150203282" src="https://cdn.treesir.pub/img/image-20210803150203282.png" style="zoom: 33%;"/> <img alt="image-20210803150231988" src="https://cdn.treesir.pub/img/image-20210803150231988.png" style="zoom: 33%;"/></p>
+<p><img alt="image-20210803150531520" src="https://cdn.treesir.pub/img/image-20210803150531520.png" style="zoom: 67%;"/> <img alt="image-20210803150604468" src="https://cdn.treesir.pub/img/image-20210803150604468.png" style="zoom:50%;"/></p>
 </li>
 </ul>
 <h2 id="测试邮件发送">测试邮件发送</h2>
 <ul>
 <li>
 <p><strong>Windows to MacOS</strong></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210803151017304.png" alt="image-20210803151017304" style="zoom: 33%;" /> <img src="https://cdn.treesir.pub/img/image-20210803151050244.png" alt="image-20210803151050244" style="zoom: 33%;" /></p>
+<p><img alt="image-20210803151017304" src="https://cdn.treesir.pub/img/image-20210803151017304.png" style="zoom: 33%;"/> <img alt="image-20210803151050244" src="https://cdn.treesir.pub/img/image-20210803151050244.png" style="zoom: 33%;"/></p>
 <p><code>正常收到邮件了</code></p>
 </li>
 <li>
 <p><strong>Macos to Windows</strong></p>
 <p><code>回复一个邮件 进行测试</code></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210803151529428.png" alt="image-20210803151529428" style="zoom: 33%;" />   <img src="https://cdn.treesir.pub/img/image-20210803151625536.png" alt="image-20210803151625536" style="zoom: 33%;" /></p>
+<p><img alt="image-20210803151529428" src="https://cdn.treesir.pub/img/image-20210803151529428.png" style="zoom: 33%;"/> <img alt="image-20210803151625536" src="https://cdn.treesir.pub/img/image-20210803151625536.png" style="zoom: 33%;"/></p>
 <p><code>测试 邮件收发 一切正常。</code></p>
 </li>
 <li>
 <p><strong>Send to Gmail</strong></p>
 <p><code>测试发送邮件至 Gmail</code></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210803152341683.png" alt="image-20210803152341683"></p>
+<p><img alt="image-20210803152341683" src="https://cdn.treesir.pub/img/image-20210803152341683.png"/></p>
 <blockquote>
 <p>正常收到邮件</p>
 </blockquote>
@@ -897,55 +858,49 @@ mail._domainkey IN      TXT     <span class="o">(</span> <span class="s2">&#34;v
 <blockquote>
 <p>一开始使用的 工具是 <code> Foxmail</code> 工具进行测试，卡在无法发送邮件这里，以为是自己的证书配置出错了，经过一系类的折腾、排错，花了一天左右的时间总算是搭建出来了。看到其相关文档，好像还可以与 <code>LDAP</code> 进行集成，这就不错了，有时间 继续研究一下。</p>
 </blockquote>
-
-    </div>
-
-    <div class="post-copyright">
-  <p class="copyright-item">
-    <span class="item-title">文章作者</span>
-    <span class="item-content">Yang'zun</span>
-  </p>
-  <p class="copyright-item">
-    <span class="item-title">上次更新</span>
-    <span class="item-content">
+</div>
+<div class="post-copyright">
+<p class="copyright-item">
+<span class="item-title">文章作者</span>
+<span class="item-content">Yang'zun</span>
+</p>
+<p class="copyright-item">
+<span class="item-title">上次更新</span>
+<span class="item-content">
         2021-08-03
         
     </span>
-  </p>
-  
-  <p class="copyright-item">
-    <span class="item-title">许可协议</span>
-    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
-  </p>
+</p>
+<p class="copyright-item">
+<span class="item-title">许可协议</span>
+<span class="item-content"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a></span>
+</p>
 </div>
 <footer class="post-footer">
-      <div class="post-tags">
-          <a href="/tags/email/">email</a>
-          <a href="/tags/install/">install</a>
-          <a href="/tags/dokcer-compose/">dokcer-compose</a>
-          </div>
-      <nav class="post-nav">
-        <a class="prev" href="/post/encryptor-test/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">Encryptor Test</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        <a class="next" href="/post/k3s-change-flannel-cni-model/">
-            <span class="next-text nav-default">K3s 集群修改 Flannel CNI 插件网络模式</span>
-            <span class="next-text nav-mobile">下一篇</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-        </div>
-        
-
-  
-  <div id="vcomments"></div>
-  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
-  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
-  <script type="text/javascript">
+<div class="post-tags">
+<a href="/tags/email/">email</a>
+<a href="/tags/install/">install</a>
+<a href="/tags/dokcer-compose/">dokcer-compose</a>
+</div>
+<nav class="post-nav">
+<a class="prev" href="/post/encryptor-test/">
+<i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">Encryptor Test</span>
+<span class="prev-text nav-mobile">上一篇</span>
+</a>
+<a class="next" href="/post/k3s-change-flannel-cni-model/">
+<span class="next-text nav-default">K3s 集群修改 Flannel CNI 插件网络模式</span>
+<span class="next-text nav-mobile">下一篇</span>
+<i class="iconfont icon-right"></i>
+</a>
+</nav>
+</footer>
+</article>
+</div>
+<div id="vcomments"></div>
+<script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+<script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+<script type="text/javascript">
     new Valine({
         el: '#vcomments' ,
         appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
@@ -957,64 +912,39 @@ mail._domainkey IN      TXT     <span class="o">(</span> <span class="s2">&#34;v
         visitor:  false 
     });
   </script>
-
-  
-
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="social-links">
-      <a href="mailto:yangzun@treesir.pub" class="iconfont icon-email" title="email"></a>
-      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
-  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-
+</main>
+<footer class="footer" id="footer">
+<div class="social-links">
+<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
+<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
+<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
+</div>
 <div class="copyright">
-  <span class="power-by">
+<span class="power-by">
     由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
   </span>
-  <span class="division">|</span>
-  <span class="theme-info">
+<span class="division">|</span>
+<span class="theme-info">
     主题 - 
     <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
-  </span>
-
-  
-
-  
-
-  <span class="copyright-year">
-    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
-    &copy; 
+</span>
+<span class="copyright-year">
+<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘 ICP 备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
+    © 
     2019 - 
     2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
-    </span>
-
+</span>
 </div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
-    </div>
-  </div>
-  
-  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
-
-
-
-<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
-
-
-
-
-
-
-
-
+</footer>
+<div class="back-to-top" id="back-to-top">
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
+<script src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js" type="text/javascript"></script>
 <script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
 <script>
     docsearch({
