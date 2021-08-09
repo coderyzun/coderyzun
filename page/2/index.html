@@ -29,7 +29,7 @@
 <meta content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" property="og:description"/>
 <meta content="website" property="og:type"/>
 <meta content="https://cdryzun.github.io/" property="og:url"/>
-<meta content="2021-08-03T11:37:38+08:00" property="og:updated_time"/>
+<meta content="2021-08-09T21:48:18+08:00" property="og:updated_time"/>
 <meta content="「Yang'zun」PlayGround" itemprop="name"/>
 <meta content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" itemprop="description"/>
 <meta content="summary" name="twitter:card"/>
@@ -96,6 +96,61 @@
 <div class="content-wrapper">
 <div class="content" id="content">
 <section class="posts" id="posts">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/interview-second-half-of-the-year-2021/">2021 下半年知识点整理</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-06-29 </span>
+<span class="more-meta"> 约 46405 字 </span>
+<span class="more-meta"> 预计阅读 93 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+<h1 id="概述">概述</h1>
+<blockquote>
+<p><strong>此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点</strong>   (题目后带 <strong><code>*</code></strong> 为实际碰到过的相关面试问题 ）。题目均来自 <code>互联网</code> 、实际面试题 及 自己对某些知识点的自问自答整理。</p>
+</blockquote>
+<h1 id="k8s-相关">K8s 相关</h1>
+<h2 id="api-server">api-Server</h2>
+<ul>
+<li>
+<p>为什么 k8s 要用申明式？</p>
+<blockquote>
+<p>答：只需描述期望状态就行, 剩下的交给k8s。它还拥有一个重要特性 <code>merge</code>能力，支持多用户同时对一个资源对象进行更改。</p>
+</blockquote>
+</li>
+<li>
+<p>k8s 大规模集群如果 api-server 发生阻塞怎么办？</p>
+<blockquote>
+</blockquote>
+</li>
+<li>
+<p>api-server 到 etcd 怎么保证事件不丢失？</p>
+<blockquote>
+<p>答：etcd 引用了 WAL 日志机制，当 etcd Apply 模块执行的提案已获得多数节点确认、持久化，此时 etcd 节点 down 机重启后，会从 WAL 中解析出 Raft 日志条目内容，追加到 Raft 日志的存储中，并重放已提交的日志提案给 Apply 模块执行</p>
+</blockquote>
+</li>
+<li>
+<p>api 资源对象 在 etcd 中的 三个组成部分是那些？</p>
+<blockquote>
+<p>答：⼀个 API 对象在 Etcd ⾥的完整资源路径，是由：<code>Group</code>（API 组）、<code>Version</code>（API 版本）和 <code>Resource</code>（API 资源类型）三个部分组成的。</p>
+</blockquote>
+</li>
+<li>
+<p>简述Kubernetes各模块如何与API Server通信？</p>
+<blockquote>
+<p>答：Kubernetes API Server作为集群的核心，负责集群各功能模块之间的通信。集群内的各个功能模块通过API Server将信息存入etcd，当需要获取和操作这些数据时，则通过API Server 提供的REST 接口（用GET、LIST 或WATCH 方法）来实现，从而实现各模块之间的信息交互。如kubelet进程与API Server的交互：每个Node上的kubelet每隔一个时间周期，就会调用一次API Server的REST接口报告自身状态，API Server在接收到这些信息后，会将节点状态信息更新到etcd中。如kube-controller-manager进程与API Server的交互：kube-controllermanager中的Node Controller 模块通过API Server提供的Watch接口实时监控Node的信息，并做相应处理。如kube-scheduler进程与API Server的交互：Scheduler通过API Server的</p>
+<p>Watch接口监听到新建Pod副本的信息后，会检索所有符合该Pod要求的Node列表，开始执行Pod调度逻辑，在调度成功后将Pod绑定到目标节点上。</p>
+</blockquote>
+</li>
+</ul>
+</div>
+<div class="read-more">
+<a class="read-more-link" href="/post/interview-second-half-of-the-year-2021/">阅读更多</a>
+</div>
+</div>
+</article>
 <article class="post">
 <header class="post-header">
 <h1 class="post-title"><a class="post-link" href="/post/kube-vip-deploy-ha-k8s-cluster/">使用 Kube-Vip 部署 高可用的 Kubernetes 集群</a></h1>
@@ -242,27 +297,6 @@
     </div>
 <div class="read-more">
 <a class="read-more-link" href="/post/gocron-install/">阅读更多</a>
-</div>
-</div>
-</article>
-<article class="post">
-<header class="post-header">
-<h1 class="post-title"><a class="post-link" href="/post/helm-k8s-deploy-mariadb/">使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群</a></h1>
-<div class="post-meta">
-<span class="post-time"> 2021-05-25 </span>
-<div class="post-category">
-<a href="/categories/k8s/"> k8s </a>
-</div>
-<span class="more-meta"> 约 1941 字 </span>
-<span class="more-meta"> 预计阅读 4 分钟 </span>
-</div>
-</header>
-<div class="post-content">
-<div class="post-summary">
-      环境说明 helm version: v3.3.1 kubernetes: v1.17.9 使用 helm chart: bitnami/mariadb 操作系统: CentOS 7.8.2003 helm 部署 mariadb 前的准备 添加 helm 私服 1 2 3 4 5 6 helm repo add bitnami https://charts.bitnami.com/bitnami helm repo update # 更新仓库索引 helm search repo mariadb bitnami/mariadb 9.3.12 10.5.10 Fast, reliable, scalable, and easy to use open-...
-    </div>
-<div class="read-more">
-<a class="read-more-link" href="/post/helm-k8s-deploy-mariadb/">阅读更多</a>
 </div>
 </div>
 </article>

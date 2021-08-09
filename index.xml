@@ -6,7 +6,14 @@
 <description>Recent content on 「Yang'zun」PlayGround</description>
 <generator>Hugo -- gohugo.io</generator>
 <language>en-us</language>
-<lastBuildDate>Tue, 03 Aug 2021 11:37:38 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml"/>
+<lastBuildDate>Mon, 09 Aug 2021 21:48:18 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml"/>
+<item>
+<title>Encryptor</title>
+<link>https://cdryzun.github.io/post/encryptor/</link>
+<pubDate>Mon, 09 Aug 2021 21:48:18 +0800</pubDate>
+<guid>https://cdryzun.github.io/post/encryptor/</guid>
+<description>&lt;p&gt;Some text is required to be placed here.&lt;/p&gt;</description>
+</item>
 <item>
 <title>使用 Docker Compose 5分钟 部署 一台邮件服务器</title>
 <link>https://cdryzun.github.io/post/docker-deploy-mailserver/</link>
@@ -61,7 +68,44 @@
 <link>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</link>
 <pubDate>Tue, 29 Jun 2021 11:38:41 +0800</pubDate>
 <guid>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</guid>
-<description/>
+<description>&lt;h1 id="概述"&gt;概述&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;此篇文档 为 2021 下半年整理的 运维 和 DevOps 相关面试知识点&lt;/strong&gt;   (题目后带 &lt;strong&gt;&lt;code&gt;*&lt;/code&gt;&lt;/strong&gt; 为实际碰到过的相关面试问题 ）。题目均来自 &lt;code&gt;互联网&lt;/code&gt; 、实际面试题 及 自己对某些知识点的自问自答整理。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id="k8s-相关"&gt;K8s 相关&lt;/h1&gt;
+&lt;h2 id="api-server"&gt;api-Server&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;为什么 k8s 要用申明式？&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;答：只需描述期望状态就行, 剩下的交给k8s。它还拥有一个重要特性 &lt;code&gt;merge&lt;/code&gt;能力，支持多用户同时对一个资源对象进行更改。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;k8s 大规模集群如果 api-server 发生阻塞怎么办？&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;api-server 到 etcd 怎么保证事件不丢失？&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;答：etcd 引用了 WAL 日志机制，当 etcd Apply 模块执行的提案已获得多数节点确认、持久化，此时 etcd 节点 down 机重启后，会从 WAL 中解析出 Raft 日志条目内容，追加到 Raft 日志的存储中，并重放已提交的日志提案给 Apply 模块执行&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;api 资源对象 在 etcd 中的 三个组成部分是那些？&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;答：⼀个 API 对象在 Etcd ⾥的完整资源路径，是由：&lt;code&gt;Group&lt;/code&gt;（API 组）、&lt;code&gt;Version&lt;/code&gt;（API 版本）和 &lt;code&gt;Resource&lt;/code&gt;（API 资源类型）三个部分组成的。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;简述Kubernetes各模块如何与API Server通信？&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;答：Kubernetes API Server作为集群的核心，负责集群各功能模块之间的通信。集群内的各个功能模块通过API Server将信息存入etcd，当需要获取和操作这些数据时，则通过API Server 提供的REST 接口（用GET、LIST 或WATCH 方法）来实现，从而实现各模块之间的信息交互。如kubelet进程与API Server的交互：每个Node上的kubelet每隔一个时间周期，就会调用一次API Server的REST接口报告自身状态，API Server在接收到这些信息后，会将节点状态信息更新到etcd中。如kube-controller-manager进程与API Server的交互：kube-controllermanager中的Node Controller 模块通过API Server提供的Watch接口实时监控Node的信息，并做相应处理。如kube-scheduler进程与API Server的交互：Scheduler通过API Server的&lt;/p&gt;
+&lt;p&gt;Watch接口监听到新建Pod副本的信息后，会检索所有符合该Pod要求的Node列表，开始执行Pod调度逻辑，在调度成功后将Pod绑定到目标节点上。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
 </item>
 <item>
 <title>使用 Kube-Vip 部署 高可用的 Kubernetes 集群</title>
