@@ -1,170 +1,209 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-<meta charset="utf-8"/>
-<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
-<title>使用 helm 在 Kubernetes 中部署 Nexus 私服 - 「Yang'zun」PlayGround</title>
-<meta content="webkit" name="renderer"/>
-<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
-<meta content="no-transform" http-equiv="Cache-Control"/>
-<meta content="no-siteapp" http-equiv="Cache-Control"/>
-<meta content="#f8f5ec" name="theme-color"/>
-<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
-<meta content="yes" name="apple-mobile-web-app-capable"/>
-<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
-<meta content="Yang'zun" name="author"/><meta content="使用 helm 在 Kubernetes 中部署 Nexus 私服" name="description"/><meta content="helm, devops, nexus, 私服, nexus, maven, docker" name="keywords"/>
-<meta content="Hugo 0.78.2 with theme even" name="generator"/>
-<link href="https://cdryzun.github.io/post/helm-k8s-deploy-nexus/" rel="canonical"/>
-<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
-<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
-<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
-<link href="/manifest.json" rel="manifest"/>
-<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
-<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet"/>
-<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
-<link href="/css/custom.css" rel="stylesheet"/>
-<meta content="使用 helm 在 Kubernetes 中部署 Nexus 私服" property="og:title"/>
-<meta content="使用 helm 在 Kubernetes 中部署 Nexus 私服" property="og:description"/>
-<meta content="article" property="og:type"/>
-<meta content="https://cdryzun.github.io/post/helm-k8s-deploy-nexus/" property="og:url"/>
-<meta content="2021-05-23T15:50:31+08:00" property="article:published_time"/>
-<meta content="2021-05-23T15:50:31+08:00" property="article:modified_time"/>
-<meta content="使用 helm 在 Kubernetes 中部署 Nexus 私服" itemprop="name"/>
-<meta content="使用 helm 在 Kubernetes 中部署 Nexus 私服" itemprop="description"/>
-<meta content="2021-05-23T15:50:31+08:00" itemprop="datePublished"/>
-<meta content="2021-05-23T15:50:31+08:00" itemprop="dateModified"/>
-<meta content="2434" itemprop="wordCount"/>
-<meta content="helm,nexus3," itemprop="keywords"/>
-<meta content="summary" name="twitter:card"/>
-<meta content="使用 helm 在 Kubernetes 中部署 Nexus 私服" name="twitter:title"/>
-<meta content="使用 helm 在 Kubernetes 中部署 Nexus 私服" name="twitter:description"/>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>使用 helm 在 Kubernetes 中部署 Nexus 私服 - 「Yang&#39;zun」PlayGround</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用 helm 在 Kubernetes 中部署 Nexus 私服" /><meta name="keywords" content="helm, devops, nexus, 私服, nexus, maven, docker" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/helm-k8s-deploy-nexus/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<meta property="og:title" content="使用 helm 在 Kubernetes 中部署 Nexus 私服" />
+<meta property="og:description" content="使用 helm 在 Kubernetes 中部署 Nexus 私服" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/helm-k8s-deploy-nexus/" />
+<meta property="article:published_time" content="2021-05-23T15:50:31+08:00" />
+<meta property="article:modified_time" content="2021-05-23T15:50:31+08:00" />
+<meta itemprop="name" content="使用 helm 在 Kubernetes 中部署 Nexus 私服">
+<meta itemprop="description" content="使用 helm 在 Kubernetes 中部署 Nexus 私服">
+<meta itemprop="datePublished" content="2021-05-23T15:50:31+08:00" />
+<meta itemprop="dateModified" content="2021-05-23T15:50:31+08:00" />
+<meta itemprop="wordCount" content="2434">
+
+
+
+<meta itemprop="keywords" content="helm,nexus3," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用 helm 在 Kubernetes 中部署 Nexus 私服"/>
+<meta name="twitter:description" content="使用 helm 在 Kubernetes 中部署 Nexus 私服"/>
+
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
 <![endif]-->
+
 <!--[if lt IE 9]>
   <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
   <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
 <![endif]-->
-<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
+
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
 </head>
 <body>
-<header class="header" id="header">
-<div class="logo-wrapper">
-<a class="logo" href="/">「Yang'zun」PlayGround</a>
+  <header id="header" class="header">
+      <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
 </div>
+
+
+
+
+
 <nav class="site-navbar">
-<ul class="menu" id="menu">
-<li class="menu-item">
-<a class="menu-item-link" href="/">主页</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/post/">归档</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/tags/">标签</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/categories/">分类</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/about/">关于</a>
-</li>
-</ul><li style="display:inline-block;margin-right:10px;">
-<input class="docsearch-input" placeholder="Search" type="search"/>
-</li></nav>
-</header>
-<div class="mobile-navbar" id="mobile-navbar">
-<div class="mobile-header-logo">
-<a class="logo" href="/">「Yang'zun」PlayGround</a>
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+  </header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
-<div class="mobile-navbar-icon">
-<span></span>
-<span></span>
-<span></span>
-</div>
-</div>
-<nav class="mobile-menu slideout-menu" id="mobile-menu">
-<ul class="mobile-menu-list">
-<a href="/">
-<li class="mobile-menu-item">主页</li>
-</a><a href="/post/">
-<li class="mobile-menu-item">归档</li>
-</a><a href="/tags/">
-<li class="mobile-menu-item">标签</li>
-</a><a href="/categories/">
-<li class="mobile-menu-item">分类</li>
-</a><a href="/about/">
-<li class="mobile-menu-item">关于</li>
-</a>
-</ul>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
 </nav>
-<div class="container" id="mobile-panel">
-<main class="main" id="main">
-<div class="content-wrapper">
-<div class="content" id="content">
-<article class="post">
-<header class="post-header">
-<h1 class="post-title">使用 helm 在 Kubernetes 中部署 Nexus 私服</h1>
-<div class="post-meta">
-<span class="post-time"> 2021-05-23 </span>
-<div class="post-category">
-<a href="/categories/k8s/"> k8s </a>
-<a href="/categories/devops/"> devops </a>
-</div>
-<span class="more-meta"> 约 2434 字 </span>
-<span class="more-meta"> 预计阅读 5 分钟 </span>
-</div>
-</header>
-<div class="post-toc" id="post-toc">
-<h2 class="post-toc-title">文章目录</h2>
-<div class="post-toc-content always-active">
-<nav id="TableOfContents">
-<ul>
-<li><a href="#环境说明">环境说明</a></li>
-<li><a href="#部署">部署</a>
-<ul>
-<li><a href="#准备-storageclass">准备 storageClass</a></li>
-<li><a href="#使用-helm-进行安装">使用 <code>helm</code> 进行安装</a>
-<ul>
-<li><a href="#添加-helm-仓库">添加 helm 仓库</a></li>
-<li><a href="#设置部署-valuesyaml-配置文件">设置部署 <code>values.yaml</code> 配置文件</a></li>
-<li><a href="#创建部署应用">创建部署应用</a></li>
-</ul>
-</li>
-<li><a href="#使用-traefik-将其暴露">使用 traefik 将其暴露</a></li>
-</ul>
-</li>
-<li><a href="#docker-私服的配置与优化">Docker 私服的配置与优化</a>
-<ul>
-<li><a href="#仓库规划">仓库规划</a>
-<ul>
-<li><a href="#docker-私服端口-使用规划">docker 私服端口 使用规划</a></li>
-<li><a href="#docker-代理仓库列表">docker 代理仓库列表</a></li>
-</ul>
-</li>
-<li><a href="#私服创建">私服创建</a>
-<ul>
-<li><a href="#创建-hostd-类型私服">创建 hostd 类型私服</a></li>
-<li><a href="#创建-proxy-类型代理私服">创建 proxy 类型代理私服</a></li>
-<li><a href="#创建-group-类型私服">创建 group 类型私服</a></li>
-<li><a href="#配置-neuxs3-开启-使用-docker的认证管理">配置 neuxs3 开启 使用 docker的认证管理</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#使用-ingress-对端口进行暴露">使用 ingress 对端口进行暴露</a>
-<ul>
-<li><a href="#创建-tls-证书生成脚本">创建 tls 证书生成脚本</a></li>
-<li><a href="#执行脚本生成-tls-证书文件">执行脚本生成 tls 证书文件</a></li>
-<li><a href="#将生成的证书使用-secret-资源对象进行存储">将生成的证书，使用 secret 资源对象进行存储</a></li>
-<li><a href="#更新-traefik-ingress-资源对象">更新 traefik ingress 资源对象</a></li>
-<li><a href="#私服的使用">私服的使用</a></li>
-</ul>
-</li>
-<li><a href="#参考文档">参考文档</a></li>
-<li><a href="#todo">Todo</a></li>
-</ul>
+
+  <div class="container" id="mobile-panel">
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">使用 helm 在 Kubernetes 中部署 Nexus 私服</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-05-23 </span>
+        <div class="post-category">
+            <a href="/categories/k8s/"> k8s </a>
+            <a href="/categories/devops/"> devops </a>
+            </div>
+          <span class="more-meta"> 约 2434 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明</a></li>
+    <li><a href="#部署">部署</a>
+      <ul>
+        <li><a href="#准备-storageclass">准备 storageClass</a></li>
+        <li><a href="#使用-helm-进行安装">使用 <code>helm</code> 进行安装</a>
+          <ul>
+            <li><a href="#添加-helm-仓库">添加 helm 仓库</a></li>
+            <li><a href="#设置部署-valuesyaml-配置文件">设置部署 <code>values.yaml</code> 配置文件</a></li>
+            <li><a href="#创建部署应用">创建部署应用</a></li>
+          </ul>
+        </li>
+        <li><a href="#使用-traefik-将其暴露">使用 traefik 将其暴露</a></li>
+      </ul>
+    </li>
+    <li><a href="#docker-私服的配置与优化">Docker 私服的配置与优化</a>
+      <ul>
+        <li><a href="#仓库规划">仓库规划</a>
+          <ul>
+            <li><a href="#docker-私服端口-使用规划">docker 私服端口 使用规划</a></li>
+            <li><a href="#docker-代理仓库列表">docker 代理仓库列表</a></li>
+          </ul>
+        </li>
+        <li><a href="#私服创建">私服创建</a>
+          <ul>
+            <li><a href="#创建-hostd-类型私服">创建 hostd 类型私服</a></li>
+            <li><a href="#创建-proxy-类型代理私服">创建 proxy 类型代理私服</a></li>
+            <li><a href="#创建-group-类型私服">创建 group 类型私服</a></li>
+            <li><a href="#配置-neuxs3-开启-使用-docker的认证管理">配置 neuxs3 开启 使用 docker的认证管理</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#使用-ingress-对端口进行暴露">使用 ingress 对端口进行暴露</a>
+      <ul>
+        <li><a href="#创建-tls-证书生成脚本">创建 tls 证书生成脚本</a></li>
+        <li><a href="#执行脚本生成-tls-证书文件">执行脚本生成 tls 证书文件</a></li>
+        <li><a href="#将生成的证书使用-secret-资源对象进行存储">将生成的证书，使用 secret 资源对象进行存储</a></li>
+        <li><a href="#更新-traefik-ingress-资源对象">更新 traefik ingress 资源对象</a></li>
+        <li><a href="#私服的使用">私服的使用</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考文档">参考文档</a></li>
+    <li><a href="#todo">Todo</a></li>
+  </ul>
 </nav>
+  </div>
 </div>
-</div>
-<div class="post-content">
-<h1 id="环境说明">环境说明</h1>
+    <div class="post-content">
+      <h1 id="环境说明">环境说明</h1>
 <ul>
 <li>helm version: <code>v3.3.1</code></li>
 <li>kubernetes: <code>v1.17.9</code></li>
@@ -270,11 +309,11 @@ helm repo update
 </span><span class="s">  imagePullPolicy: IfNotPresent
 </span><span class="s">  env:
 </span><span class="s">    - name: install4jAddVmParams
-</span><span class="s">      value: "-Xms1200M -Xmx1200M -XX:MaxDirectMemorySize=2G -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+</span><span class="s">      value: &#34;-Xms1200M -Xmx1200M -XX:MaxDirectMemorySize=2G -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap&#34;
 </span><span class="s">    - name: NEXUS_SECURITY_RANDOMPASSWORD
-</span><span class="s">      value: "false"
+</span><span class="s">      value: &#34;false&#34;
 </span><span class="s">    - name: TZ
-</span><span class="s">      value: "Asia/Shanghai"
+</span><span class="s">      value: &#34;Asia/Shanghai&#34;
 </span><span class="s">  resources: 
 </span><span class="s">    limits:
 </span><span class="s">     cpu: 4
@@ -285,8 +324,8 @@ helm repo update
 </span><span class="s">
 </span><span class="s">persistence:
 </span><span class="s">  enabled: true
-</span><span class="s">  storageClass: "nfs-retain"
-</span><span class="s">  storageSize: "100Gi"
+</span><span class="s">  storageClass: &#34;nfs-retain&#34;
+</span><span class="s">  storageSize: &#34;100Gi&#34;
 </span><span class="s">
 </span><span class="s">service:
 </span><span class="s">  name: nexus-service
@@ -329,7 +368,7 @@ helm repo update
 helm upgrade --install nexus  -f ./prod-values.yaml  -n nexus stable/sonatype-nexus <span class="c1"># 部署安装</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210523162416847" src="https://cdn.treesir.pub/img/image-20210523162416847.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210523162416847.png" alt="image-20210523162416847"></p>
 <h2 id="使用-traefik-将其暴露">使用 traefik 将其暴露</h2>
 <blockquote>
 <p>traefik 部署安装使用，请参考 <a href="https://www.treesir.pub/post/ingress-traefik/">此篇文档</a></p>
@@ -374,7 +413,7 @@ spec:
 kubectl apply -f ./nexus-ingressroute.yaml 
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210523162902742" src="https://cdn.treesir.pub/img/image-20210523162902742.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210523162902742.png" alt="image-20210523162902742"></p>
 <p><strong>初始化U/P:  <code>admin: admin123</code></strong></p>
 <h1 id="docker-私服的配置与优化">Docker 私服的配置与优化</h1>
 <blockquote>
@@ -472,13 +511,13 @@ kubectl apply -f ./nexus-ingressroute.yaml
 <blockquote>
 <p>建议对不同仓库类型的 私服做一下，blob存储的隔离 (可选)</p>
 </blockquote>
-<p><img alt="image-20210608120921089" src="https://cdn.treesir.pub/img/image-20210608120921089.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608120921089.png" alt="image-20210608120921089"></p>
 </li>
 <li>
 <p>选择创建 <code>hostd</code> 类型 docker 私服</p>
-<p><img alt="image-20210608120857805" src="https://cdn.treesir.pub/img/image-20210608120857805.png"/></p>
-<p><img alt="image-20210608121148991" src="https://cdn.treesir.pub/img/image-20210608121148991.png"/></p>
-<p><img alt="image-20210608121249427" src="https://cdn.treesir.pub/img/image-20210608121249427.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608120857805.png" alt="image-20210608120857805"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608121148991.png" alt="image-20210608121148991"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608121249427.png" alt="image-20210608121249427"></p>
 </li>
 </ul>
 <h3 id="创建-proxy-类型代理私服">创建 proxy 类型代理私服</h3>
@@ -488,10 +527,10 @@ kubectl apply -f ./nexus-ingressroute.yaml
 <ul>
 <li>
 <p>选择创建 <code>proxy</code> 类型 docker 私服</p>
-<p><img alt="image-20210608121818153" src="https://cdn.treesir.pub/img/image-20210608121818153.png"/></p>
-<p><img alt="image-20210608122129261" src="https://cdn.treesir.pub/img/image-20210608122129261.png"/></p>
-<p><img alt="image-20210608122321922" src="https://cdn.treesir.pub/img/image-20210608122321922.png"/></p>
-<p><img alt="image-20210608122431537" src="https://cdn.treesir.pub/img/image-20210608122431537.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608121818153.png" alt="image-20210608121818153"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608122129261.png" alt="image-20210608122129261"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608122321922.png" alt="image-20210608122321922"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608122431537.png" alt="image-20210608122431537"></p>
 </li>
 </ul>
 <h3 id="创建-group-类型私服">创建 group 类型私服</h3>
@@ -501,22 +540,22 @@ kubectl apply -f ./nexus-ingressroute.yaml
 <ul>
 <li>
 <p>组集合列表，如下所示</p>
-<p><img alt="image-20210608122810520" src="https://cdn.treesir.pub/img/image-20210608122810520.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608122810520.png" alt="image-20210608122810520"></p>
 </li>
 <li>
 <p>创建 group 组 <code>idocker.io</code></p>
-<p><img alt="image-20210608122923180" src="https://cdn.treesir.pub/img/image-20210608122923180.png"/></p>
-<p><img alt="image-20210608123030930" src="https://cdn.treesir.pub/img/image-20210608123030930.png"/></p>
-<p><img alt="image-20210608123121924" src="https://cdn.treesir.pub/img/image-20210608123121924.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608122923180.png" alt="image-20210608122923180"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608123030930.png" alt="image-20210608123030930"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210608123121924.png" alt="image-20210608123121924"></p>
 </li>
 </ul>
 <h3 id="配置-neuxs3-开启-使用-docker的认证管理">配置 neuxs3 开启 使用 docker的认证管理</h3>
 <blockquote>
 <p>默认情况下，docker 认证在 neuxs3 中是没有被打开的，这里需要配置开启一下才行，不然会导致 执行 <code>docker login</code> 不成功。</p>
 </blockquote>
-<p><img alt="image-20210610112948251" src="https://cdn.treesir.pub/img/image-20210610112948251.png"/></p>
-<p><img alt="image-20210610113029463" src="https://cdn.treesir.pub/img/image-20210610113029463.png"/></p>
-<p>​	<img alt="image-20210610113048664" src="https://cdn.treesir.pub/img/image-20210610113048664.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210610112948251.png" alt="image-20210610112948251"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210610113029463.png" alt="image-20210610113029463"></p>
+<p>​	<img src="https://cdn.treesir.pub/img/image-20210610113048664.png" alt="image-20210610113048664"></p>
 <h1 id="使用-ingress-对端口进行暴露">使用 ingress 对端口进行暴露</h1>
 <blockquote>
 <p>在使用 traefik 暴露的docker私服中，因默认开启了 443 端口的监听，此时 docker 私服将默认使用 <code>websecure</code> 入口上的 ingressroute 路由规则，如不添加对应证书的话，将导致 <code>match</code> 上的规则不被匹配</p>
@@ -653,18 +692,18 @@ kubectl apply -f ./nexus-ingressroute.yaml
 
 usage<span class="o">()</span>  
 <span class="o">{</span>  
-    <span class="nb">echo</span> <span class="s2">"Usage: </span><span class="nv">$0</span><span class="s2"> [-a [rsa|ecc]] [-d &lt;domain&gt;] [-n &lt;name&gt;] [-h]"</span>  
-    <span class="nb">echo</span> <span class="s2">"  Options:"</span>
-    <span class="nb">echo</span> <span class="s2">"    -a  algorithm.[rsa|ecc]"</span>
-    <span class="nb">echo</span> <span class="s2">"    -d  domain.example: xxx.com,abc.org,*.abc.org"</span>
-    <span class="nb">echo</span> <span class="s2">"    -n  server key name"</span>   
-    <span class="nb">echo</span> <span class="s2">"    -h  help"</span>  
+    <span class="nb">echo</span> <span class="s2">&#34;Usage: </span><span class="nv">$0</span><span class="s2"> [-a [rsa|ecc]] [-d &lt;domain&gt;] [-n &lt;name&gt;] [-h]&#34;</span>  
+    <span class="nb">echo</span> <span class="s2">&#34;  Options:&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;    -a  algorithm.[rsa|ecc]&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;    -d  domain.example: xxx.com,abc.org,*.abc.org&#34;</span>
+    <span class="nb">echo</span> <span class="s2">&#34;    -n  server key name&#34;</span>   
+    <span class="nb">echo</span> <span class="s2">&#34;    -h  help&#34;</span>  
     <span class="nb">exit</span> <span class="m">1</span>  
 <span class="o">}</span> 
 
-<span class="nv">srv_key_name</span><span class="o">=</span><span class="s2">"server"</span>
+<span class="nv">srv_key_name</span><span class="o">=</span><span class="s2">&#34;server&#34;</span>
 
-<span class="k">while</span> <span class="nb">getopts</span> <span class="s2">"a:d:n:h"</span> arg <span class="c1">#选项后面的冒号表示该选项需要参数</span>
+<span class="k">while</span> <span class="nb">getopts</span> <span class="s2">&#34;a:d:n:h&#34;</span> arg <span class="c1">#选项后面的冒号表示该选项需要参数</span>
 <span class="k">do</span>
     <span class="k">case</span> <span class="nv">$arg</span> in
         a<span class="o">)</span>
@@ -687,83 +726,83 @@ usage<span class="o">()</span>
     <span class="k">esac</span>
 <span class="k">done</span>
 
-<span class="nv">domain</span><span class="o">=</span><span class="s2">"domain.com"</span>
-<span class="nv">san</span><span class="o">=</span><span class="s2">"DNS:*.</span><span class="si">${</span><span class="nv">domain</span><span class="si">}</span><span class="s2">,DNS:</span><span class="si">${</span><span class="nv">domain</span><span class="si">}</span><span class="s2">"</span>
-<span class="k">if</span> <span class="o">[</span> -n <span class="s2">"</span><span class="si">${</span><span class="nv">all_domain</span><span class="si">}</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<span class="nv">domain</span><span class="o">=</span><span class="s2">&#34;domain.com&#34;</span>
+<span class="nv">san</span><span class="o">=</span><span class="s2">&#34;DNS:*.</span><span class="si">${</span><span class="nv">domain</span><span class="si">}</span><span class="s2">,DNS:</span><span class="si">${</span><span class="nv">domain</span><span class="si">}</span><span class="s2">&#34;</span>
+<span class="k">if</span> <span class="o">[</span> -n <span class="s2">&#34;</span><span class="si">${</span><span class="nv">all_domain</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     <span class="c1">#分割域名</span>
-    <span class="nv">OLD_IFS</span><span class="o">=</span><span class="s2">"</span><span class="nv">$IFS</span><span class="s2">"</span>  
-    <span class="nv">IFS</span><span class="o">=</span><span class="s2">","</span> 
+    <span class="nv">OLD_IFS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$IFS</span><span class="s2">&#34;</span>  
+    <span class="nv">IFS</span><span class="o">=</span><span class="s2">&#34;,&#34;</span> 
     <span class="nv">domain_array</span><span class="o">=(</span><span class="nv">$all_domain</span><span class="o">)</span>
-    <span class="nv">IFS</span><span class="o">=</span><span class="s2">"</span><span class="nv">$OLD_IFS</span><span class="s2">"</span>  
+    <span class="nv">IFS</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$OLD_IFS</span><span class="s2">&#34;</span>  
 
     <span class="nv">domain_len</span><span class="o">=</span><span class="si">${#</span><span class="nv">domain_array</span><span class="p">[@]</span><span class="si">}</span> 
       
     <span class="nv">domain</span><span class="o">=</span><span class="si">${</span><span class="nv">domain_array</span><span class="p">[0]</span><span class="si">}</span>
-    <span class="nv">san</span><span class="o">=</span><span class="s2">""</span>
+    <span class="nv">san</span><span class="o">=</span><span class="s2">&#34;&#34;</span>
     <span class="k">for</span> <span class="o">((</span><span class="nv">i</span><span class="o">=</span>0<span class="p">;</span>i&lt;domain_len<span class="p">;</span>i++<span class="o">))</span>
    <span class="o">{</span>
     <span class="k">if</span> <span class="o">[</span> <span class="nv">$i</span> <span class="o">=</span> <span class="m">0</span> <span class="o">]</span><span class="p">;</span><span class="k">then</span>
-        <span class="nv">san</span><span class="o">=</span><span class="s2">"DNS:</span><span class="si">${</span><span class="nv">domain_array</span><span class="p">[i]</span><span class="si">}</span><span class="s2">"</span>
+        <span class="nv">san</span><span class="o">=</span><span class="s2">&#34;DNS:</span><span class="si">${</span><span class="nv">domain_array</span><span class="p">[i]</span><span class="si">}</span><span class="s2">&#34;</span>
     <span class="k">else</span>
-        <span class="nv">san</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">san</span><span class="si">}</span><span class="s2">,DNS:</span><span class="si">${</span><span class="nv">domain_array</span><span class="p">[i]</span><span class="si">}</span><span class="s2">"</span>
+        <span class="nv">san</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">san</span><span class="si">}</span><span class="s2">,DNS:</span><span class="si">${</span><span class="nv">domain_array</span><span class="p">[i]</span><span class="si">}</span><span class="s2">&#34;</span>
     <span class="k">fi</span>
    <span class="o">}</span>
 <span class="k">fi</span>
 
-<span class="nv">ca_subj</span><span class="o">=</span><span class="s2">"/C=CN/ST=Hubei/L=Wuhan/O=MY/CN=MY CA"</span>
-<span class="nv">server_subj</span><span class="o">=</span><span class="s2">"/C=CN/ST=Hubei/L=Wuhan/O=MY/CN=</span><span class="si">${</span><span class="nv">domain</span><span class="si">}</span><span class="s2">"</span>
+<span class="nv">ca_subj</span><span class="o">=</span><span class="s2">&#34;/C=CN/ST=Hubei/L=Wuhan/O=MY/CN=MY CA&#34;</span>
+<span class="nv">server_subj</span><span class="o">=</span><span class="s2">&#34;/C=CN/ST=Hubei/L=Wuhan/O=MY/CN=</span><span class="si">${</span><span class="nv">domain</span><span class="si">}</span><span class="s2">&#34;</span>
 <span class="c1">#其中C是Country，ST是state，L是local，O是Organization，OU是Organization Unit，CN是common name</span>
 <span class="nv">days</span><span class="o">=</span><span class="m">14610</span> <span class="c1"># 有效期40年</span>
-<span class="nb">echo</span> <span class="s2">"san:</span><span class="si">${</span><span class="nv">san</span><span class="si">}</span><span class="s2">"</span>
+<span class="nb">echo</span> <span class="s2">&#34;san:</span><span class="si">${</span><span class="nv">san</span><span class="si">}</span><span class="s2">&#34;</span>
 
-<span class="nv">sdir</span><span class="o">=</span><span class="s2">"certs"</span>
-<span class="nv">ca_key_file</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/ca.key"</span>
-<span class="nv">ca_crt_file</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/ca.crt"</span>
-<span class="nv">srv_key_file</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">srv_key_name</span><span class="si">}</span><span class="s2">.key"</span>
-<span class="nv">srv_csr_file</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">srv_key_name</span><span class="si">}</span><span class="s2">.csr"</span>
-<span class="nv">srv_crt_file</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">srv_key_name</span><span class="si">}</span><span class="s2">.crt"</span>
-<span class="nv">srv_p12_file</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">srv_key_name</span><span class="si">}</span><span class="s2">.p12"</span>
-<span class="nv">srv_fullchain_file</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">srv_key_name</span><span class="si">}</span><span class="s2">-fullchain.crt"</span>
-<span class="nv">cfg_san_file</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/san.cnf"</span>
+<span class="nv">sdir</span><span class="o">=</span><span class="s2">&#34;certs&#34;</span>
+<span class="nv">ca_key_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/ca.key&#34;</span>
+<span class="nv">ca_crt_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/ca.crt&#34;</span>
+<span class="nv">srv_key_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">srv_key_name</span><span class="si">}</span><span class="s2">.key&#34;</span>
+<span class="nv">srv_csr_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">srv_key_name</span><span class="si">}</span><span class="s2">.csr&#34;</span>
+<span class="nv">srv_crt_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">srv_key_name</span><span class="si">}</span><span class="s2">.crt&#34;</span>
+<span class="nv">srv_p12_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">srv_key_name</span><span class="si">}</span><span class="s2">.p12&#34;</span>
+<span class="nv">srv_fullchain_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">srv_key_name</span><span class="si">}</span><span class="s2">-fullchain.crt&#34;</span>
+<span class="nv">cfg_san_file</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">sdir</span><span class="si">}</span><span class="s2">/san.cnf&#34;</span>
 
 
 <span class="c1">#algorithm config</span>
-<span class="k">if</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">"rsa"</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">&#34;rsa&#34;</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
     <span class="nv">rsa_len</span><span class="o">=</span><span class="m">2048</span>
-<span class="k">elif</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">"ecc"</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
+<span class="k">elif</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">&#34;ecc&#34;</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
     <span class="nv">ecc_name</span><span class="o">=</span>prime256v1
 <span class="k">else</span> 
     usage 
     <span class="nb">exit</span> <span class="m">1</span>
 <span class="k">fi</span>     <span class="c1">#ifend</span>
 
-<span class="nb">echo</span> <span class="s2">"algorithm:</span><span class="si">${</span><span class="nv">alg</span><span class="si">}</span><span class="s2">"</span>
+<span class="nb">echo</span> <span class="s2">&#34;algorithm:</span><span class="si">${</span><span class="nv">alg</span><span class="si">}</span><span class="s2">&#34;</span>
 
 mkdir -p <span class="si">${</span><span class="nv">sdir</span><span class="si">}</span>
 
-<span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">"</span><span class="si">${</span><span class="nv">ca_key_file</span><span class="si">}</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span>  <span class="s2">"------------- gen ca key-----------------------"</span>
-    <span class="k">if</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">"rsa"</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
+<span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="si">${</span><span class="nv">ca_key_file</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span>  <span class="s2">&#34;------------- gen ca key-----------------------&#34;</span>
+    <span class="k">if</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">&#34;rsa&#34;</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
         openssl genrsa -out <span class="si">${</span><span class="nv">ca_key_file</span><span class="si">}</span> <span class="si">${</span><span class="nv">rsa_len</span><span class="si">}</span>
-    <span class="k">elif</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">"ecc"</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
+    <span class="k">elif</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">&#34;ecc&#34;</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
         openssl ecparam -out <span class="si">${</span><span class="nv">ca_key_file</span><span class="si">}</span> -name <span class="si">${</span><span class="nv">ecc_name</span><span class="si">}</span> -genkey
     <span class="k">fi</span>     <span class="c1">#ifend</span>
 
-    openssl req -new -x509 -days <span class="si">${</span><span class="nv">days</span><span class="si">}</span> -key <span class="si">${</span><span class="nv">ca_key_file</span><span class="si">}</span> -out <span class="si">${</span><span class="nv">ca_crt_file</span><span class="si">}</span> -subj <span class="s2">"</span><span class="si">${</span><span class="nv">ca_subj</span><span class="si">}</span><span class="s2">"</span>
+    openssl req -new -x509 -days <span class="si">${</span><span class="nv">days</span><span class="si">}</span> -key <span class="si">${</span><span class="nv">ca_key_file</span><span class="si">}</span> -out <span class="si">${</span><span class="nv">ca_crt_file</span><span class="si">}</span> -subj <span class="s2">&#34;</span><span class="si">${</span><span class="nv">ca_subj</span><span class="si">}</span><span class="s2">&#34;</span>
 <span class="k">fi</span>
 
 
-<span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">"</span><span class="si">${</span><span class="nv">srv_key_file</span><span class="si">}</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span>  <span class="s2">"------------- gen server key-----------------------"</span>
-    <span class="k">if</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">"rsa"</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
+<span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="si">${</span><span class="nv">srv_key_file</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span>  <span class="s2">&#34;------------- gen server key-----------------------&#34;</span>
+    <span class="k">if</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">&#34;rsa&#34;</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
         openssl genrsa -out <span class="si">${</span><span class="nv">srv_key_file</span><span class="si">}</span> <span class="si">${</span><span class="nv">rsa_len</span><span class="si">}</span>
-    <span class="k">elif</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">"ecc"</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
+    <span class="k">elif</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">alg</span><span class="si">}</span> <span class="o">=</span> <span class="s2">&#34;ecc&#34;</span> <span class="o">]]</span> <span class="p">;</span> <span class="k">then</span>
         openssl ecparam -genkey -name <span class="si">${</span><span class="nv">ecc_name</span><span class="si">}</span> -out <span class="si">${</span><span class="nv">srv_key_file</span><span class="si">}</span>
     <span class="k">fi</span>     <span class="c1">#ifend</span>
 
-    openssl req -new  -sha256 -key <span class="si">${</span><span class="nv">srv_key_file</span><span class="si">}</span> -out <span class="si">${</span><span class="nv">srv_csr_file</span><span class="si">}</span> -subj <span class="s2">"</span><span class="si">${</span><span class="nv">server_subj</span><span class="si">}</span><span class="s2">"</span>
+    openssl req -new  -sha256 -key <span class="si">${</span><span class="nv">srv_key_file</span><span class="si">}</span> -out <span class="si">${</span><span class="nv">srv_csr_file</span><span class="si">}</span> -subj <span class="s2">&#34;</span><span class="si">${</span><span class="nv">server_subj</span><span class="si">}</span><span class="s2">&#34;</span>
 
-    <span class="nb">printf</span> <span class="s2">"[ SAN ]\nauthorityKeyIdentifier=keyid,issuer\nbasicConstraints=CA:FALSE\nkeyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment\nsubjectAltName=</span><span class="si">${</span><span class="nv">san</span><span class="si">}</span><span class="s2">"</span> &gt; <span class="si">${</span><span class="nv">cfg_san_file</span><span class="si">}</span>
+    <span class="nb">printf</span> <span class="s2">&#34;[ SAN ]\nauthorityKeyIdentifier=keyid,issuer\nbasicConstraints=CA:FALSE\nkeyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment\nsubjectAltName=</span><span class="si">${</span><span class="nv">san</span><span class="si">}</span><span class="s2">&#34;</span> &gt; <span class="si">${</span><span class="nv">cfg_san_file</span><span class="si">}</span>
     openssl x509 -req  -days <span class="si">${</span><span class="nv">days</span><span class="si">}</span> -sha256 -CA <span class="si">${</span><span class="nv">ca_crt_file</span><span class="si">}</span> -CAkey <span class="si">${</span><span class="nv">ca_key_file</span><span class="si">}</span> -CAcreateserial -in <span class="si">${</span><span class="nv">srv_csr_file</span><span class="si">}</span>  -out <span class="si">${</span><span class="nv">srv_crt_file</span><span class="si">}</span> -extfile <span class="si">${</span><span class="nv">cfg_san_file</span><span class="si">}</span> -extensions SAN
     cat <span class="si">${</span><span class="nv">srv_crt_file</span><span class="si">}</span> <span class="si">${</span><span class="nv">ca_crt_file</span><span class="si">}</span> &gt; <span class="si">${</span><span class="nv">srv_fullchain_file</span><span class="si">}</span>
 
@@ -817,7 +856,7 @@ ca.crt  ca.key  ca.srl  san.cnf  tls.crt  tls.csr  tls-fullchain.crt  tls.key  t
 kubectl get secret idocker-tls -n nexus -o yaml 
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210608145341615" src="https://cdn.treesir.pub/img/image-20210608145341615.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210608145341615.png" alt="image-20210608145341615"></p>
 <h2 id="更新-traefik-ingress-资源对象">更新 traefik ingress 资源对象</h2>
 <blockquote>
 <p>最终，完整 <code>nexus-ingressroute.yaml</code> 配置文件如下所示:</p>
@@ -1011,7 +1050,7 @@ mkdir -p /etc/docker/certs.d/qa.idocker.io
 cp /etc/docker/certs.d/idocker.io/ca.crt  /etc/docker/certs.d/qa.idocker.io/
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210608160819915" src="https://cdn.treesir.pub/img/image-20210608160819915.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210608160819915.png" alt="image-20210608160819915"></p>
 </li>
 </ul>
 <blockquote>
@@ -1038,11 +1077,11 @@ cp /etc/docker/certs.d/idocker.io/ca.crt  /etc/docker/certs.d/qa.idocker.io/
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">cat /etc/docker/daemon.json 
 <span class="o">{</span>
-    <span class="s2">"insecure-registries"</span>: <span class="o">[</span>
-        <span class="s2">"idocker.io"</span>,
-        <span class="s2">"dev.idocker.io"</span>,
-        <span class="s2">"qa.idocker.io"</span>,
-        <span class="s2">"prod.idocker.io"</span>
+    <span class="s2">&#34;insecure-registries&#34;</span>: <span class="o">[</span>
+        <span class="s2">&#34;idocker.io&#34;</span>,
+        <span class="s2">&#34;dev.idocker.io&#34;</span>,
+        <span class="s2">&#34;qa.idocker.io&#34;</span>,
+        <span class="s2">&#34;prod.idocker.io&#34;</span>
     <span class="o">]</span>
 <span class="o">}</span>
 </code></pre></td></tr></table>
@@ -1069,48 +1108,54 @@ cp /etc/docker/certs.d/idocker.io/ca.crt  /etc/docker/certs.d/qa.idocker.io/
 <p><a href="https://doc.traefik.io/traefik/routing/routers/">https://doc.traefik.io/traefik/routing/routers/</a></p>
 <p><a href="https://www.jianshu.com/p/52fedb82ef53">https://www.jianshu.com/p/52fedb82ef53</a></p>
 <h1 id="todo">Todo</h1>
-</div>
-<div class="post-copyright">
-<p class="copyright-item">
-<span class="item-title">文章作者</span>
-<span class="item-content">Yang'zun</span>
-</p>
-<p class="copyright-item">
-<span class="item-title">上次更新</span>
-<span class="item-content">
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
         2021-05-23
         
     </span>
-</p>
-<p class="copyright-item">
-<span class="item-title">许可协议</span>
-<span class="item-content"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a></span>
-</p>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
 </div>
 <footer class="post-footer">
-<div class="post-tags">
-<a href="/tags/helm/">helm</a>
-<a href="/tags/nexus3/">nexus3</a>
-</div>
-<nav class="post-nav">
-<a class="prev" href="/post/spinnaker-helm-installd/">
-<i class="iconfont icon-left"></i>
-<span class="prev-text nav-default">使用 Helm 部署 Spinnaker 持续部署(CD)平台</span>
-<span class="prev-text nav-mobile">上一篇</span>
-</a>
-<a class="next" href="/post/rancher-monitor-config-third/">
-<span class="next-text nav-default">Rancher 开启监控后的，阈值告警配置说明 (三)</span>
-<span class="next-text nav-mobile">下一篇</span>
-<i class="iconfont icon-right"></i>
-</a>
-</nav>
-</footer>
-</article>
-</div>
-<div id="vcomments"></div>
-<script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
-<script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
-<script type="text/javascript">
+      <div class="post-tags">
+          <a href="/tags/helm/">helm</a>
+          <a href="/tags/nexus3/">nexus3</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/spinnaker-helm-installd/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">使用 Helm 部署 Spinnaker 持续部署(CD)平台</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/rancher-monitor-config-third/">
+            <span class="next-text nav-default">Rancher 开启监控后的，阈值告警配置说明 (三)</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
     new Valine({
         el: '#vcomments' ,
         appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
@@ -1122,39 +1167,64 @@ cp /etc/docker/certs.d/idocker.io/ca.crt  /etc/docker/certs.d/qa.idocker.io/
         visitor:  false 
     });
   </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:yangzun@treesir.pub" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-</main>
-<footer class="footer" id="footer">
-<div class="social-links">
-<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
-<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
-<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
-</div>
+
 <div class="copyright">
-<span class="power-by">
+  <span class="power-by">
     由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
   </span>
-<span class="division">|</span>
-<span class="theme-info">
+  <span class="division">|</span>
+  <span class="theme-info">
     主题 - 
     <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
-</span>
-<span class="copyright-year">
-<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘 ICP 备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
-    © 
+  </span>
+
+  
+
+  
+
+  <span class="copyright-year">
+    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+    &copy; 
     2019 - 
     2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
-</span>
+    </span>
+
 </div>
-</footer>
-<div class="back-to-top" id="back-to-top">
-<i class="iconfont icon-up"></i>
-</div>
-</div>
-<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
-<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
-<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
-<script src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js" type="text/javascript"></script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
 <script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
 <script>
     docsearch({

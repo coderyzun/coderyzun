@@ -1,151 +1,190 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-<meta charset="utf-8"/>
-<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
-<title>使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群 - 「Yang'zun」PlayGround</title>
-<meta content="webkit" name="renderer"/>
-<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
-<meta content="no-transform" http-equiv="Cache-Control"/>
-<meta content="no-siteapp" http-equiv="Cache-Control"/>
-<meta content="#f8f5ec" name="theme-color"/>
-<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
-<meta content="yes" name="apple-mobile-web-app-capable"/>
-<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
-<meta content="Yang'zun" name="author"/><meta content="使用 Helm 和 localPV 在 K8s 中部署 Mariadb 主程复制集群" name="description"/><meta content="helm, devops, mariadb, localpv, k8s, docker, StorageClass" name="keywords"/>
-<meta content="Hugo 0.78.2 with theme even" name="generator"/>
-<link href="https://cdryzun.github.io/post/helm-k8s-deploy-mariadb/" rel="canonical"/>
-<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
-<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
-<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
-<link href="/manifest.json" rel="manifest"/>
-<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
-<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet"/>
-<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
-<link href="/css/custom.css" rel="stylesheet"/>
-<meta content="使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群" property="og:title"/>
-<meta content="使用 Helm 和 localPV 在 K8s 中部署 Mariadb 主程复制集群" property="og:description"/>
-<meta content="article" property="og:type"/>
-<meta content="https://cdryzun.github.io/post/helm-k8s-deploy-mariadb/" property="og:url"/>
-<meta content="2021-05-25T11:33:17+08:00" property="article:published_time"/>
-<meta content="2021-05-25T11:33:17+08:00" property="article:modified_time"/>
-<meta content="使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群" itemprop="name"/>
-<meta content="使用 Helm 和 localPV 在 K8s 中部署 Mariadb 主程复制集群" itemprop="description"/>
-<meta content="2021-05-25T11:33:17+08:00" itemprop="datePublished"/>
-<meta content="2021-05-25T11:33:17+08:00" itemprop="dateModified"/>
-<meta content="1941" itemprop="wordCount"/>
-<meta content="helm,mariadb,localpv," itemprop="keywords"/>
-<meta content="summary" name="twitter:card"/>
-<meta content="使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群" name="twitter:title"/>
-<meta content="使用 Helm 和 localPV 在 K8s 中部署 Mariadb 主程复制集群" name="twitter:description"/>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群 - 「Yang&#39;zun」PlayGround</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用 Helm 和 localPV 在 K8s 中部署 Mariadb 主程复制集群" /><meta name="keywords" content="helm, devops, mariadb, localpv, k8s, docker, StorageClass" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/helm-k8s-deploy-mariadb/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<meta property="og:title" content="使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群" />
+<meta property="og:description" content="使用 Helm 和 localPV 在 K8s 中部署 Mariadb 主程复制集群" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/helm-k8s-deploy-mariadb/" />
+<meta property="article:published_time" content="2021-05-25T11:33:17+08:00" />
+<meta property="article:modified_time" content="2021-05-25T11:33:17+08:00" />
+<meta itemprop="name" content="使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群">
+<meta itemprop="description" content="使用 Helm 和 localPV 在 K8s 中部署 Mariadb 主程复制集群">
+<meta itemprop="datePublished" content="2021-05-25T11:33:17+08:00" />
+<meta itemprop="dateModified" content="2021-05-25T11:33:17+08:00" />
+<meta itemprop="wordCount" content="1941">
+
+
+
+<meta itemprop="keywords" content="helm,mariadb,localpv," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群"/>
+<meta name="twitter:description" content="使用 Helm 和 localPV 在 K8s 中部署 Mariadb 主程复制集群"/>
+
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
 <![endif]-->
+
 <!--[if lt IE 9]>
   <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
   <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
 <![endif]-->
-<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
+
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
 </head>
 <body>
-<header class="header" id="header">
-<div class="logo-wrapper">
-<a class="logo" href="/">「Yang'zun」PlayGround</a>
+  <header id="header" class="header">
+      <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
 </div>
+
+
+
+
+
 <nav class="site-navbar">
-<ul class="menu" id="menu">
-<li class="menu-item">
-<a class="menu-item-link" href="/">主页</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/post/">归档</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/tags/">标签</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/categories/">分类</a>
-</li><li class="menu-item">
-<a class="menu-item-link" href="/about/">关于</a>
-</li>
-</ul><li style="display:inline-block;margin-right:10px;">
-<input class="docsearch-input" placeholder="Search" type="search"/>
-</li></nav>
-</header>
-<div class="mobile-navbar" id="mobile-navbar">
-<div class="mobile-header-logo">
-<a class="logo" href="/">「Yang'zun」PlayGround</a>
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+  </header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
-<div class="mobile-navbar-icon">
-<span></span>
-<span></span>
-<span></span>
-</div>
-</div>
-<nav class="mobile-menu slideout-menu" id="mobile-menu">
-<ul class="mobile-menu-list">
-<a href="/">
-<li class="mobile-menu-item">主页</li>
-</a><a href="/post/">
-<li class="mobile-menu-item">归档</li>
-</a><a href="/tags/">
-<li class="mobile-menu-item">标签</li>
-</a><a href="/categories/">
-<li class="mobile-menu-item">分类</li>
-</a><a href="/about/">
-<li class="mobile-menu-item">关于</li>
-</a>
-</ul>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
 </nav>
-<div class="container" id="mobile-panel">
-<main class="main" id="main">
-<div class="content-wrapper">
-<div class="content" id="content">
-<article class="post">
-<header class="post-header">
-<h1 class="post-title">使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群</h1>
-<div class="post-meta">
-<span class="post-time"> 2021-05-25 </span>
-<div class="post-category">
-<a href="/categories/k8s/"> k8s </a>
-</div>
-<span class="more-meta"> 约 1941 字 </span>
-<span class="more-meta"> 预计阅读 4 分钟 </span>
-</div>
-</header>
-<div class="post-toc" id="post-toc">
-<h2 class="post-toc-title">文章目录</h2>
-<div class="post-toc-content always-active">
-<nav id="TableOfContents">
-<ul>
-<li><a href="#环境说明">环境说明</a></li>
-<li><a href="#helm-部署-mariadb-前的准备">helm 部署 <code>mariadb</code> 前的准备</a>
-<ul>
-<li><a href="#添加-helm-私服">添加 helm 私服</a></li>
-<li><a href="#对-chart-进行-定制更改优化">对 chart 进行 定制更改优化</a></li>
-<li><a href="#创建-localpv">创建 <code>localPv</code></a></li>
-<li><a href="#创建-localpv-指定文件夹">创建 localPv 指定文件夹</a></li>
-<li><a href="#创建-localpv-pvc-资源对象">创建 localPv <code>pvc</code> 资源对象</a></li>
-</ul>
-</li>
-<li><a href="#helm-部署对应资源">helm 部署对应资源</a>
-<ul>
-<li><a href="#创建-prod-valuesyaml-部署文件">创建 prod-values.yaml 部署文件</a></li>
-<li><a href="#执行应用的部署">执行应用的部署</a></li>
-<li><a href="#获取外部连接地址">获取外部连接地址</a></li>
-</ul>
-</li>
-<li><a href="#安装后的测试">安装后的测试</a>
-<ul>
-<li><a href="#测试主从复制">测试主从复制</a></li>
-<li><a href="#slave-端只读">slave 端只读</a></li>
-</ul>
-</li>
-<li><a href="#参考文档及链接">参考文档及链接</a></li>
-<li><a href="#总结">总结</a></li>
-</ul>
+
+  <div class="container" id="mobile-panel">
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-05-25 </span>
+        <div class="post-category">
+            <a href="/categories/k8s/"> k8s </a>
+            </div>
+          <span class="more-meta"> 约 1941 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明</a></li>
+    <li><a href="#helm-部署-mariadb-前的准备">helm 部署 <code>mariadb</code> 前的准备</a>
+      <ul>
+        <li><a href="#添加-helm-私服">添加 helm 私服</a></li>
+        <li><a href="#对-chart-进行-定制更改优化">对 chart 进行 定制更改优化</a></li>
+        <li><a href="#创建-localpv">创建 <code>localPv</code></a></li>
+        <li><a href="#创建-localpv-指定文件夹">创建 localPv 指定文件夹</a></li>
+        <li><a href="#创建-localpv-pvc-资源对象">创建 localPv <code>pvc</code> 资源对象</a></li>
+      </ul>
+    </li>
+    <li><a href="#helm-部署对应资源">helm 部署对应资源</a>
+      <ul>
+        <li><a href="#创建-prod-valuesyaml-部署文件">创建 prod-values.yaml 部署文件</a></li>
+        <li><a href="#执行应用的部署">执行应用的部署</a></li>
+        <li><a href="#获取外部连接地址">获取外部连接地址</a></li>
+      </ul>
+    </li>
+    <li><a href="#安装后的测试">安装后的测试</a>
+      <ul>
+        <li><a href="#测试主从复制">测试主从复制</a></li>
+        <li><a href="#slave-端只读">slave 端只读</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考文档及链接">参考文档及链接</a></li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
 </nav>
+  </div>
 </div>
-</div>
-<div class="post-content">
-<h1 id="环境说明">环境说明</h1>
+    <div class="post-content">
+      <h1 id="环境说明">环境说明</h1>
 <ul>
 <li>helm version: <code>v3.3.1</code></li>
 <li>kubernetes: <code>v1.17.9</code></li>
@@ -497,7 +536,7 @@ persistentvolumeclaim/mariadb-primary-pvc-local created
 persistentvolumeclaim/mariadb-secondary-pvc-local created
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210525142754841" src="https://cdn.treesir.pub/img/image-20210525142754841.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210525142754841.png" alt="image-20210525142754841"></p>
 <h1 id="helm-部署对应资源">helm 部署对应资源</h1>
 <h2 id="创建-prod-valuesyaml-部署文件">创建 prod-values.yaml 部署文件</h2>
 <blockquote>
@@ -676,12 +715,12 @@ persistentvolumeclaim/mariadb-secondary-pvc-local created
 </span><span class="s">architecture: replication
 </span><span class="s">
 </span><span class="s">auth:
-</span><span class="s">  rootPassword: "123456"  # root 密码
+</span><span class="s">  rootPassword: &#34;123456&#34;  # root 密码
 </span><span class="s">  database: ancun # 初始化添加的 数据库
-</span><span class="s">  username: "ancun"
-</span><span class="s">  password: "123456"
+</span><span class="s">  username: &#34;ancun&#34;
+</span><span class="s">  password: &#34;123456&#34;
 </span><span class="s">  replicationUser: replicator
-</span><span class="s">  replicationPassword: "123456"
+</span><span class="s">  replicationPassword: &#34;123456&#34;
 </span><span class="s">
 </span><span class="s">primary:
 </span><span class="s">  replicaCount: 1
@@ -732,10 +771,10 @@ persistentvolumeclaim/mariadb-secondary-pvc-local created
 </span><span class="s">    timeoutSeconds: 1
 </span><span class="s">    failureThreshold: 3
 </span><span class="s">    successThreshold: 1
-</span><span class="s">  extraFlags: "--max-connect-errors=1000 --max_connections=155"
+</span><span class="s">  extraFlags: &#34;--max-connect-errors=1000 --max_connections=155&#34;
 </span><span class="s">  extraEnvVars:
 </span><span class="s">   - name: TZ
-</span><span class="s">     value: "Asia/Shanghai"
+</span><span class="s">     value: &#34;Asia/Shanghai&#34;
 </span><span class="s">  persistence:
 </span><span class="s">    enabled: true
 </span><span class="s">    existingClaim: mariadb-primary-pvc-local
@@ -794,10 +833,10 @@ persistentvolumeclaim/mariadb-secondary-pvc-local created
 </span><span class="s">    timeoutSeconds: 1
 </span><span class="s">    failureThreshold: 3
 </span><span class="s">    successThreshold: 1
-</span><span class="s">  extraFlags: "--max-connect-errors=1000 --max_connections=155"
+</span><span class="s">  extraFlags: &#34;--max-connect-errors=1000 --max_connections=155&#34;
 </span><span class="s">  extraEnvVars:
 </span><span class="s">   - name: TZ
-</span><span class="s">     value: "Asia/Shanghai"
+</span><span class="s">     value: &#34;Asia/Shanghai&#34;
 </span><span class="s">  persistence:
 </span><span class="s">    enabled: true
 </span><span class="s">    existingClaim: mariadb-secondary-pvc-local
@@ -816,8 +855,8 @@ persistentvolumeclaim/mariadb-secondary-pvc-local created
 </span><span class="s">    tag: 0.12.1-debian-10-r444
 </span><span class="s">    pullPolicy: IfNotPresent
 </span><span class="s">  annotations:
-</span><span class="s">    prometheus.io/scrape: "true"
-</span><span class="s">    prometheus.io/port: "9104"
+</span><span class="s">    prometheus.io/scrape: &#34;true&#34;
+</span><span class="s">    prometheus.io/port: &#34;9104&#34;
 </span><span class="s">  resources:
 </span><span class="s">    limits: 
 </span><span class="s">      memory: 256Mi
@@ -846,10 +885,10 @@ local-pvc.yaml  local-pv.yaml  mariadb  mariadb-9.3.12.tgz  prod-values.yaml
 helm upgrade --install mariadb -f ./prod-values.yaml -n mariadb ./mariadb/  
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210525151429443" src="https://cdn.treesir.pub/img/image-20210525151429443.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210525151429443.png" alt="image-20210525151429443"></p>
 <blockquote>
 <p>这里部署后，需要注意一下，在从库中默认是只读的，<code>root 除外</code>。为了进行验证我们可以进入 <code>从库</code> 容器查看一下对应进程的 <code>args</code></p>
-<p><img alt="image-20210525153755252" src="https://cdn.treesir.pub/img/image-20210525153755252.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210525153755252.png" alt="image-20210525153755252"></p>
 </blockquote>
 <h2 id="获取外部连接地址">获取外部连接地址</h2>
 <blockquote>
@@ -870,15 +909,15 @@ mariadb-primary     NodePort   10.101.91.176   &lt;none&gt;        3306:31011/TC
 mariadb-secondary   NodePort   10.97.222.104   &lt;none&gt;        3306:31848/TCP   3h12m
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210525174403044" src="https://cdn.treesir.pub/img/image-20210525174403044.png"/></p>
-<p><img alt="image-20210525174427113" src="https://cdn.treesir.pub/img/image-20210525174427113.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210525174403044.png" alt="image-20210525174403044"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210525174427113.png" alt="image-20210525174427113"></p>
 <h1 id="安装后的测试">安装后的测试</h1>
 <h2 id="测试主从复制">测试主从复制</h2>
 <blockquote>
 <p>这里测试使用的用户均已 <code>root</code> 用户进行</p>
 </blockquote>
 <p><strong>在主中创建数据库，查看 slave 这边是否有对应同步</strong></p>
-<p><img alt="image-20210525154322095" src="https://cdn.treesir.pub/img/image-20210525154322095.png"/></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210525154322095.png" alt="image-20210525154322095"></p>
 <p><strong>在主中对应数据库创建表，查看 slave 这边是否有对应同步</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -892,7 +931,7 @@ mariadb-secondary   NodePort   10.97.222.104   &lt;none&gt;        3306:31848/TC
 create table test_tb <span class="o">(</span>id int<span class="o">)</span><span class="p">;</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210525155035516" src="https://cdn.treesir.pub/img/image-20210525155035516.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210525155035516.png" alt="image-20210525155035516"></p>
 <blockquote>
 <p>上面测试输出结果，可以看到正常进行了同步</p>
 </blockquote>
@@ -922,7 +961,7 @@ create table test_tb <span class="o">(</span>id int<span class="o">)</span><span
 ERROR <span class="m">1290</span> <span class="o">(</span>HY000<span class="o">)</span>: The MariaDB server is running with the --read-only option so it cannot execute this statement
 </code></pre></td></tr></table>
 </div>
-</div><p><img alt="image-20210525155944081" src="https://cdn.treesir.pub/img/image-20210525155944081.png"/></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210525155944081.png" alt="image-20210525155944081"></p>
 <h1 id="参考文档及链接">参考文档及链接</h1>
 <p><a href="https://github.com/bitnami/charts/tree/master/bitnami/mariadb/#installing-the-chart">https://github.com/bitnami/charts/tree/master/bitnami/mariadb/#installing-the-chart</a></p>
 <p><a href="https://github.com/bitnami/bitnami-docker-mariadb/issues/174">https://github.com/bitnami/bitnami-docker-mariadb/issues/174</a></p>
@@ -930,49 +969,55 @@ ERROR <span class="m">1290</span> <span class="o">(</span>HY000<span class="o">)
 <blockquote>
 <p>主从集群部署完毕后，这里还有两个问题需要提及和记录一下，<code>第一个</code>: 由于使用的是 localPv 并做了节点亲和，pod 使用对应 localpv 的 <code>pvc</code> 进行数据卷挂载时，将会 <code>继承</code> 其亲和调度策略。如果这时对应 <code>primary(master)</code> 节点主机出现 down 机，主从集群将会被破坏且无法使用 kubernetes 调度策略实现 pod <code>自恢复</code>，在生产环境中 <code>有条件</code> 的话，这里建议是进行使用分布式存储，可满足 pod 调度在 <code>任意</code> 节点 那种。<code>第二个</code>: 由于 localPv 使用的是对应主机中的 <code>磁盘目录</code>进行挂载，如果此时磁盘出现损坏，同样会导致集群被破坏，且 <code>数据可能丢失问题</code> ，建议做好定期的数据备份，并对 对应磁盘使用 <code>raid</code> 去提高磁盘稳定和可靠性。</p>
 </blockquote>
-</div>
-<div class="post-copyright">
-<p class="copyright-item">
-<span class="item-title">文章作者</span>
-<span class="item-content">Yang'zun</span>
-</p>
-<p class="copyright-item">
-<span class="item-title">上次更新</span>
-<span class="item-content">
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
         2021-05-25
         
     </span>
-</p>
-<p class="copyright-item">
-<span class="item-title">许可协议</span>
-<span class="item-content"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a></span>
-</p>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
 </div>
 <footer class="post-footer">
-<div class="post-tags">
-<a href="/tags/helm/">helm</a>
-<a href="/tags/mariadb/">mariadb</a>
-<a href="/tags/localpv/">localpv</a>
-</div>
-<nav class="post-nav">
-<a class="prev" href="/post/gocron-install/">
-<i class="iconfont icon-left"></i>
-<span class="prev-text nav-default">Gocron 实践安装，实现统一定时任务管理平台</span>
-<span class="prev-text nav-mobile">上一篇</span>
-</a>
-<a class="next" href="/post/spinnaker-helm-installd/">
-<span class="next-text nav-default">使用 Helm 部署 Spinnaker 持续部署(CD)平台</span>
-<span class="next-text nav-mobile">下一篇</span>
-<i class="iconfont icon-right"></i>
-</a>
-</nav>
-</footer>
-</article>
-</div>
-<div id="vcomments"></div>
-<script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
-<script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
-<script type="text/javascript">
+      <div class="post-tags">
+          <a href="/tags/helm/">helm</a>
+          <a href="/tags/mariadb/">mariadb</a>
+          <a href="/tags/localpv/">localpv</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/gocron-install/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Gocron 实践安装，实现统一定时任务管理平台</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/spinnaker-helm-installd/">
+            <span class="next-text nav-default">使用 Helm 部署 Spinnaker 持续部署(CD)平台</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
     new Valine({
         el: '#vcomments' ,
         appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
@@ -984,39 +1029,64 @@ ERROR <span class="m">1290</span> <span class="o">(</span>HY000<span class="o">)
         visitor:  false 
     });
   </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:yangzun@treesir.pub" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-</main>
-<footer class="footer" id="footer">
-<div class="social-links">
-<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
-<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
-<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
-</div>
+
 <div class="copyright">
-<span class="power-by">
+  <span class="power-by">
     由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
   </span>
-<span class="division">|</span>
-<span class="theme-info">
+  <span class="division">|</span>
+  <span class="theme-info">
     主题 - 
     <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
-</span>
-<span class="copyright-year">
-<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘 ICP 备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
-    © 
+  </span>
+
+  
+
+  
+
+  <span class="copyright-year">
+    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+    &copy; 
     2019 - 
     2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
-</span>
+    </span>
+
 </div>
-</footer>
-<div class="back-to-top" id="back-to-top">
-<i class="iconfont icon-up"></i>
-</div>
-</div>
-<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
-<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
-<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
-<script src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js" type="text/javascript"></script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
 <script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
 <script>
     docsearch({
