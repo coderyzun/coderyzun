@@ -2,27 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://cdryzun.github.io/post/encryptor-test/</loc>
-    <lastmod>2021-08-09T20:02:30+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/post/</loc>
-    <lastmod>2021-08-09T20:02:30+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/</loc>
-    <lastmod>2021-08-09T20:02:30+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://cdryzun.github.io/categories/</loc>
     <lastmod>2021-08-03T11:37:38+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -58,7 +37,21 @@
   </url>
   
   <url>
+    <loc>https://cdryzun.github.io/post/</loc>
+    <lastmod>2021-08-03T11:37:38+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://cdryzun.github.io/tags/</loc>
+    <lastmod>2021-08-03T11:37:38+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/</loc>
     <lastmod>2021-08-03T11:37:38+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -256,6 +249,13 @@
   <url>
     <loc>https://cdryzun.github.io/post/k8s-vpa/</loc>
     <lastmod>2021-07-08T14:41:34+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/interview-second-half-of-the-year-2021/</loc>
+    <lastmod>2021-06-29T11:38:41+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
