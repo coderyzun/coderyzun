@@ -1,202 +1,163 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理 - 「Yang&#39;zun」PlayGround</title>
-  <meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
-
-
-<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用 Docker-Compose 一键部署 Nexus3 私服，并配置使用 Traefik 进行对应代理配置的管理" /><meta name="keywords" content="neuxs3, traefik, https, tls, devops, docker-compose, proxy, nginx, 私服" />
-
-
-
-
-
-
-<meta name="generator" content="Hugo 0.78.2 with theme even" />
-
-
-<link rel="canonical" href="https://cdryzun.github.io/post/nexus-use-traefik-proxy/" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-
-
-
-<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
-<link rel="stylesheet" href="/css/custom.css">
-
-
-<meta property="og:title" content="Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理" />
-<meta property="og:description" content="使用 Docker-Compose 一键部署 Nexus3 私服，并配置使用 Traefik 进行对应代理配置的管理" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://cdryzun.github.io/post/nexus-use-traefik-proxy/" />
-<meta property="article:published_time" content="2021-06-10T09:51:36+08:00" />
-<meta property="article:modified_time" content="2021-06-10T09:51:36+08:00" />
-<meta itemprop="name" content="Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理">
-<meta itemprop="description" content="使用 Docker-Compose 一键部署 Nexus3 私服，并配置使用 Traefik 进行对应代理配置的管理">
-<meta itemprop="datePublished" content="2021-06-10T09:51:36+08:00" />
-<meta itemprop="dateModified" content="2021-06-10T09:51:36+08:00" />
-<meta itemprop="wordCount" content="1333">
-
-
-
-<meta itemprop="keywords" content="neuxs3,traefik,mkcert,https," />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理"/>
-<meta name="twitter:description" content="使用 Docker-Compose 一键部署 Nexus3 私服，并配置使用 Traefik 进行对应代理配置的管理"/>
-
+<meta charset="utf-8"/>
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<title>Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理 - 「Yang'zun」PlayGround</title>
+<meta content="webkit" name="renderer"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<meta content="no-transform" http-equiv="Cache-Control"/>
+<meta content="no-siteapp" http-equiv="Cache-Control"/>
+<meta content="#f8f5ec" name="theme-color"/>
+<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Yang'zun" name="author"/><meta content="使用 Docker-Compose 一键部署 Nexus3 私服，并配置使用 Traefik 进行对应代理配置的管理" name="description"/><meta content="neuxs3, traefik, https, tls, devops, docker-compose, proxy, nginx, 私服" name="keywords"/>
+<meta content="Hugo 0.78.2 with theme even" name="generator"/>
+<link href="https://cdryzun.github.io/post/nexus-use-traefik-proxy/" rel="canonical"/>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/manifest.json" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
+<link href="/css/custom.css" rel="stylesheet"/>
+<meta content="Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理" property="og:title"/>
+<meta content="使用 Docker-Compose 一键部署 Nexus3 私服，并配置使用 Traefik 进行对应代理配置的管理" property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://cdryzun.github.io/post/nexus-use-traefik-proxy/" property="og:url"/>
+<meta content="2021-06-10T09:51:36+08:00" property="article:published_time"/>
+<meta content="2021-06-10T09:51:36+08:00" property="article:modified_time"/>
+<meta content="Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理" itemprop="name"/>
+<meta content="使用 Docker-Compose 一键部署 Nexus3 私服，并配置使用 Traefik 进行对应代理配置的管理" itemprop="description"/>
+<meta content="2021-06-10T09:51:36+08:00" itemprop="datePublished"/>
+<meta content="2021-06-10T09:51:36+08:00" itemprop="dateModified"/>
+<meta content="1333" itemprop="wordCount"/>
+<meta content="neuxs3,traefik,mkcert,https," itemprop="keywords"/>
+<meta content="summary" name="twitter:card"/>
+<meta content="Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理" name="twitter:title"/>
+<meta content="使用 Docker-Compose 一键部署 Nexus3 私服，并配置使用 Traefik 进行对应代理配置的管理" name="twitter:description"/>
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
 <![endif]-->
-
 <!--[if lt IE 9]>
   <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
   <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
 <![endif]-->
-
-<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
+<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
 </head>
 <body>
-  <header id="header" class="header">
-      <div class="logo-wrapper">
-  <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
+<header class="header" id="header">
+<div class="logo-wrapper">
+<a class="logo" href="/">「Yang'zun」PlayGround</a>
 </div>
-
-
-
-
-
 <nav class="site-navbar">
-  <ul id="menu" class="menu">
-    <li class="menu-item">
-        <a class="menu-item-link" href="/">主页</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">归档</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/tags/">标签</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/categories/">分类</a>
-      </li><li class="menu-item">
-        <a class="menu-item-link" href="/about/">关于</a>
-      </li>
-  </ul><li style="display:inline-block;margin-right:10px;">
-    <input type="search" class="docsearch-input" placeholder="Search" />
-  </li></nav>
-
-  </header>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">「Yang&#39;zun」PlayGround</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
+<ul class="menu" id="menu">
+<li class="menu-item">
+<a class="menu-item-link" href="/">主页</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/post/">归档</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/tags/">标签</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/categories/">分类</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/about/">关于</a>
+</li>
+</ul><li style="display:inline-block;margin-right:10px;">
+<input class="docsearch-input" placeholder="Search" type="search"/>
+</li></nav>
+</header>
+<div class="mobile-navbar" id="mobile-navbar">
+<div class="mobile-header-logo">
+<a class="logo" href="/">「Yang'zun」PlayGround</a>
 </div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <a href="/">
-        <li class="mobile-menu-item">主页</li>
-      </a><a href="/post/">
-        <li class="mobile-menu-item">归档</li>
-      </a><a href="/tags/">
-        <li class="mobile-menu-item">标签</li>
-      </a><a href="/categories/">
-        <li class="mobile-menu-item">分类</li>
-      </a><a href="/about/">
-        <li class="mobile-menu-item">关于</li>
-      </a>
-  </ul>
-
-  
-
-
-</nav>
-
-  <div class="container" id="mobile-panel">
-
-    <main id="main" class="main">
-      <div class="content-wrapper">
-        <div id="content" class="content">
-          <article class="post">
-    
-    <header class="post-header">
-      <h1 class="post-title">Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理</h1>
-
-      <div class="post-meta">
-        <span class="post-time"> 2021-06-10 </span>
-        <div class="post-category">
-            <a href="/categories/devops/"> devops </a>
-            <a href="/categories/docker-compose/"> docker-compose </a>
-            <a href="/categories/proxy/"> proxy </a>
-            </div>
-          <span class="more-meta"> 约 1333 字 </span>
-          <span class="more-meta"> 预计阅读 3 分钟 </span>
-        
-      </div>
-    </header>
-
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">文章目录</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#环境说明">环境说明</a>
-      <ul>
-        <li><a href="#软件版本说明">软件版本说明</a></li>
-        <li><a href="#端口使用规划">端口使用规划</a>
-          <ul>
-            <li><a href="#nexus-私服端口-使用规划">nexus 私服端口 使用规划</a></li>
-            <li><a href="#docker-代理仓库列表">docker 代理仓库列表</a></li>
-            <li><a href="#traefik-ingress-端口-使用规划">traefik ingress 端口 使用规划</a></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-    <li><a href="#私服--traefik-使用-dokcerc-compsoe-一键部署安装">私服 &amp; traefik 使用 dokcerc-compsoe 一键部署安装</a>
-      <ul>
-        <li><a href="#docker-compose-的安装和准备工作">docker-compose 的安装和准备工作</a></li>
-        <li><a href="#git-clone-代码">git clone 代码</a></li>
-        <li><a href="#生成证书">生成证书</a></li>
-        <li><a href="#检查确认-docker-compose-部署文件">检查确认 docker-compose 部署文件</a></li>
-        <li><a href="#执行启动--导入-ca-证书的验证">执行启动 &amp; 导入 ca 证书的验证</a>
-          <ul>
-            <li><a href="#docker-compsoe-执行启动">docker-compsoe 执行启动</a></li>
-            <li><a href="#添加-hosts-记录">添加 hosts 记录</a></li>
-            <li><a href="#导入-ca-证书添加信任">导入 ca 证书，添加信任</a></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-    <li><a href="#docker-私服-测试使用">docker 私服 测试使用</a>
-      <ul>
-        <li><a href="#检查配置">检查配置</a></li>
-        <li><a href="#信任-docker-私服">信任 docker 私服</a></li>
-        <li><a href="#查看私服镜像情况">查看私服镜像情况</a></li>
-      </ul>
-    </li>
-    <li><a href="#参考文档">参考文档</a></li>
-  </ul>
-</nav>
-  </div>
+<div class="mobile-navbar-icon">
+<span></span>
+<span></span>
+<span></span>
 </div>
-    <div class="post-content">
-      <h1 id="环境说明">环境说明</h1>
+</div>
+<nav class="mobile-menu slideout-menu" id="mobile-menu">
+<ul class="mobile-menu-list">
+<a href="/">
+<li class="mobile-menu-item">主页</li>
+</a><a href="/post/">
+<li class="mobile-menu-item">归档</li>
+</a><a href="/tags/">
+<li class="mobile-menu-item">标签</li>
+</a><a href="/categories/">
+<li class="mobile-menu-item">分类</li>
+</a><a href="/about/">
+<li class="mobile-menu-item">关于</li>
+</a>
+</ul>
+</nav>
+<div class="container" id="mobile-panel">
+<main class="main" id="main">
+<div class="content-wrapper">
+<div class="content" id="content">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title">Docker-Compose 部署 Nexus3 Docker 私服，配置使用 Traefik 进行代理管理</h1>
+<div class="post-meta">
+<span class="post-time"> 2021-06-10 </span>
+<div class="post-category">
+<a href="/categories/devops/"> devops </a>
+<a href="/categories/docker-compose/"> docker-compose </a>
+<a href="/categories/proxy/"> proxy </a>
+</div>
+<span class="more-meta"> 约 1333 字 </span>
+<span class="more-meta"> 预计阅读 3 分钟 </span>
+</div>
+</header>
+<div class="post-toc" id="post-toc">
+<h2 class="post-toc-title">文章目录</h2>
+<div class="post-toc-content always-active">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#环境说明">环境说明</a>
+<ul>
+<li><a href="#软件版本说明">软件版本说明</a></li>
+<li><a href="#端口使用规划">端口使用规划</a>
+<ul>
+<li><a href="#nexus-私服端口-使用规划">nexus 私服端口 使用规划</a></li>
+<li><a href="#docker-代理仓库列表">docker 代理仓库列表</a></li>
+<li><a href="#traefik-ingress-端口-使用规划">traefik ingress 端口 使用规划</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#私服--traefik-使用-dokcerc-compsoe-一键部署安装">私服 &amp; traefik 使用 dokcerc-compsoe 一键部署安装</a>
+<ul>
+<li><a href="#docker-compose-的安装和准备工作">docker-compose 的安装和准备工作</a></li>
+<li><a href="#git-clone-代码">git clone 代码</a></li>
+<li><a href="#生成证书">生成证书</a></li>
+<li><a href="#检查确认-docker-compose-部署文件">检查确认 docker-compose 部署文件</a></li>
+<li><a href="#执行启动--导入-ca-证书的验证">执行启动 &amp; 导入 ca 证书的验证</a>
+<ul>
+<li><a href="#docker-compsoe-执行启动">docker-compsoe 执行启动</a></li>
+<li><a href="#添加-hosts-记录">添加 hosts 记录</a></li>
+<li><a href="#导入-ca-证书添加信任">导入 ca 证书，添加信任</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#docker-私服-测试使用">docker 私服 测试使用</a>
+<ul>
+<li><a href="#检查配置">检查配置</a></li>
+<li><a href="#信任-docker-私服">信任 docker 私服</a></li>
+<li><a href="#查看私服镜像情况">查看私服镜像情况</a></li>
+</ul>
+</li>
+<li><a href="#参考文档">参考文档</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<div class="post-content">
+<h1 id="环境说明">环境说明</h1>
 <h2 id="软件版本说明">软件版本说明</h2>
 <ul>
 <li>操作系统:  <code>CentOS 7.9.2009</code></li>
@@ -365,9 +326,9 @@ v1.4.3
 
 mkdir -p certs <span class="c1"># 创建存放证书文件夹</span>
 
-./mkcert -ecdsa -cert-file certs/treesir-pub.crt -key-file certs/treesir-pub.key <span class="s2">&#34;treesir.pub&#34;</span> <span class="s2">&#34;*.treesir.pub&#34;</span> <span class="s2">&#34;treesir.lan&#34;</span> <span class="s2">&#34;*.treesir.lan&#34;</span> <span class="c1"># 生成域名证书</span>
+./mkcert -ecdsa -cert-file certs/treesir-pub.crt -key-file certs/treesir-pub.key <span class="s2">"treesir.pub"</span> <span class="s2">"*.treesir.pub"</span> <span class="s2">"treesir.lan"</span> <span class="s2">"*.treesir.lan"</span> <span class="c1"># 生成域名证书</span>
  
-./mkcert -ecdsa -cert-file certs/idocker-io.crt -key-file certs/idocker-io.key <span class="s2">&#34;idocker.io&#34;</span> <span class="s2">&#34;*.idocker.io&#34;</span> <span class="s2">&#34;idocker.lan&#34;</span> <span class="s2">&#34;*.idocker.lan&#34;</span> <span class="c1"># 生成 docker 私服使用证书</span>
+./mkcert -ecdsa -cert-file certs/idocker-io.crt -key-file certs/idocker-io.key <span class="s2">"idocker.io"</span> <span class="s2">"*.idocker.io"</span> <span class="s2">"idocker.lan"</span> <span class="s2">"*.idocker.lan"</span> <span class="c1"># 生成 docker 私服使用证书</span>
  
 ls certs/  <span class="c1"># 确认证书是否存在</span>
 idocker-io.crt  idocker-io.key  treesir-pub.crt  treesir-pub.key
@@ -492,15 +453,15 @@ tls:
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">cat docker-compose.yml 
-version: <span class="s2">&#34;3&#34;</span>
+version: <span class="s2">"3"</span>
 services:
   traefik:
     restart: always
     image: traefik:v2.4.8
     container_name: traefik
     ports:
-      - <span class="s2">&#34;80:80&#34;</span>
-      - <span class="s2">&#34;443:443&#34;</span>
+      - <span class="s2">"80:80"</span>
+      - <span class="s2">"443:443"</span>
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./certs:/certs:ro
@@ -589,7 +550,7 @@ docker-compose logs -f  <span class="c1"># 检查日志，确认有无错误</sp
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">sudo -- sh -c <span class="s2">&#34;echo &#39;192.168.8.88 idocker.io dev.idocker.io qa.idocker.io prod.idocker.io mirror.treesir.pub traefik.treesir.pub&#39; &gt;&gt; /etc/hosts&#34;</span> <span class="c1"># macos</span>
+<pre class="chroma"><code class="language-bash" data-lang="bash">sudo -- sh -c <span class="s2">"echo '192.168.8.88 idocker.io dev.idocker.io qa.idocker.io prod.idocker.io mirror.treesir.pub traefik.treesir.pub' &gt;&gt; /etc/hosts"</span> <span class="c1"># macos</span>
 </code></pre></td></tr></table>
 </div>
 </div><h3 id="导入-ca-证书添加信任">导入 ca 证书，添加信任</h3>
@@ -606,20 +567,20 @@ sz -y <span class="k">$(</span>mkcert -CAROOT<span class="k">)</span>/rootCA.pem
 </code></pre></td></tr></table>
 </div>
 </div><p>双击此证书，添加到系统中</p>
-<p><img src="https://cdn.treesir.pub/img/image-20210610110703249.png" alt="image-20210610110703249"></p>
+<p><img alt="image-20210610110703249" src="https://cdn.treesir.pub/img/image-20210610110703249.png"/></p>
 <p>双击打开，设置永远信任</p>
-<p><img src="https://cdn.treesir.pub/img/image-20210610110824559.png" alt="image-20210610110824559"></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210610110900639.png" alt="image-20210610110900639"></p>
-<p><img src="https://cdn.treesir.pub/img/image-20210610110926368.png" alt="image-20210610110926368"></p>
+<p><img alt="image-20210610110824559" src="https://cdn.treesir.pub/img/image-20210610110824559.png"/></p>
+<p><img alt="image-20210610110900639" src="https://cdn.treesir.pub/img/image-20210610110900639.png"/></p>
+<p><img alt="image-20210610110926368" src="https://cdn.treesir.pub/img/image-20210610110926368.png"/></p>
 <p>测试访问一下 nexus dashboard manage</p>
-<p><img src="https://cdn.treesir.pub/img/image-20210610111116798.png" alt="image-20210610111116798"></p>
+<p><img alt="image-20210610111116798" src="https://cdn.treesir.pub/img/image-20210610111116798.png"/></p>
 <p>nexus dashboard manage 初始化 admin 密码查看</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">docker <span class="nb">exec</span>  nexus3 bash -c <span class="s2">&#34;cat /nexus-data/admin.password&#34;</span>
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker <span class="nb">exec</span>  nexus3 bash -c <span class="s2">"cat /nexus-data/admin.password"</span>
 </code></pre></td></tr></table>
 </div>
 </div><h1 id="docker-私服-测试使用">docker 私服 测试使用</h1>
@@ -630,9 +591,9 @@ sz -y <span class="k">$(</span>mkcert -CAROOT<span class="k">)</span>/rootCA.pem
 <blockquote>
 <p>且创建 <code>idocker.io</code> 可供测试使用的列表做测试试验</p>
 </blockquote>
-<p><img src="https://cdn.treesir.pub/img/image-20210610113856665.png" alt="image-20210610113856665"></p>
+<p><img alt="image-20210610113856665" src="https://cdn.treesir.pub/img/image-20210610113856665.png"/></p>
 <p>traefik 中配置检查</p>
-<p><img src="https://cdn.treesir.pub/img/image-20210610114024241.png" alt="image-20210610114024241"></p>
+<p><img alt="image-20210610114024241" src="https://cdn.treesir.pub/img/image-20210610114024241.png"/></p>
 <h2 id="信任-docker-私服">信任 docker 私服</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -651,19 +612,19 @@ sz -y <span class="k">$(</span>mkcert -CAROOT<span class="k">)</span>/rootCA.pem
 cat /etc/docker/daemon.json 
 <span class="o">{</span>
 ...
-    <span class="s2">&#34;insecure-registries&#34;</span>: <span class="o">[</span><span class="s2">&#34;idocker.io&#34;</span><span class="o">]</span>
+    <span class="s2">"insecure-registries"</span>: <span class="o">[</span><span class="s2">"idocker.io"</span><span class="o">]</span>
 ...
 <span class="o">}</span>
 
 docker login idocker.io
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://cdn.treesir.pub/img/image-20210610122651706.png" alt="image-20210610122651706"></p>
+</div><p><img alt="image-20210610122651706" src="https://cdn.treesir.pub/img/image-20210610122651706.png"/></p>
 <h2 id="查看私服镜像情况">查看私服镜像情况</h2>
 <p><code>idocker.io</code> group 私服</p>
-<p><img src="https://cdn.treesir.pub/img/image-20210610122756789.png" alt="image-20210610122756789"></p>
+<p><img alt="image-20210610122756789" src="https://cdn.treesir.pub/img/image-20210610122756789.png"/></p>
 <p><code>docker-custom</code> hostd 私服</p>
-<p><img src="https://cdn.treesir.pub/img/image-20210610122836249.png" alt="image-20210610122836249"></p>
+<p><img alt="image-20210610122836249" src="https://cdn.treesir.pub/img/image-20210610122836249.png"/></p>
 <h1 id="参考文档">参考文档</h1>
 <p><a href="https://doc.traefik.io/traefik/migration/v1-to-v2/">https://doc.traefik.io/traefik/migration/v1-to-v2/</a></p>
 <p><a href="https://shanyue.tech/op/traefik.html#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B">https://shanyue.tech/op/traefik.html#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B</a></p>
@@ -671,56 +632,50 @@ docker login idocker.io
 <p><a href="https://github.com/SushiFu/traefik-local">https://github.com/SushiFu/traefik-local</a></p>
 <p><a href="https://traefik.io/blog/traefik-2-tls-101-23b4fbee81f1/">https://traefik.io/blog/traefik-2-tls-101-23b4fbee81f1/</a></p>
 <p><a href="https://github.com/SushiFu/traefik-local">https://github.com/SushiFu/traefik-local</a></p>
-
-    </div>
-
-    <div class="post-copyright">
-  <p class="copyright-item">
-    <span class="item-title">文章作者</span>
-    <span class="item-content">Yang'zun</span>
-  </p>
-  <p class="copyright-item">
-    <span class="item-title">上次更新</span>
-    <span class="item-content">
+</div>
+<div class="post-copyright">
+<p class="copyright-item">
+<span class="item-title">文章作者</span>
+<span class="item-content">Yang'zun</span>
+</p>
+<p class="copyright-item">
+<span class="item-title">上次更新</span>
+<span class="item-content">
         2021-06-10
         
     </span>
-  </p>
-  
-  <p class="copyright-item">
-    <span class="item-title">许可协议</span>
-    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
-  </p>
+</p>
+<p class="copyright-item">
+<span class="item-title">许可协议</span>
+<span class="item-content"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a></span>
+</p>
 </div>
 <footer class="post-footer">
-      <div class="post-tags">
-          <a href="/tags/neuxs3/">neuxs3</a>
-          <a href="/tags/traefik/">traefik</a>
-          <a href="/tags/mkcert/">mkcert</a>
-          <a href="/tags/https/">https</a>
-          </div>
-      <nav class="post-nav">
-        <a class="prev" href="/post/kaniko-image-build/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">Kaniko Docker 镜像构建 初体验</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        <a class="next" href="/post/rancher-import-cluster-fix/">
-            <span class="next-text nav-default">Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复</span>
-            <span class="next-text nav-mobile">下一篇</span>
-            <i class="iconfont icon-right"></i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-        </div>
-        
-
-  
-  <div id="vcomments"></div>
-  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
-  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
-  <script type="text/javascript">
+<div class="post-tags">
+<a href="/tags/neuxs3/">neuxs3</a>
+<a href="/tags/traefik/">traefik</a>
+<a href="/tags/mkcert/">mkcert</a>
+<a href="/tags/https/">https</a>
+</div>
+<nav class="post-nav">
+<a class="prev" href="/post/kaniko-image-build/">
+<i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">Kaniko Docker 镜像构建 初体验</span>
+<span class="prev-text nav-mobile">上一篇</span>
+</a>
+<a class="next" href="/post/rancher-import-cluster-fix/">
+<span class="next-text nav-default">Rancher 导入集群提示 Scheduler &amp; Controller 不健康问题修复</span>
+<span class="next-text nav-mobile">下一篇</span>
+<i class="iconfont icon-right"></i>
+</a>
+</nav>
+</footer>
+</article>
+</div>
+<div id="vcomments"></div>
+<script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+<script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+<script type="text/javascript">
     new Valine({
         el: '#vcomments' ,
         appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
@@ -732,64 +687,39 @@ docker login idocker.io
         visitor:  false 
     });
   </script>
-
-  
-
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="social-links">
-      <a href="mailto:yangzun@treesir.pub" class="iconfont icon-email" title="email"></a>
-      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
-  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-
+</main>
+<footer class="footer" id="footer">
+<div class="social-links">
+<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
+<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
+<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
+</div>
 <div class="copyright">
-  <span class="power-by">
+<span class="power-by">
     由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
   </span>
-  <span class="division">|</span>
-  <span class="theme-info">
+<span class="division">|</span>
+<span class="theme-info">
     主题 - 
     <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
-  </span>
-
-  
-
-  
-
-  <span class="copyright-year">
-    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
-    &copy; 
+</span>
+<span class="copyright-year">
+<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘 ICP 备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
+    © 
     2019 - 
     2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
-    </span>
-
+</span>
 </div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont icon-up"></i>
-    </div>
-  </div>
-  
-  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
-
-
-
-<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
-
-
-
-
-
-
-
-
+</footer>
+<div class="back-to-top" id="back-to-top">
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
+<script src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js" type="text/javascript"></script>
 <script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
 <script>
     docsearch({
