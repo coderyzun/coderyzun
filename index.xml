@@ -6,7 +6,14 @@
 <description>Recent content on 「Yang'zun」PlayGround</description>
 <generator>Hugo -- gohugo.io</generator>
 <language>en-us</language>
-<lastBuildDate>Tue, 03 Aug 2021 11:37:38 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml"/>
+<lastBuildDate>Sun, 15 Aug 2021 20:00:50 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml"/>
+<item>
+<title>GoLang Struct</title>
+<link>https://cdryzun.github.io/post/go-lang-struct/</link>
+<pubDate>Sun, 15 Aug 2021 20:00:50 +0800</pubDate>
+<guid>https://cdryzun.github.io/post/go-lang-struct/</guid>
+<description>Struct 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69</description>
+</item>
 <item>
 <title>使用 Docker Compose 5分钟 部署 一台邮件服务器</title>
 <link>https://cdryzun.github.io/post/docker-deploy-mailserver/</link>
@@ -61,7 +68,7 @@
 <link>https://cdryzun.github.io/post/2021-knowledge/</link>
 <pubDate>Tue, 29 Jun 2021 11:38:41 +0800</pubDate>
 <guid>https://cdryzun.github.io/post/2021-knowledge/</guid>
-<description>文章的部分内容被密码保护： --- DON'T MODIFY THIS LINE --- 概述 此篇文档 为 2021 年整理的 运维 和 DevOps 相关知识点 K8s 相关 api-Server 为什么 k8s 要用申明式？ 答：只需描述期望状态就行, 剩下的</description>
+<description>[toc] 文章的部分内容被密码保护： --- DON'T MODIFY THIS LINE --- 概述 此篇文档 为 2021 年整理的 运维 和 DevOps 相关知识点 K8s 相关 api-Server 为什么 k8s 要用申明式？ 答：只需描述期望状态就行, 剩下</description>
 </item>
 <item>
 <title>使用 Kube-Vip 部署 高可用的 Kubernetes 集群</title>
