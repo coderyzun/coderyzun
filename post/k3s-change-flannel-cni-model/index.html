@@ -33,7 +33,7 @@
 <meta content="k3s 集群修改 flannel 默认 vxlan 模式，更改为 host-gw 模式的记录" itemprop="description"/>
 <meta content="2021-07-29T08:56:04+08:00" itemprop="datePublished"/>
 <meta content="2021-07-29T08:56:04+08:00" itemprop="dateModified"/>
-<meta content="1240" itemprop="wordCount"/>
+<meta content="1208" itemprop="wordCount"/>
 <meta content="flannel,n1,linux," itemprop="keywords"/>
 <meta content="summary" name="twitter:card"/>
 <meta content="K3s 集群修改 Flannel CNI 插件网络模式" name="twitter:title"/>
@@ -108,7 +108,7 @@
 <a href="/categories/openwrt/"> openwrt </a>
 <a href="/categories/network/"> network </a>
 </div>
-<span class="more-meta"> 约 1240 字 </span>
+<span class="more-meta"> 约 1208 字 </span>
 <span class="more-meta"> 预计阅读 3 分钟 </span>
 </div>
 </header>
@@ -318,13 +318,6 @@
 </span><span class="lnt">37
 </span><span class="lnt">38
 </span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">cat /etc/config/k3s 
@@ -332,13 +325,6 @@ config globals <span class="s1">'globals'</span>
         option opts <span class="s1">'--server https://192.168.8.112:6443 --flannel-backend host-gw --token K106ccb265579f1e40038844787c9ce4dd8528b6c58e26894e953661c9a907ef5d2::server:4843c59507b6840cb1c3bea454570f85 --docker --kube-apiserver-arg service-node-port-range=40000-65000 --no-deploy traefik --write-kubeconfig ~/.kube/config --write-kubeconfig-mode 666'</span>
         option root <span class="s1">'/application/k3s'</span>
         
-           
-cat /etc/config/k3s 
-config globals <span class="s1">'globals'</span>
-        option opts <span class="s1">'--server https://192.168.8.112:6443 --flannel-backend host-gw --token K106ccb265579f1e40038844787c9ce4dd8528b6c58e26894e953661c9a907ef5d2::server:4843c59507b6840cb1c3bea454570f85 --docker --kube-apiserver-arg service-node-port-range=40000-65000 --no-deploy traefik --write-kubeconfig ~/.kube/config --write-kubeconfig-mode 666'</span>
-        option root <span class="s1">'/application/k3s'</span>
-
-
 
 cat /etc/init.d/k3s 
 <span class="c1">#!/bin/sh /etc/rc.common</span>
